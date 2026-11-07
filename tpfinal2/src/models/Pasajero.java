@@ -1,99 +1,85 @@
 package models;
 
-import java.util.Objects;
+import utils.Identificable;
 
-public class Pasajero {
-    private int id;
-    private String nombre;
-private String apellido;
- private String paisDeOrigen;
- private String domicilioOrigen;
-private double telefono;
- private String email;
+public class Pasajero implements Identificable {
 
-    public Pasajero(int id, String nombre, String apellido, String paisDeOrigen, String domicilioOrigen, double telefono, String email) {
-        this.id = id;
+
+        private int dni;
+        private String nombre;
+        private String apellido;
+        private String origen;
+        private String domicilioOrigen;
+        private String telefono;
+        private String email;
+
+
+        public Pasajero( int dni, String nombre, String apellido,
+            String origen, String domicilioOrigen,
+            String telefono, String email){
+
+        this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.paisDeOrigen = paisDeOrigen;
+        this.origen = origen;
         this.domicilioOrigen = domicilioOrigen;
         this.telefono = telefono;
         this.email = email;
     }
 
-    public int getId() {
-        return id;
+        @Override
+        public int getId() {
+        return dni;
     }
 
-    public String getApellido() {
-        return apellido;
+        public int getDni () {
+        return dni;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String getNombre() {
+        public String getNombre () {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+        public String getApellido () {
+        return apellido;
     }
 
-    public String getPaisDeOrigen() {
-        return paisDeOrigen;
+        public String getOrigen () {
+        return origen;
     }
 
-    public void setPaisDeOrigen(String paisDeOrigen) {
-        this.paisDeOrigen = paisDeOrigen;
-    }
-
-    public String getDomicilioOrigen() {
+        public String getDomicilioOrigen () {
         return domicilioOrigen;
     }
 
-    public void setDomicilioOrigen(String domicilioOrigen) {
-        this.domicilioOrigen = domicilioOrigen;
-    }
-
-    public double getTelefono() {
+        public String getTelefono () {
         return telefono;
     }
 
-    public void setTelefono(double telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getEmail() {
+        public String getEmail () {
         return email;
     }
 
-    public void setEmail(String email) {
+
+        public void modificarDatos (String domicilio,
+            String telefono,
+            String email){
+
+        this.domicilioOrigen = domicilio;
+        this.telefono = telefono;
         this.email = email;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Pasajero pasajero)) return false;
-        return id == pasajero.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
-
-    @Override
-    public String toString() {
+        @Override
+        public String toString () {
         return "Pasajero{" +
-                "id=" + id +
+                "dni=" + dni +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
-                ", paisDeOrigen='" + paisDeOrigen + '\'' +
+                ", origen='" + origen + '\'' +
                 ", domicilioOrigen='" + domicilioOrigen + '\'' +
-                ", telefono=" + telefono +
+                ", telefono='" + telefono + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }
-}
+    }
