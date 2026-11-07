@@ -1,5 +1,5 @@
-package utils;
+package enums;
 
 public enum EEstadoHabitacion {
-    DISPONIBLE, OCUPADA, LIMPIEZA
+    DISPONIBLE, OCUPADA, LIMPIEZA, REPARACION,DESINFECCION
 }
