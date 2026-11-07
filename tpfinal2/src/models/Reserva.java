@@ -1,5 +1,7 @@
 package models;
 
+import utils.EstadoReserva;
+
 import java.time.LocalDate;
 
 public class Reserva {
