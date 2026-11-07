@@ -87,7 +87,6 @@ private LocalDate fechaDesde;
           && fechaHasta.isAfter(desde);
  }
 
-
  public long calcularNoches() {
   return java.time.temporal.ChronoUnit.DAYS.between(
           fechaDesde, fechaHasta);
