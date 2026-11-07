@@ -1,4 +1,4 @@
-package utils;
+package enums;
 
 public enum EstadoReserva {
     PENDIENTE, EN_CURSO,
