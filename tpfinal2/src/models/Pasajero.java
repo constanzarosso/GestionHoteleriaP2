@@ -1,6 +1,8 @@
 package models;
 
-import utils.Identificable;
+import interfaces.Identificable;
+
+import java.util.Objects;
 
 public class Pasajero implements Identificable {
 
@@ -61,13 +63,25 @@ public class Pasajero implements Identificable {
     }
 
 
-        public void modificarDatos (String domicilio,
-            String telefono,
-            String email){
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Pasajero pasajero)) return false;
+        return dni == pasajero.dni;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(dni);
+    }
+
+    public void modificarDatos (String domicilio,
+                                String telefono,
+                                String email){
 
         this.domicilioOrigen = domicilio;
         this.telefono = telefono;
         this.email = email;
+
     }
 
         @Override
