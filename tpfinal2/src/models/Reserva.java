@@ -1,6 +1,6 @@
 package models;
 
-import utils.EstadoReserva;
+import enums.EstadoReserva;
 import interfaces.Identificable;
 
 import java.time.LocalDate;
