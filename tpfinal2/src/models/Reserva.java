@@ -1,7 +1,7 @@
 package models;
 
 import utils.EstadoReserva;
-import utils.Identificable;
+import interfaces.Identificable;
 
 import java.time.LocalDate;
 
