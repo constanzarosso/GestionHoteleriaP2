@@ -2,7 +2,7 @@ package models;
 
 import interfaces.Facturable;
 import interfaces.Identificable;
-import utils.MetodoDePago;
+import enums.MetodoDePago;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
