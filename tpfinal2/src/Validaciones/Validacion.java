@@ -2,7 +2,17 @@ package Validaciones;
 
 import Excepciones.*;
 
-public class Validacion {
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+
+public final class Validacion {
+
+    //Evita que se cree automaticamente el constructor publico para que no se instancie
+    private Validacion() {
+        throw new UnsupportedOperationException("Esta clase no puede ser instanciada");
+    }
 
     public static void validarEntero(String texto) throws NumeroInvalidoException{
         try{
@@ -18,16 +28,26 @@ public class Validacion {
         }
     }
 
-    public static void validarRango(){
+    public static void validarRango(int numero, int minimo, int maximo) throws FueraDeRangoException{
 
+        if(numero < minimo || numero > maximo){
+            throw new FueraDeRangoException("El numero debe estar entre "+minimo+ " y "+maximo);
+        }
     }
 
-    public static void validarMonto(){
+    public static void validarMonto(double monto) throws MontoInvalidoException{
 
+        // devuelve true/false si el numero es real y valido o no es un numero
+        if(!Double.isFinite(monto) || monto < 0){
+            throw new MontoInvalidoException("El monto es negativo o invalido.");
+        }
     }
 
-    public static void validarSoloLetras(){
+    public static void validarSoloLetras(String texto) throws TextoInvalidoException{
 
+        if(texto == null || !texto.trim().matches("[\\p{L} ]+")){ // permite solo letras
+            throw new TextoInvalidoException("El texto solo puede contener letras y espacios.");
+        }
     }
 
     public static void validarDni(String dni) throws DniInvalidoException {
@@ -60,20 +80,54 @@ public class Validacion {
 
     }
 
-    public static void validarFecha(){
+    public static void validarFecha(String fecha) throws FechaInvalidaException{
+        if(fecha == null){
+            throw new FechaInvalidaException("La fecha no puede ser nula.");
+        }
+
+        // guardo las reglas de como tiene que verse el formato de la fecha dia/mes/año -> uuuu fechas normales -> yyyy obliga a poner d.C/a.C
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT);
+
+        try{
+            LocalDate.parse(fecha, formato);
+        }catch (DateTimeParseException e){
+            throw new FechaInvalidaException("La fecha debe tener formato dd/MM/yyyy (dia/mes/año) y ser valida");
+        }
+    }
+
+    // Min 4 caract Max 20 carac -> letras,num,punto,guion -> No espacios ni Caracteres especiales
+    public static void validarNombreUsuario(String nombreUsuario) throws NombreUsuarioInvalidoException{
+
+        if(nombreUsuario == null || !nombreUsuario.matches("^[a-zA-Z0-9]([._]?[a-zA-Z0-9]){3,19}$")){
+            throw new NombreUsuarioInvalidoException("El nombre de usuario debe tener entre 4 y 20 caracteres. " +
+                    "Solo se permiten letras, numero, puntos y guiones bajos.");
+        }
 
     }
 
-    public static void validarNombreUsuario(){
+    // Min 8, Max 30 carct -> Mayus 1, Minuscula 1, Num 1 , Caracter especial 1
+    public static void validarContrasenia(String contrasenia) throws ContraseniaInvalidaException{
 
+        if(contrasenia == null ||
+                contrasenia.length() < 8 ||
+                contrasenia.length() > 30 ||
+                contrasenia.contains(" ") ||
+                !contrasenia.matches(".*[A-Z].*") ||
+                !contrasenia.matches(".*[a-z].*") ||
+                !contrasenia.matches(".*[0-9].*") ||
+                !contrasenia.matches(".*[^a-zA-Z0-9].*")){
+
+            throw new ContraseniaInvalidaException("La contraseña tiene que tener entre 8 y 30 caracteres." +
+                    "Sin espacios, con una mayuscula, una miniscula, un numero y un caracter especial.");
+        }
     }
 
-    public static void validarContrasenia(){
+    public static void validarSiNo(String respuesta) throws TextoInvalidoException{
 
-    }
-
-    public static void validarSiNo(){
-
+        respuesta = respuesta.toLowerCase();
+        if(respuesta == null || !respuesta.trim().matches("(?i)(s|si|sí|n|no)")){ // ?i = ignora mayus y min
+            throw new TextoInvalidoException("Debe ingresar S/N o si/no");
+        }
     }
 
 
