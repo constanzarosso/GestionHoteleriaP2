@@ -2,6 +2,6 @@ package Excepciones;
 
 public class NumeroInvalidoException extends DatoInvalidoException {
     public NumeroInvalidoException() {
-        super("Error: Numero incorrecto");
+        super("Error: El valor ingresado tiene que ser un numero entero");
     }
 }
