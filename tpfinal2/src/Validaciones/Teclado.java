@@ -71,32 +71,23 @@ public final class Teclado {
         }
     }
 
-    public static String leerContrasenia(String mensaje){
-        while(true){
-            System.out.println(mensaje);
-            String contrasenia = sc.nextLine();
+    public static String leerContrasenia(String mensaje) throws ContraseniaInvalidaException{
 
-            try {
-                Validacion.validarContrasenia(contrasenia);
-                return  contrasenia;
-            }catch (ContraseniaInvalidaException e){
-                System.out.println(e.getMessage());
-            }
-        }
+            System.out.print(mensaje);
+            String contrasenia = sc.nextLine();
+            Validacion.validarContrasenia(contrasenia);
+            return  contrasenia;
+
+
     }
 
-    public static String leerNombreUsuario(String mensaje){
-        while(true){
-            System.out.println(mensaje);
-            String nombreUsuario = sc.nextLine();
+    public static String leerNombreUsuario(String mensaje) throws NombreUsuarioInvalidoException{
 
-            try {
-                Validacion.validarNombreUsuario(nombreUsuario);
-                return nombreUsuario;
-            }catch (NombreUsuarioInvalidoException e){
-                System.out.println(e.getMessage());
-            }
-        }
+            System.out.print(mensaje);
+            String nombreUsuario = sc.nextLine();
+            Validacion.validarNombreUsuario(nombreUsuario);
+            return nombreUsuario;
+
     }
 
     public static LocalDate leerFecha(String mensaje){

@@ -1,6 +1,5 @@
 package models;
 
-import Validaciones.Validacion;
 import enums.Permiso;
 import enums.TipoUsuario;
 import interfaces.Identificable;
@@ -45,7 +44,7 @@ public abstract class Usuario implements Identificable {
         return new HashSet<>(permisos);
     }
 
-    public boolean validarContraenia(String contrasenia){
+    public boolean validarContrasenia(String contrasenia){
         return this.contrasenia.equals(contrasenia);
 
     }
