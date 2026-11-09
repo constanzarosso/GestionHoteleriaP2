@@ -1,14 +1,26 @@
+import ConexionBD.Conexion;
 import Excepciones.*;
 import Validaciones.Teclado;
 import Validaciones.Validacion;
 import models.Hotel;
 import models.Usuario;
 
+import java.sql.Connection;
 import java.util.Scanner;
 
 
 public class Main {
     public static void main(String[] args) {
+        //SOLO PROBE LA CONEXION//
+        /*try{
+            Conexion.getConnection();
+            System.out.println("Conectado");
+            Conexion.closeConnection();
+        }catch (PersistenciaException e){
+            System.out.println(e.getMessage());
+        }
+         */
+        //________________________________________________________________________________________________//
 
         Hotel hotel = new Hotel("Hotel UTN");
         int contador=0;
