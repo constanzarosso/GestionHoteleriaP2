@@ -74,5 +74,5 @@ public class GestorHabitaciones extends GestorGenerico<Habitacion>{
         }
         return disponiblesSegunCapacidad;
     }
-    
+
 }
