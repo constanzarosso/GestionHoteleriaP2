@@ -1,6 +1,8 @@
 package models;
 
+import Excepciones.CredencialesInvalidasException;
 import Excepciones.ElementoNoEncontradoException;
+import Excepciones.UsuarioInactivoException;
 import enums.Permiso;
 
 public class GestorUsuarios extends GestorGenerico<Usuario> {
@@ -18,18 +20,28 @@ public class GestorUsuarios extends GestorGenerico<Usuario> {
         throw new ElementoNoEncontradoException();
     }
 
-    public boolean login(String nombreUsuario, String contrasenia){
+    public Usuario login(String nombreUsuario, String contrasenia)throws CredencialesInvalidasException, UsuarioInactivoException {
+
+        Usuario usuario;
         try{
-            Usuario usuario = buscarPorNombre(nombreUsuario);
-            return usuario.isActivo() && usuario.validarContraenia(contrasenia);
+            usuario = buscarPorNombre(nombreUsuario);
+
         }catch(ElementoNoEncontradoException e){
-            return false;
+           throw new CredencialesInvalidasException();
         }
+
+        if (!usuario.isActivo()) {
+            throw new UsuarioInactivoException();
+        }
+
+        if(!usuario.validarContrasenia(contrasenia)){
+            throw new CredencialesInvalidasException();
+        }
+        return usuario;
     }
 
     public void darDeBajaUsuario(int id) throws ElementoNoEncontradoException{
         Usuario usuario = buscarElemento(id);
-
         usuario.darDeBaja();
     }
 
