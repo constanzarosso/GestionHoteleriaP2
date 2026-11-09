@@ -52,7 +52,7 @@ public final class Validacion {
 
     public static void validarDni(String dni) throws DniInvalidoException {
         // matches devuelve true/false si el string cumple -> "\\d" cualquier numero del 0 al 9 y (7,8) entre 7 y 8 digitos
-        if(dni == null || !dni.trim().replace(".","").matches("\\d(7,8)")){
+        if(dni == null || !dni.trim().replace(".","").matches("\\d{7,8}")){
             throw new DniInvalidoException("El DNI debe tener 7 u 8 digitos.");
         }
     }
