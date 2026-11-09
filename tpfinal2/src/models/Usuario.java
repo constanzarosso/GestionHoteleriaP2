@@ -36,6 +36,10 @@ public abstract class Usuario implements Identificable {
         return activo;
     }
 
+    public void darDeBaja(){
+        this.activo = false;
+    }
+
     //Evita el usuario.getPemisos().clear() osea que no lo pueden borrar los permisos
     public Set<Permiso> getPermisos() {
         return new HashSet<>(permisos);
