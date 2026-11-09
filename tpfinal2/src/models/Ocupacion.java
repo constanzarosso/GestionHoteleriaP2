@@ -119,8 +119,7 @@ public class Ocupacion implements Identificable, Facturable {
                         ? fechaCheckOut
                         : LocalDate.now());
 
-       // double totalEstadia =
-               // noches * reserva.getHabitacion().calcularPrecioPorNoche();
+        double totalEstadia =  noches * reserva.getHabitacion().calcularPrecioPorNoche();
 
         double totalConsumos = 0;
 
@@ -128,7 +127,7 @@ public class Ocupacion implements Identificable, Facturable {
             totalConsumos += consumo.calcularTotal();
         }
 
-        return 0; //totalEstadia + totalConsumos;
+        return totalEstadia + totalConsumos;
     }
 
     @Override

@@ -1,71 +1,55 @@
 package models;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-    /**
-     * Gestiona las reservas del hotel.
-     */
-    public class GestorReservas extends GestorGenerico<Reserva> {
+public class GestorReservas extends GestorGenerico<Reserva> {
 
-        /**
-         * Constructor.
-         */
-        public GestorReservas(List<Reserva> iniciales) {
-            super(iniciales);
-        }
-
-        /**
-         * Obtiene las reservas de una habitación.
-         */
-        public List<Reserva> reservasDeHabitacion(int numero) {
-
-            List<Reserva> resultado = new ArrayList<>();
-
-            for (Reserva reserva : listar()) {
-                if (reserva.getHabitacion().getId() == numero) {
-                    resultado.add(reserva);
-                }
-            }
-
-            return resultado;
-        }
-
-        /**
-         * Obtiene las reservas de un pasajero.
-         */
-        public List<Reserva> reservasDePasajero(int dni) {
-
-            List<Reserva> resultado = new ArrayList<>();
-
-            for (Reserva reserva : listar()) {
-                if (reserva.getPasajero().getDni() == dni) {
-                    resultado.add(reserva);
-                }
-            }
-
-            return resultado;
-        }
-
-        /**
-         * Verifica si existe una reserva superpuesta.
-         */
-        public boolean hayReservaSuperpuesta(int numero,
-                                             LocalDate desde,
-                                             LocalDate hasta) {
-
-            for (Reserva reserva : listar()) {
-
-                if (reserva.getHabitacion().getId() == numero
-                        && reserva.estaActiva()
-                        && reserva.seSuperpone(desde, hasta)) {
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
+    public GestorReservas() {
+        super();
     }
+
+    public GestorReservas(Map<Integer, Reserva> elementos) {
+        super(elementos);
+    }
+
+    public List<Reserva> reservasDeHabitacion(int numero) {
+        List<Reserva> reservas = new ArrayList<>();
+
+        for (Reserva reserva : obtenerElementos()) {
+            if (reserva.getHabitacion().getId() == numero) {
+                reservas.add(reserva);
+            }
+        }
+
+        return reservas;
+    }
+
+    public List<Reserva> reservasDePasajero(int dni) {
+        List<Reserva> reservas = new ArrayList<>();
+
+        for (Reserva reserva : obtenerElementos()) {
+            if (reserva.getPasajero().getId() == dni) {
+                reservas.add(reserva);
+            }
+        }
+
+        return reservas;
+    }
+
+    public boolean hayReservaSuperpuesta(int numero, LocalDate desde, LocalDate hasta) {
+        for (Reserva reserva : obtenerElementos()) {
+            if (reserva.getHabitacion().getId() == numero
+                    && reserva.estaActiva()
+                    && reserva.seSuperpone(desde, hasta)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
 

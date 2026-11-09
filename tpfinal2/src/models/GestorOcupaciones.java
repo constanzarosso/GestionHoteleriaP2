@@ -2,29 +2,22 @@ package models;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
-/**
- * Gestiona las ocupaciones del hotel.
- */
 public class GestorOcupaciones extends GestorGenerico<Ocupacion> {
 
-    /**
-     * Constructor.
-     */
-    public GestorOcupaciones(List<Ocupacion> iniciales) {
-        super(iniciales);
+    public GestorOcupaciones() {
+        super();
     }
 
-    /**
-     * Busca la ocupación activa de una habitación.
-     */
+    public GestorOcupaciones(Map<Integer, Ocupacion> elementos) {
+        super(elementos);
+    }
+
     public Ocupacion ocupacionActivaDe(int numero) {
-
-        for (Ocupacion ocupacion : listar()) {
-
+        for (Ocupacion ocupacion : obtenerElementos()) {
             if (ocupacion.getHabitacion().getId() == numero
                     && ocupacion.estaActiva()) {
-
                 return ocupacion;
             }
         }
@@ -32,36 +25,27 @@ public class GestorOcupaciones extends GestorGenerico<Ocupacion> {
         return null;
     }
 
-    /**
-     * Obtiene todas las ocupaciones activas.
-     */
     public List<Ocupacion> listarActivas() {
+        List<Ocupacion> activas = new ArrayList<>();
 
-        List<Ocupacion> resultado = new ArrayList<>();
-
-        for (Ocupacion ocupacion : listar()) {
+        for (Ocupacion ocupacion : obtenerElementos()) {
             if (ocupacion.estaActiva()) {
-                resultado.add(ocupacion);
+                activas.add(ocupacion);
             }
         }
 
-        return resultado;
+        return activas;
     }
 
-    /**
-     * Obtiene el historial de ocupaciones de un pasajero.
-     */
     public List<Ocupacion> historialDe(int dni) {
+        List<Ocupacion> historial = new ArrayList<>();
 
-        List<Ocupacion> resultado = new ArrayList<>();
-
-        for (Ocupacion ocupacion : listar()) {
-
-            if (ocupacion.getTitular().getDni() == dni) {
-                resultado.add(ocupacion);
+        for (Ocupacion ocupacion : obtenerElementos()) {
+            if (ocupacion.getTitular().getId() == dni) {
+                historial.add(ocupacion);
             }
         }
 
-        return resultado;
+        return historial;
     }
 }

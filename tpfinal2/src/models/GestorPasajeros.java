@@ -2,29 +2,29 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class GestorPasajeros GestorGenerico<Pasajero> {
+public class GestorPasajeros extends GestorGenerico<Pasajero> {
 
-
-        public GestorPasajeros(List<Pasajero> iniciales) {
-            super(iniciales);
-        }
-
-        /**
-         * Busca pasajeros por apellido.
-         */
-        public List<Pasajero> buscarPorApellido(String apellido) {
-
-            List<Pasajero> resultado = new ArrayList<>();
-
-            for (Pasajero pasajero : listar()) {
-                if (pasajero.getApellido().equalsIgnoreCase(apellido)) {
-                    resultado.add(pasajero);
-                }
-            }
-
-            return resultado;
-        }
+    public GestorPasajeros() {
+        super();
     }
+
+    public GestorPasajeros(Map<Integer, Pasajero> elementos) {
+        super(elementos);
+    }
+
+    public List<Pasajero> buscarPorApellido(String apellido) {
+        List<Pasajero> encontrados = new ArrayList<>();
+
+        for (Pasajero pasajero : obtenerElementos()) {
+            if (pasajero.getApellido().equalsIgnoreCase(apellido)) {
+                encontrados.add(pasajero);
+            }
+        }
+
+        return encontrados;
+    }
+}
 
 
