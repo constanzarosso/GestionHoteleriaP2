@@ -1,4 +1,5 @@
 import Excepciones.ContraseniaInvalidaException;
+import Excepciones.DniInvalidoException;
 import Excepciones.NombreUsuarioInvalidoException;
 import Validaciones.Validacion;
 
