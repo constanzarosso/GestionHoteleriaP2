@@ -1,6 +1,9 @@
 package models;
 
 
+import Excepciones.ElementoNoEncontradoException;
+import Excepciones.PeriodoInvalidoException;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,14 +12,15 @@ import java.util.Map;
 public class GestorReservas extends GestorGenerico<Reserva> {
 
     public GestorReservas() {
-        super();
     }
 
     public GestorReservas(Map<Integer, Reserva> elementos) {
         super(elementos);
     }
 
-    public List<Reserva> reservasDeHabitacion(int numero) {
+    public List<Reserva> reservasDeHabitacion(int numero)
+            throws ElementoNoEncontradoException {
+
         List<Reserva> reservas = new ArrayList<>();
 
         for (Reserva reserva : obtenerElementos()) {
@@ -25,10 +29,16 @@ public class GestorReservas extends GestorGenerico<Reserva> {
             }
         }
 
+        if (reservas.isEmpty()) {
+            throw new ElementoNoEncontradoException();
+        }
+
         return reservas;
     }
 
-    public List<Reserva> reservasDePasajero(int dni) {
+    public List<Reserva> reservasDePasajero(int dni)
+            throws ElementoNoEncontradoException {
+
         List<Reserva> reservas = new ArrayList<>();
 
         for (Reserva reserva : obtenerElementos()) {
@@ -37,10 +47,22 @@ public class GestorReservas extends GestorGenerico<Reserva> {
             }
         }
 
+        if (reservas.isEmpty()) {
+            throw new ElementoNoEncontradoException();
+        }
+
         return reservas;
     }
 
-    public boolean hayReservaSuperpuesta(int numero, LocalDate desde, LocalDate hasta) {
+    public boolean hayReservaSuperpuesta(int numero,
+                                         LocalDate desde,
+                                         LocalDate hasta)
+            throws PeriodoInvalidoException {
+
+        if (desde == null || hasta == null || !desde.isBefore(hasta)) {
+            throw new PeriodoInvalidoException();
+        }
+
         for (Reserva reserva : obtenerElementos()) {
             if (reserva.getHabitacion().getId() == numero
                     && reserva.estaActiva()
@@ -52,4 +74,3 @@ public class GestorReservas extends GestorGenerico<Reserva> {
         return false;
     }
 }
-

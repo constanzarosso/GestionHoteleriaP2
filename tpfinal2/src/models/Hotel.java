@@ -2,7 +2,11 @@ package models;
 
 import Excepciones.*;
 import Validaciones.Validacion;
+import enums.EstadoReserva;
+import enums.MetodoDePago;
 import enums.Permiso;
+
+import java.time.LocalDate;
 
 public class Hotel {
 
@@ -97,5 +101,71 @@ public class Hotel {
 
     //Gestor Habitaciones
 
+    public void hacerCheckIn(int idReserva)
+            throws ElementoNoEncontradoException,
+            HabitacionNoDisponibleException,
+            ReservaInvalidaException,
+            PersistenciaException, ElementoDuplicadoException {
 
-}
+        Reserva reserva = reservas.buscarElemento(idReserva);
+
+        if (reserva.getEstado() != EstadoReserva.PENDIENTE) {
+            throw new ReservaInvalidaException();
+        }
+
+        Habitacion habitacion = reserva.getHabitacion();
+
+        if (!habitacion.estaDisponible()) {
+            throw new HabitacionNoDisponibleException();
+        }
+
+        if (ocupaciones.ocupacionActiva(habitacion.getId()) != null) {
+            throw new ReservaInvalidaException();
+        }
+
+        reserva.pasarAEnCurso();
+        habitacion.ocupar();
+
+        Ocupacion ocupacion = new Ocupacion(
+                ocupaciones.siguienteId(),
+                reserva,
+                LocalDate.now()
+        );
+
+        ocupaciones.agregarElemento(ocupacion);
+
+
+        ///reservaDAO.modificar(reserva);
+        ///ocupacionDAO.insertar(ocupacion);
+        /// aca hay que meter persistencia de datos
+    }
+        public void hacerCheckOut(int numero, MetodoDePago pago)
+        throws ElementoNoEncontradoException,
+                ReservaInvalidaException,
+                PersistenciaException {
+
+            Ocupacion ocupacion = ocupaciones.ocupacionActiva(numero);
+
+            if (ocupacion == null) {
+                throw new ReservaInvalidaException();
+            }
+
+            if (pago == null) {
+                throw new ReservaInvalidaException();
+            }
+
+            ocupacion.finalizar(LocalDate.now(), pago);
+
+            Reserva reserva = ocupacion.getReserva();
+            reserva.finalizar();
+
+            Habitacion habitacion = ocupacion.getHabitacion();
+            habitacion.liberar();
+
+            ///ocupacionDAO.modificar(ocupacion);
+            ///reservaDAO.modificar(reserva);
+            /// aca persistencia de datos
+        }
+    }
+
+
