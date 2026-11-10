@@ -1,4 +1,5 @@
 import ConexionBD.Conexion;
+import ConexionBD.GestorHabitacionesDB;
 import Excepciones.*;
 import Validaciones.Teclado;
 import Validaciones.Validacion;
@@ -20,6 +21,13 @@ public class Main {
             System.out.println(e.getMessage());
         }
          */
+        //PROBE SI FUNCIONABAN LAS TABLAS//
+        try{
+            GestorHabitacionesDB.createTable();
+            System.out.println("Tablas creadas");
+        } catch (PersistenciaException e) {
+            throw new RuntimeException(e.getMessage());
+        }
         //________________________________________________________________________________________________//
 
         Hotel hotel = new Hotel("Hotel UTN");
