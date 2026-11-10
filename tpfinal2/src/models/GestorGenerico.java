@@ -1,7 +1,7 @@
 package models;
 
-import Excepciones.ElementoDuplicadoException;
-import Excepciones.ElementoNoEncontradoException;
+import Excepciones.ExcepcionesDatos.ElementoDuplicadoException;
+import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
 import interfaces.Identificable;
 
 import java.util.ArrayList;

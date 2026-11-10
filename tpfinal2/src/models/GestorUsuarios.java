@@ -1,8 +1,8 @@
 package models;
 
-import Excepciones.CredencialesInvalidasException;
-import Excepciones.ElementoNoEncontradoException;
-import Excepciones.UsuarioInactivoException;
+import Excepciones.ExcepcionesDB.CredencialesInvalidasException;
+import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
+import Excepciones.ExcepcionesDB.UsuarioInactivoException;
 import enums.Permiso;
 
 public class GestorUsuarios extends GestorGenerico<Usuario> {

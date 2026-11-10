@@ -1,4 +1,6 @@
-package Excepciones;
+package Excepciones.ExcepcionesDB;
+
+import Excepciones.ExcepcionesDatos.TextoInvalidoException;
 
 public class ContraseniaInvalidaException extends TextoInvalidoException {
     public ContraseniaInvalidaException(String mensaje) {

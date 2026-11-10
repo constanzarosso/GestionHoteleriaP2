@@ -1,4 +1,4 @@
-package Excepciones;
+package Excepciones.ExcepcionesHotel;
 
 public class CapacidadExcedidaException extends Exception {
     public CapacidadExcedidaException() {

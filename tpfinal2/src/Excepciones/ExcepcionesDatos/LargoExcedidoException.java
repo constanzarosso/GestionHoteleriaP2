@@ -1,4 +1,4 @@
-package Excepciones;
+package Excepciones.ExcepcionesDatos;
 
 public class LargoExcedidoException extends DatoInvalidoException {
     public LargoExcedidoException( ) {

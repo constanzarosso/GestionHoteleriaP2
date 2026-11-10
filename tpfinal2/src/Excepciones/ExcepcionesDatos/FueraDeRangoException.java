@@ -1,4 +1,4 @@
-package Excepciones;
+package Excepciones.ExcepcionesDatos;
 
 public class FueraDeRangoException extends DatoInvalidoException {
     public FueraDeRangoException(String mensaje) {

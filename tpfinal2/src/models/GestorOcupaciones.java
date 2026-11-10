@@ -1,6 +1,6 @@
 package models;
 
-import Excepciones.ElementoNoEncontradoException;
+import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
 
 import java.util.List;
 import java.util.ArrayList;

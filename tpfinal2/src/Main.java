@@ -1,12 +1,9 @@
-import ConexionBD.Conexion;
-import Excepciones.*;
+import Excepciones.ExcepcionesDB.ContraseniaInvalidaException;
+import Excepciones.ExcepcionesDB.CredencialesInvalidasException;
+import Excepciones.ExcepcionesDB.NombreUsuarioInvalidoException;
+import Excepciones.ExcepcionesDB.UsuarioInactivoException;
 import Validaciones.Teclado;
-import Validaciones.Validacion;
 import models.Hotel;
-import models.Usuario;
-
-import java.sql.Connection;
-import java.util.Scanner;
 
 
 public class Main {
@@ -47,7 +44,8 @@ public class Main {
                     }
 
                 hotel.cerrarSesion();
-            }catch (CredencialesInvalidasException | ContraseniaInvalidaException | NombreUsuarioInvalidoException | UsuarioInactivoException e){
+            }catch (CredencialesInvalidasException | ContraseniaInvalidaException | NombreUsuarioInvalidoException |
+                    UsuarioInactivoException e){
                 System.out.println(e.getMessage());
             }
 

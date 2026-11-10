@@ -1,6 +1,6 @@
 package ConexionBD;
 
-import Excepciones.PersistenciaException;
+import Excepciones.ExcepcionesDB.PersistenciaException;
 
 import java.io.FileInputStream;
 import java.io.IOException;

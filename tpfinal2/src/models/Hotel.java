@@ -1,6 +1,11 @@
 package models;
 
-import Excepciones.*;
+import Excepciones.ExcepcionesDB.*;
+import Excepciones.ExcepcionesDatos.ElementoDuplicadoException;
+import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
+import Excepciones.ExcepcionesHotel.CapacidadExcedidaException;
+import Excepciones.ExcepcionesHotel.HabitacionNoDisponibleException;
+import Excepciones.ExcepcionesHotel.ReservaInvalidaException;
 import Validaciones.Validacion;
 import enums.*;
 
@@ -59,7 +64,7 @@ public class Hotel {
         usuarioActual = null;
     }
 
-    private void verificarPermiso(Permiso permiso) throws AccesoDenegadoException{
+    private void verificarPermiso(Permiso permiso) throws AccesoDenegadoException {
         if(usuarioActual == null || !usuarioActual.tienePermiso(permiso)){
             throw new AccesoDenegadoException();
         }
@@ -192,7 +197,7 @@ public class Hotel {
         return habitaciones.listarPorEstado(estado);
     }
 
-    public List<Habitacion> listarHabitacionesDisponiblesParaHuesped(int cantidad) throws AccesoDenegadoException, CapacidadExcedidaException{
+    public List<Habitacion> listarHabitacionesDisponiblesParaHuesped(int cantidad) throws AccesoDenegadoException, CapacidadExcedidaException {
         verificarPermiso(Permiso.VER_HABITACIONES);
         return habitaciones.listarDisponiblesParaHuesped(cantidad);
     }
