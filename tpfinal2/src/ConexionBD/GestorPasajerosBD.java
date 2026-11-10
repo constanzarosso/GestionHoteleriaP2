@@ -7,7 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public final class GestorPasajerosBD {
-    private static void crearPasajeros () throws PersistenciaException{
+    private GestorPasajerosBD() {
+    }
+
+    private static void crearPasajeros() throws PersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -23,7 +26,7 @@ public final class GestorPasajerosBD {
             ps.execute();
         } catch (SQLException e) {
             throw new PersistenciaException("Error al crear la tabla pasajeros: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 if (ps != null) {
                     ps.close();
@@ -33,7 +36,8 @@ public final class GestorPasajerosBD {
             }
         }
     }
-    public static void createTable() throws PersistenciaException{
+
+    public static void createTable() throws PersistenciaException {
         crearPasajeros();
     }
 }

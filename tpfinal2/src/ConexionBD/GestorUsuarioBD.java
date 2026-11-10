@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public final class GestorUsuarioBD {
+    private GestorUsuarioBD() {
+    }
 
     private static void crearUsuarios() throws PersistenciaException {
         PreparedStatement ps = null;
@@ -23,7 +25,7 @@ public final class GestorUsuarioBD {
             ps.execute();
         } catch (SQLException e) {
             throw new PersistenciaException("Error al crear la tabla usuarios: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 if (ps != null) {
                     ps.close();
@@ -61,7 +63,7 @@ public final class GestorUsuarioBD {
         }
     }
 
-    public static void createTable() throws PersistenciaException{
+    public static void createTable() throws PersistenciaException {
         crearUsuarios();
         crearUsuariosPermisos();
     }
