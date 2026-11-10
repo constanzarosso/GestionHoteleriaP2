@@ -1,4 +1,4 @@
-import ConexionBD.GestorHabitacionesBD;
+import ConexionBD.*;
 import Excepciones.*;
 import Validaciones.Teclado;
 import models.Hotel;
@@ -18,9 +18,14 @@ public class Main {
         //PROBE SI FUNCIONABAN LAS TABLAS//
         try{
             GestorHabitacionesBD.createTable();
+            GestorPasajerosBD.createTable();
+            GestorUsuarioBD.createTable();
+            GestorReservasBD.createTable();
+            GestorOcupacionesBD.createTable();
+            GestorBackupBD.createTable();
             System.out.println("Tablas creadas");
         } catch (PersistenciaException e) {
-            throw new RuntimeException(e.getMessage());
+            System.out.println(e.getMessage());
         }
         //________________________________________________________________________________________________//
 
