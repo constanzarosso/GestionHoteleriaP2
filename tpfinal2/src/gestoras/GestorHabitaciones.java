@@ -12,6 +12,13 @@ import java.util.Map;
 public class GestorHabitaciones extends GestorGenerico<Habitacion> {
 
 
+    public GestorHabitaciones() {
+    }
+
+    public GestorHabitaciones(List<Habitacion> listaPorParametro) {
+        super(listaPorParametro);
+    }
+
     public List<Habitacion> listarDisponibles() {
         List<Habitacion> disponibles = new ArrayList<>();
 
