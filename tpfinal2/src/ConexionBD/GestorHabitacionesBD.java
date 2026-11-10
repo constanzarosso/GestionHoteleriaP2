@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public final class GestorHabitacionesDB {
+public final class GestorHabitacionesBD {
 
     private static void crearHabitaciones() throws PersistenciaException {
         PreparedStatement ps = null;

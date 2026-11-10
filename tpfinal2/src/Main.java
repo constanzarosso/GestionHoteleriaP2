@@ -1,13 +1,7 @@
-import ConexionBD.Conexion;
-import ConexionBD.GestorHabitacionesDB;
+import ConexionBD.GestorHabitacionesBD;
 import Excepciones.*;
 import Validaciones.Teclado;
-import Validaciones.Validacion;
 import models.Hotel;
-import models.Usuario;
-
-import java.sql.Connection;
-import java.util.Scanner;
 
 
 public class Main {
@@ -23,7 +17,7 @@ public class Main {
          */
         //PROBE SI FUNCIONABAN LAS TABLAS//
         try{
-            GestorHabitacionesDB.createTable();
+            GestorHabitacionesBD.createTable();
             System.out.println("Tablas creadas");
         } catch (PersistenciaException e) {
             throw new RuntimeException(e.getMessage());
