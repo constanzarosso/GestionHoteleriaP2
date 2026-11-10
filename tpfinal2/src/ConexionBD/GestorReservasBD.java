@@ -7,9 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public final class GestorReservasBD {
-    private static void crearReservas() throws PersistenciaException{
+    private GestorReservasBD() {
+    }
+
+    private static void crearReservas() throws PersistenciaException {
         PreparedStatement ps = null;
-        try{
+        try {
             Connection conn = Conexion.getConnection();
             ps = conn.prepareStatement("CREATE TABLE IF NOT EXISTS reservas ("
                     + "id INT NOT NULL, "
@@ -26,7 +29,7 @@ public final class GestorReservasBD {
 
         } catch (SQLException e) {
             throw new PersistenciaException("Error al crear la tabla reservas: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 if (ps != null) {
                     ps.close();
@@ -37,7 +40,7 @@ public final class GestorReservasBD {
         }
     }
 
-    public static void createTable () throws PersistenciaException{
+    public static void createTable() throws PersistenciaException {
         crearReservas();
     }
 }

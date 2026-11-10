@@ -1,7 +1,9 @@
 import ConexionBD.*;
 import Excepciones.*;
 import Validaciones.Teclado;
-import models.Hotel;
+import models.*;
+
+import java.util.List;
 
 
 public class Main {
@@ -27,6 +29,21 @@ public class Main {
         } catch (PersistenciaException e) {
             System.out.println(e.getMessage());
         }
+
+        //PROBE INSERTAR Y LISTAR HABITACIONES//
+
+        /*try {
+            GestorHabitacionesBD.insertHabitacion(new HabitacionSimple(101, 1, 1, 50000));
+            GestorHabitacionesBD.insertHabitacion(new HabitacionDoble(205, 2, 2, 50000, true));
+            GestorHabitacionesBD.insertHabitacion(new HabitacionSuite(401, 4, 2, 50000, true));
+
+            for (Habitacion h : GestorHabitacionesBD.listar()) {
+                System.out.println(h);
+            }
+        } catch (PersistenciaException e) {
+            System.out.println(e.getMessage());
+        }*/
+
         //________________________________________________________________________________________________//
 
         Hotel hotel = new Hotel("Hotel UTN");

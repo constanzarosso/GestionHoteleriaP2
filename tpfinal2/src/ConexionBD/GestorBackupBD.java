@@ -7,6 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public final class GestorBackupBD {
+    private GestorBackupBD() {
+    }
+
     private static void crearBackups() throws PersistenciaException {
         PreparedStatement ps = null;
         try {
@@ -30,7 +33,8 @@ public final class GestorBackupBD {
             }
         }
     }
-    public static void createTable () throws PersistenciaException{
+
+    public static void createTable() throws PersistenciaException {
         crearBackups();
     }
 }
