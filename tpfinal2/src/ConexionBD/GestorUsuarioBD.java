@@ -14,7 +14,7 @@ public final class GestorUsuarioBD {
             Connection conn = Conexion.getConnection();
             ps = conn.prepareStatement("CREATE TABLE IF NOT EXISTS usuarios ("
                     + "id INT NOT NULL, "
-                    + "nombre_usuario VARCHAR(20) NOT NULL, "
+                    + "nombre_usuario VARCHAR(40) NOT NULL, "
                     + "contrasenia VARCHAR(30) NOT NULL, "
                     + "tipo ENUM('ADMINISTRADOR', 'RECEPCIONISTA', 'PASAJERO') NOT NULL, "
                     + "activo BOOLEAN NOT NULL, "
