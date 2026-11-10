@@ -142,4 +142,6 @@ public class Ocupacion implements Identificable, Facturable {
                 ", consumos=" + consumos +
                 '}';
     }
+
+
 }
