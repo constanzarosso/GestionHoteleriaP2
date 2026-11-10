@@ -1,6 +1,8 @@
 package ConexionBD;
 
-import Excepciones.PersistenciaException;
+
+
+import Excepciones.ExcepcionesDB.PersistenciaException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
