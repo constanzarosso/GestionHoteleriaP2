@@ -1,19 +1,13 @@
 package gestoras;
 
-
-<<<<<<< HEAD:tpfinal2/src/models/GestorReservas.java
 import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
 import Excepciones.ExcepcionesHotel.PeriodoInvalidoException;
-=======
-import Excepciones.ElementoNoEncontradoException;
-import Excepciones.PeriodoInvalidoException;
 import models.Reserva;
->>>>>>> 8a738042df9978b8ff772ad1bf90466ae9491194:tpfinal2/src/gestoras/GestorReservas.java
+
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class GestorReservas extends GestorGenerico<Reserva> {
 
