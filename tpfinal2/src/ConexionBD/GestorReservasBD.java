@@ -1,7 +1,6 @@
 package ConexionBD;
-
-import Excepciones.ElementoNoEncontradoException;
-import Excepciones.PersistenciaException;
+import Excepciones.ExcepcionesDB.PersistenciaException;
+import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
 import enums.EstadoReserva;
 import gestoras.GestorHabitaciones;
 import gestoras.GestorPasajeros;
