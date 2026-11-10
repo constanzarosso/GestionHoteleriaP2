@@ -1,11 +1,7 @@
 import ConexionBD.*;
-import Excepciones.*;
-import Excepciones.ExcepcionesDB.*;
+import Excepciones.ExcepcionesBD.*;
 import Validaciones.Teclado;
 import models.Hotel;
-import models.*;
-
-import java.util.List;
 
 
 public class Main {
@@ -28,7 +24,7 @@ public class Main {
             GestorOcupacionesBD.createTable();
             GestorBackupBD.createTable();
             System.out.println("Tablas creadas");
-        } catch (PersistenciaException e) {
+        } catch (BDPersistenciaException e) {
             System.out.println(e.getMessage());
         }
 
@@ -73,8 +69,9 @@ public class Main {
                     }
 
                 hotel.cerrarSesion();
-            }catch (CredencialesInvalidasException | ContraseniaInvalidaException | NombreUsuarioInvalidoException |
-                    UsuarioInactivoException e){
+            }catch (BDCredencialesInvalidasException | BDContraseniaInvalidaException |
+                    BDNombreUsuarioInvalidoException |
+                    BDUsuarioInactivoException e){
                 System.out.println(e.getMessage());
             }
 

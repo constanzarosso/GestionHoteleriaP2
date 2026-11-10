@@ -17,10 +17,10 @@ public abstract class GestorGenerico<E extends Identificable> {
     }
 
 
-    //PREGUNTAR AL PROFE//
     public GestorGenerico(List<E> listaPorParametro) {
-        for (E elemento: listaPorParametro)
-            elementos.put(elemento.getId(),elemento);
+        this.elementos = new HashMap<>();
+        for (E elemento : listaPorParametro)
+            elementos.put(elemento.getId(), elemento);
     }
 
     public void agregarElemento(E unElemento) throws ElementoDuplicadoException {

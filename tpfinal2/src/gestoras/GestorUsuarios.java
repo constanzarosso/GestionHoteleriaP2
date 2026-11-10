@@ -1,8 +1,8 @@
 package gestoras;
 
-import Excepciones.ExcepcionesDB.CredencialesInvalidasException;
+import Excepciones.ExcepcionesBD.BDCredencialesInvalidasException;
 import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
-import Excepciones.ExcepcionesDB.UsuarioInactivoException;
+import Excepciones.ExcepcionesBD.BDUsuarioInactivoException;
 import enums.Permiso;
 import models.Usuario;
 
@@ -21,22 +21,22 @@ public class GestorUsuarios extends GestorGenerico<Usuario> {
         throw new ElementoNoEncontradoException();
     }
 
-    public Usuario login(String nombreUsuario, String contrasenia)throws CredencialesInvalidasException, UsuarioInactivoException {
+    public Usuario login(String nombreUsuario, String contrasenia)throws BDCredencialesInvalidasException, BDUsuarioInactivoException {
 
         Usuario usuario;
         try{
             usuario = buscarPorNombre(nombreUsuario);
 
         }catch(ElementoNoEncontradoException e){
-           throw new CredencialesInvalidasException();
+           throw new BDCredencialesInvalidasException();
         }
 
         if (!usuario.isActivo()) {
-            throw new UsuarioInactivoException();
+            throw new BDUsuarioInactivoException();
         }
 
         if(!usuario.validarContrasenia(contrasenia)){
-            throw new CredencialesInvalidasException();
+            throw new BDCredencialesInvalidasException();
         }
         return usuario;
     }

@@ -1,6 +1,6 @@
 package ConexionBD;
 
-import Excepciones.ExcepcionesDB.PersistenciaException;
+import Excepciones.ExcepcionesBD.BDPersistenciaException;
 import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
 import enums.MetodoDePago;
 import gestoras.GestorReservas;
@@ -17,13 +17,12 @@ import java.util.ArrayList;
 
 import java.util.List;
 import java.sql.Date;
-import java.time.LocalDate;
 
 public final class GestorOcupacionesBD {
     private GestorOcupacionesBD() {
     }
 
-    private static void crearOcupaciones() throws PersistenciaException {
+    private static void crearOcupaciones() throws BDPersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -39,19 +38,19 @@ public final class GestorOcupacionesBD {
                     + "FOREIGN KEY (id_reserva) REFERENCES reservas(id))");
             ps.execute();
         } catch (SQLException e) {
-            throw new PersistenciaException("Error al crear la tabla ocupaciones: " + e.getMessage());
+            throw new BDPersistenciaException("Error al crear la tabla ocupaciones: " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new PersistenciaException("Error al cerrar: " + e.getMessage());
+                throw new BDPersistenciaException("Error al cerrar: " + e.getMessage());
             }
         }
     }
 
-    private static void crearConsumos() throws PersistenciaException {
+    private static void crearConsumos() throws BDPersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -65,25 +64,25 @@ public final class GestorOcupacionesBD {
                     + "FOREIGN KEY (id_ocupacion) REFERENCES ocupaciones(id))");
             ps.execute();
         } catch (SQLException e) {
-            throw new PersistenciaException("Error al crear la tabla consumos: " + e.getMessage());
+            throw new BDPersistenciaException("Error al crear la tabla consumos: " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new PersistenciaException("Error al cerrar: " + e.getMessage());
+                throw new BDPersistenciaException("Error al cerrar: " + e.getMessage());
             }
         }
     }
 
-    public static void createTable() throws PersistenciaException {
+    public static void createTable() throws BDPersistenciaException {
         crearOcupaciones();
         crearConsumos();
     }
 
     public List<Ocupacion> listar(GestorReservas gestorReservas)
-            throws PersistenciaException, ElementoNoEncontradoException {
+            throws BDPersistenciaException, ElementoNoEncontradoException {
 
         List<Ocupacion> ocupaciones = new ArrayList<>();
 
@@ -123,7 +122,7 @@ public final class GestorOcupacionesBD {
                 ocupaciones.add(ocupacion);
             }
         } catch (SQLException e) {
-            throw new PersistenciaException(
+            throw new BDPersistenciaException(
                     "Error al listar ocupaciones: " + e.getMessage());
         }
 
@@ -132,7 +131,7 @@ public final class GestorOcupacionesBD {
 
 
         private void listarConsumos(Connection conn, Ocupacion ocupacion)
-            throws PersistenciaException {
+            throws BDPersistenciaException {
 
         String sql = "SELECT * FROM consumos WHERE id_ocupacion = ?";
 
@@ -156,13 +155,13 @@ public final class GestorOcupacionesBD {
             }
 
         } catch (SQLException e) {
-            throw new PersistenciaException(
+            throw new BDPersistenciaException(
                     "Error al listar consumos: " + e.getMessage());
         }
     }
 
     public void insertar(Ocupacion ocupacion)
-            throws PersistenciaException {
+            throws BDPersistenciaException {
 
         String sql = "INSERT INTO ocupaciones "
                 + "(id, id_reserva, fecha_check_in, fecha_check_out, total, metodo_pago) "
@@ -192,13 +191,13 @@ public final class GestorOcupacionesBD {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new PersistenciaException(
+            throw new BDPersistenciaException(
                     "Error al insertar ocupación: " + e.getMessage());
         }
     }
 
     public void modificar(Ocupacion ocupacion)
-            throws PersistenciaException {
+            throws BDPersistenciaException {
 
         String sql = "UPDATE ocupaciones SET "
                 + "fecha_check_out = ?, total = ?, metodo_pago = ? "
@@ -226,13 +225,13 @@ public final class GestorOcupacionesBD {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new PersistenciaException(
+            throw new BDPersistenciaException(
                     "Error al modificar ocupación: " + e.getMessage());
         }
     }
 
     public void insertarConsumo(int idOcupacion, Consumo consumo)
-            throws PersistenciaException {
+            throws BDPersistenciaException {
 
         String sql = "INSERT INTO consumos "
                 + "(id, id_ocupacion, descripcion, monto, fecha) "
@@ -250,7 +249,7 @@ public final class GestorOcupacionesBD {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new PersistenciaException(
+            throw new BDPersistenciaException(
                     "Error al insertar consumo: " + e.getMessage());
         }
     }
