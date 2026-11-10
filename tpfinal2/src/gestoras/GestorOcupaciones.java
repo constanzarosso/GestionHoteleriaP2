@@ -1,6 +1,7 @@
-package models;
+package gestoras;
 
 import Excepciones.ElementoNoEncontradoException;
+import models.Ocupacion;
 
 import java.util.List;
 import java.util.ArrayList;

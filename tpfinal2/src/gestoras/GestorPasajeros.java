@@ -1,6 +1,7 @@
-package models;
+package gestoras;
 
 import Excepciones.ElementoNoEncontradoException;
+import models.Pasajero;
 
 import java.util.ArrayList;
 import java.util.List;

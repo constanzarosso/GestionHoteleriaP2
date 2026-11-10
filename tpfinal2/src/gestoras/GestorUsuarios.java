@@ -1,9 +1,10 @@
-package models;
+package gestoras;
 
 import Excepciones.CredencialesInvalidasException;
 import Excepciones.ElementoNoEncontradoException;
 import Excepciones.UsuarioInactivoException;
 import enums.Permiso;
+import models.Usuario;
 
 public class GestorUsuarios extends GestorGenerico<Usuario> {
 

@@ -1,10 +1,10 @@
-package models;
+package gestoras;
 
 import Excepciones.CapacidadExcedidaException;
 import enums.EEstadoHabitacion;
 import enums.ETipoHabitacion;
+import models.Habitacion;
 
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

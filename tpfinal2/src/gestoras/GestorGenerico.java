@@ -1,4 +1,4 @@
-package models;
+package gestoras;
 
 import Excepciones.ElementoDuplicadoException;
 import Excepciones.ElementoNoEncontradoException;

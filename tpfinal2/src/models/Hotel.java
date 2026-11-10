@@ -5,6 +5,10 @@ import Validaciones.Validacion;
 import enums.EstadoReserva;
 import enums.MetodoDePago;
 import enums.Permiso;
+import gestoras.GestorOcupaciones;
+import gestoras.GestorPasajeros;
+import gestoras.GestorReservas;
+import gestoras.GestorUsuarios;
 
 import java.time.LocalDate;
 
