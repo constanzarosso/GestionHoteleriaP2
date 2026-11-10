@@ -1,6 +1,6 @@
 package ConexionBD;
 
-import Excepciones.PersistenciaException;
+import Excepciones.ExcepcionesDB.PersistenciaException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,7 +21,7 @@ public final class GestorBackupBD {
                     + "PRIMARY KEY (id))");
 
             ps.execute();
-        } catch (SQLException e) {
+        } catch (SQLException | PersistenciaException e) {
             throw new PersistenciaException("Error al crear tabla de backups: " + e.getMessage());
         } finally {
             try {

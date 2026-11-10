@@ -1,6 +1,6 @@
 package ConexionBD;
 
-import Excepciones.PersistenciaException;
+import Excepciones.ExcepcionesDB.PersistenciaException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,7 +24,7 @@ public final class GestorPasajerosBD {
                     + "email VARCHAR(100) NULL, "
                     + "PRIMARY KEY (dni))");
             ps.execute();
-        } catch (SQLException e) {
+        } catch (SQLException | PersistenciaException e) {
             throw new PersistenciaException("Error al crear la tabla pasajeros: " + e.getMessage());
         } finally {
             try {

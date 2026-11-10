@@ -1,6 +1,7 @@
 package ConexionBD;
 
-import Excepciones.PersistenciaException;
+import Excepciones.ExcepcionesDB.PersistenciaException;
+
 import enums.EEstadoHabitacion;
 import enums.ETipoHabitacion;
 import models.Habitacion;
@@ -34,7 +35,7 @@ public final class GestorHabitacionesBD {
                     + "motivo VARCHAR(100) NULL, "
                     + "PRIMARY KEY (numero))");
             ps.execute();
-        } catch (SQLException e) {
+        } catch (SQLException | PersistenciaException e) {
             throw new PersistenciaException("Error al crear la tabla: " + e.getMessage());
         } finally {
             try {

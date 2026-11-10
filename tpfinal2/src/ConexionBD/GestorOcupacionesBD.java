@@ -1,6 +1,6 @@
 package ConexionBD;
 
-import Excepciones.PersistenciaException;
+import Excepciones.ExcepcionesDB.PersistenciaException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +25,7 @@ public final class GestorOcupacionesBD {
                     + "UNIQUE (id_reserva), "
                     + "FOREIGN KEY (id_reserva) REFERENCES reservas(id))");
             ps.execute();
-        } catch (SQLException e) {
+        } catch (SQLException | PersistenciaException e) {
             throw new PersistenciaException("Error al crear la tabla ocupaciones: " + e.getMessage());
         } finally {
             try {

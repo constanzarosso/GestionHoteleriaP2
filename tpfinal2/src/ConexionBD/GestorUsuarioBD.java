@@ -1,6 +1,7 @@
 package ConexionBD;
 
-import Excepciones.PersistenciaException;
+import Excepciones.ExcepcionesDB.PersistenciaException;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +24,7 @@ public final class GestorUsuarioBD {
                     + "PRIMARY KEY (id), "
                     + "UNIQUE (nombre_usuario))");
             ps.execute();
-        } catch (SQLException e) {
+        } catch (SQLException | PersistenciaException e) {
             throw new PersistenciaException("Error al crear la tabla usuarios: " + e.getMessage());
         } finally {
             try {
