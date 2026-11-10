@@ -1,8 +1,9 @@
-package models;
+package gestoras;
 
 import Excepciones.ExcepcionesHotel.CapacidadExcedidaException;
 import enums.EEstadoHabitacion;
 import enums.ETipoHabitacion;
+import models.Habitacion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +11,6 @@ import java.util.Map;
 
 public class GestorHabitaciones extends GestorGenerico<Habitacion> {
 
-    public GestorHabitaciones() {
-    }
-
-    public GestorHabitaciones(Map<Integer, Habitacion> elementos) {
-        super(elementos);
-    }
 
     public List<Habitacion> listarDisponibles() {
         List<Habitacion> disponibles = new ArrayList<>();

@@ -10,6 +10,10 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public final class Conexion {
+
+    private Conexion() {
+    }
+
     private static Connection conn;
 
     public static Connection getConnection() throws PersistenciaException {
@@ -34,13 +38,13 @@ public final class Conexion {
         return conn;
     }
 
-    public static void closeConnection () throws PersistenciaException{
-        try{
-            if(conn != null){
+    public static void closeConnection() throws PersistenciaException {
+        try {
+            if (conn != null) {
                 conn.close();
             }
         } catch (SQLException e) {
-            throw new PersistenciaException("Error al cerrar la conexion: " +e.getMessage());
+            throw new PersistenciaException("Error al cerrar la conexion: " + e.getMessage());
         }
     }
 }

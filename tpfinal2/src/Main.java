@@ -1,9 +1,11 @@
-import Excepciones.ExcepcionesDB.ContraseniaInvalidaException;
-import Excepciones.ExcepcionesDB.CredencialesInvalidasException;
-import Excepciones.ExcepcionesDB.NombreUsuarioInvalidoException;
-import Excepciones.ExcepcionesDB.UsuarioInactivoException;
+import ConexionBD.*;
+import Excepciones.*;
+import Excepciones.ExcepcionesDB.*;
 import Validaciones.Teclado;
 import models.Hotel;
+import models.*;
+
+import java.util.List;
 
 
 public class Main {
@@ -17,6 +19,33 @@ public class Main {
             System.out.println(e.getMessage());
         }
          */
+        //PROBE SI FUNCIONABAN LAS TABLAS//
+        try{
+            GestorHabitacionesBD.createTable();
+            GestorPasajerosBD.createTable();
+            GestorUsuarioBD.createTable();
+            GestorReservasBD.createTable();
+            GestorOcupacionesBD.createTable();
+            GestorBackupBD.createTable();
+            System.out.println("Tablas creadas");
+        } catch (PersistenciaException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //PROBE INSERTAR Y LISTAR HABITACIONES//
+
+        /*try {
+            GestorHabitacionesBD.insertHabitacion(new HabitacionSimple(101, 1, 1, 50000));
+            GestorHabitacionesBD.insertHabitacion(new HabitacionDoble(205, 2, 2, 50000, true));
+            GestorHabitacionesBD.insertHabitacion(new HabitacionSuite(401, 4, 2, 50000, true));
+
+            for (Habitacion h : GestorHabitacionesBD.listar()) {
+                System.out.println(h);
+            }
+        } catch (PersistenciaException e) {
+            System.out.println(e.getMessage());
+        }*/
+
         //________________________________________________________________________________________________//
 
         Hotel hotel = new Hotel("Hotel UTN");
