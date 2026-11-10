@@ -1,6 +1,7 @@
 package ConexionBD;
 
-import Excepciones.PersistenciaException;
+
+import Excepciones.ExcepcionesDB.PersistenciaException;
 import models.Pasajero;
 
 import java.sql.Connection;
