@@ -20,17 +20,13 @@ public class Main {
         }
          */
         //PROBE SI FUNCIONABAN LAS TABLAS//
-        try{
-            GestorHabitacionesBD.createTable();
-            GestorPasajerosBD.createTable();
-            GestorUsuarioBD.createTable();
-            GestorReservasBD.createTable();
-            GestorOcupacionesBD.createTable();
-            GestorBackupBD.createTable();
-            System.out.println("Tablas creadas");
-        } catch (PersistenciaException e) {
-            System.out.println(e.getMessage());
-        }
+        GestorHabitacionesBD.createTable();
+        GestorPasajerosBD.createTable();
+        GestorUsuarioBD.createTable();
+        GestorReservasBD.createTable();
+        GestorOcupacionesBD.createTable();
+        GestorBackupBD.createTable();
+        System.out.println("Tablas creadas");
 
         //PROBE INSERTAR Y LISTAR HABITACIONES//
 
