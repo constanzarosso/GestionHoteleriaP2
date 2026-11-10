@@ -7,17 +7,14 @@ import Excepciones.ExcepcionesHotel.CapacidadExcedidaException;
 import Excepciones.ExcepcionesHotel.HabitacionNoDisponibleException;
 import Excepciones.ExcepcionesHotel.ReservaInvalidaException;
 import Validaciones.Validacion;
-<<<<<<< HEAD
+//<<<<<<< HEAD
 import enums.*;
-=======
+//=======
 import enums.EstadoReserva;
 import enums.MetodoDePago;
 import enums.Permiso;
-import gestoras.GestorOcupaciones;
-import gestoras.GestorPasajeros;
-import gestoras.GestorReservas;
-import gestoras.GestorUsuarios;
->>>>>>> 8a738042df9978b8ff772ad1bf90466ae9491194
+import gestoras.*;
+//>>>>>>> 8a738042df9978b8ff772ad1bf90466ae9491194
 
 import java.time.LocalDate;
 import java.util.List;
