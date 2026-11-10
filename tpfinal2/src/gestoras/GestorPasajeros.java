@@ -12,9 +12,7 @@ public class GestorPasajeros extends GestorGenerico<Pasajero> {
     public GestorPasajeros() {
     }
 
-    public GestorPasajeros(Map<Integer, Pasajero> elementos) {
-        super(elementos);
-    }
+
 
     public List<Pasajero> buscarPorApellido(String apellido)
             throws ElementoNoEncontradoException {

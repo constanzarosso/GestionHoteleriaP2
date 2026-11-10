@@ -12,9 +12,7 @@ public class GestorOcupaciones extends GestorGenerico<Ocupacion> {
     public GestorOcupaciones() {
     }
 
-    public GestorOcupaciones(Map<Integer, Ocupacion> elementos) {
-        super(elementos);
-    }
+
 
     public Ocupacion ocupacionActiva(int numero)
             throws ElementoNoEncontradoException {

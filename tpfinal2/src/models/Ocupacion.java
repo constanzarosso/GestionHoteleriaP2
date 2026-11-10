@@ -109,7 +109,7 @@ public class Ocupacion implements Identificable, Facturable {
     }
 
     /**
-     * Calcula el total de la estadía y sus consumos.
+     * Calcula el total de la estadia y sus consumos.
      */
     @Override
     public double calcularTotal() {

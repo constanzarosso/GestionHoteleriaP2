@@ -15,9 +15,6 @@ public class GestorReservas extends GestorGenerico<Reserva> {
     public GestorReservas() {
     }
 
-    public GestorReservas(Map<Integer, Reserva> elementos) {
-        super(elementos);
-    }
 
     public List<Reserva> reservasDeHabitacion(int numero)
             throws ElementoNoEncontradoException {
