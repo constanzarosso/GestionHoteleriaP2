@@ -1,7 +1,11 @@
 package gestoras;
 
+<<<<<<< HEAD:tpfinal2/src/models/GestorPasajeros.java
+import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
+=======
 import Excepciones.ElementoNoEncontradoException;
 import models.Pasajero;
+>>>>>>> 8a738042df9978b8ff772ad1bf90466ae9491194:tpfinal2/src/gestoras/GestorPasajeros.java
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package Excepciones;
+package Excepciones.ExcepcionesDB;
 
 public class UsuarioInactivoException extends Exception {
     public UsuarioInactivoException() {

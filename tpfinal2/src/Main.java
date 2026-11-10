@@ -1,6 +1,8 @@
 import ConexionBD.*;
 import Excepciones.*;
+import Excepciones.ExcepcionesDB.*;
 import Validaciones.Teclado;
+import models.Hotel;
 import models.*;
 
 import java.util.List;
@@ -71,7 +73,8 @@ public class Main {
                     }
 
                 hotel.cerrarSesion();
-            }catch (CredencialesInvalidasException | ContraseniaInvalidaException | NombreUsuarioInvalidoException | UsuarioInactivoException e){
+            }catch (CredencialesInvalidasException | ContraseniaInvalidaException | NombreUsuarioInvalidoException |
+                    UsuarioInactivoException e){
                 System.out.println(e.getMessage());
             }
 

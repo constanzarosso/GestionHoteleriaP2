@@ -1,7 +1,15 @@
 package models;
 
-import Excepciones.*;
+import Excepciones.ExcepcionesDB.*;
+import Excepciones.ExcepcionesDatos.ElementoDuplicadoException;
+import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
+import Excepciones.ExcepcionesHotel.CapacidadExcedidaException;
+import Excepciones.ExcepcionesHotel.HabitacionNoDisponibleException;
+import Excepciones.ExcepcionesHotel.ReservaInvalidaException;
 import Validaciones.Validacion;
+<<<<<<< HEAD
+import enums.*;
+=======
 import enums.EstadoReserva;
 import enums.MetodoDePago;
 import enums.Permiso;
@@ -9,8 +17,10 @@ import gestoras.GestorOcupaciones;
 import gestoras.GestorPasajeros;
 import gestoras.GestorReservas;
 import gestoras.GestorUsuarios;
+>>>>>>> 8a738042df9978b8ff772ad1bf90466ae9491194
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Hotel {
 
@@ -20,6 +30,7 @@ public class Hotel {
     private GestorOcupaciones ocupaciones;
     private GestorReservas reservas;
     private GestorUsuarios usuarios;
+    private GestorHabitaciones habitaciones;
 
 
     public Hotel(String nombre){
@@ -29,8 +40,8 @@ public class Hotel {
         this.ocupaciones = new GestorOcupaciones();
         this.reservas = new GestorReservas();
         this.usuarios = new GestorUsuarios();
-
-        cargarDatos();
+        this.habitaciones = new GestorHabitaciones();
+        cargarCredencialesAdmin();
     }
 
     public String getNombre() {
@@ -42,7 +53,7 @@ public class Hotel {
     }
 
     //Gestor Usuarios
-    private void cargarDatos(){
+    private void cargarCredencialesAdmin(){
         if(usuarios.cantidadElementos() == 0){
             Administrador admin = new Administrador(usuarios.siguienteId(), "admin","Admin123!");
 
@@ -63,7 +74,7 @@ public class Hotel {
         usuarioActual = null;
     }
 
-    private void verificarPermiso(Permiso permiso) throws AccesoDenegadoException{
+    private void verificarPermiso(Permiso permiso) throws AccesoDenegadoException {
         if(usuarioActual == null || !usuarioActual.tienePermiso(permiso)){
             throw new AccesoDenegadoException();
         }
@@ -109,8 +120,9 @@ public class Hotel {
             throws ElementoNoEncontradoException,
             HabitacionNoDisponibleException,
             ReservaInvalidaException,
-            PersistenciaException, ElementoDuplicadoException {
+            PersistenciaException, ElementoDuplicadoException, AccesoDenegadoException {
 
+        verificarPermiso(Permiso.HACER_CHECKIN_CHECKOUT);
         Reserva reserva = reservas.buscarElemento(idReserva);
 
         if (reserva.getEstado() != EstadoReserva.PENDIENTE) {
@@ -143,11 +155,13 @@ public class Hotel {
         ///ocupacionDAO.insertar(ocupacion);
         /// aca hay que meter persistencia de datos
     }
-        public void hacerCheckOut(int numero, MetodoDePago pago)
-        throws ElementoNoEncontradoException,
-                ReservaInvalidaException,
-                PersistenciaException {
 
+        public void hacerCheckOut(int numero, MetodoDePago pago)
+                throws ElementoNoEncontradoException,
+                ReservaInvalidaException,
+                PersistenciaException, AccesoDenegadoException {
+
+            verificarPermiso(Permiso.HACER_CHECKIN_CHECKOUT);
             Ocupacion ocupacion = ocupaciones.ocupacionActiva(numero);
 
             if (ocupacion == null) {
@@ -170,6 +184,58 @@ public class Hotel {
             ///reservaDAO.modificar(reserva);
             /// aca persistencia de datos
         }
+
+
+    public List<Habitacion> listarHabitacionesDisponibles() throws AccesoDenegadoException{
+        verificarPermiso(Permiso.VER_HABITACIONES);
+        return habitaciones.listarDisponibles();
     }
+
+    public List<Habitacion> listarHabitacionesOcupadas() throws AccesoDenegadoException{
+        verificarPermiso(Permiso.VER_HABITACIONES);
+        return habitaciones.listarOcupadas();
+    }
+
+    public List<Habitacion> listarHabitacionesPorTipo(ETipoHabitacion tipoHabitacion) throws AccesoDenegadoException{
+        verificarPermiso(Permiso.VER_HABITACIONES);
+        return habitaciones.listarPorTipo(tipoHabitacion);
+    }
+
+
+    public List<Habitacion> listarHabitacionesPorEstado(EEstadoHabitacion estado) throws AccesoDenegadoException{
+        verificarPermiso(Permiso.VER_HABITACIONES);
+        return habitaciones.listarPorEstado(estado);
+    }
+
+    public List<Habitacion> listarHabitacionesDisponiblesParaHuesped(int cantidad) throws AccesoDenegadoException, CapacidadExcedidaException {
+        verificarPermiso(Permiso.VER_HABITACIONES);
+        return habitaciones.listarDisponiblesParaHuesped(cantidad);
+    }
+
+    public void ocuparHabitacion(int numero) throws AccesoDenegadoException, ElementoNoEncontradoException {
+        verificarPermiso(Permiso.CAMBIAR_ESTADO_HABITACION);
+        Habitacion habitacion = habitaciones.buscarElemento(numero);
+        habitacion.ocupar();
+    }
+
+    public void liberarHabitacion(int numero) throws AccesoDenegadoException, ElementoNoEncontradoException {
+        verificarPermiso(Permiso.CAMBIAR_ESTADO_HABITACION);
+        Habitacion habitacion = habitaciones.buscarElemento(numero);
+        habitacion.liberar();
+    }
+
+    public void marcarHabitacionNoDisponible(int numero, String motivo, EEstadoHabitacion estado) throws AccesoDenegadoException, ElementoNoEncontradoException {
+        verificarPermiso(Permiso.CAMBIAR_ESTADO_HABITACION);
+        Habitacion habitacion = habitaciones.buscarElemento(numero);
+        habitacion.marcarNoDisponible(motivo, estado);
+    }
+
+    public Habitacion buscarHabitacion(int numero) throws AccesoDenegadoException, ElementoNoEncontradoException {
+        verificarPermiso(Permiso.VER_HABITACIONES);
+        return habitaciones.buscarElemento(numero);
+    }
+
+
+}
 
 

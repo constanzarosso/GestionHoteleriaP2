@@ -1,4 +1,4 @@
-package Excepciones;
+package Excepciones.ExcepcionesDatos;
 
 public class ElementoDuplicadoException extends Exception {
     public ElementoDuplicadoException() {

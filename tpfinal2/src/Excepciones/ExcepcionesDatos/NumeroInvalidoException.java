@@ -1,4 +1,4 @@
-package Excepciones;
+package Excepciones.ExcepcionesDatos;
 
 public class NumeroInvalidoException extends DatoInvalidoException {
     public NumeroInvalidoException() {

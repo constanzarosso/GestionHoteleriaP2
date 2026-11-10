@@ -1,6 +1,13 @@
 package Validaciones;
 
-import Excepciones.*;
+import Excepciones.ExcepcionesDB.ContraseniaInvalidaException;
+import Excepciones.ExcepcionesDB.EmailInvalidoException;
+import Excepciones.ExcepcionesDB.NombreUsuarioInvalidoException;
+import Excepciones.ExcepcionesDatos.*;
+import Excepciones.ExcepcionesHotel.DniInvalidoException;
+import Excepciones.ExcepcionesHotel.FechaInvalidaException;
+import Excepciones.ExcepcionesHotel.MontoInvalidoException;
+import Excepciones.ExcepcionesHotel.TelefonoInvalidoException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,7 +21,7 @@ public final class Validacion {
         throw new UnsupportedOperationException("Esta clase no puede ser instanciada");
     }
 
-    public static void validarEntero(String texto) throws NumeroInvalidoException{
+    public static void validarEntero(String texto) throws NumeroInvalidoException {
         try{
             Integer.parseInt(texto);
         }catch(NumberFormatException e){
@@ -22,20 +29,20 @@ public final class Validacion {
         }
     }
 
-    public static void validarNoVacio(String texto) throws CampoVacioException{
+    public static void validarNoVacio(String texto) throws CampoVacioException {
         if(texto == null || texto.trim().isEmpty()){
             throw new CampoVacioException();
         }
     }
 
-    public static void validarRango(int numero, int minimo, int maximo) throws FueraDeRangoException{
+    public static void validarRango(int numero, int minimo, int maximo) throws FueraDeRangoException {
 
         if(numero < minimo || numero > maximo){
             throw new FueraDeRangoException("El numero debe estar entre "+minimo+ " y "+maximo);
         }
     }
 
-    public static void validarMonto(double monto) throws MontoInvalidoException{
+    public static void validarMonto(double monto) throws MontoInvalidoException {
 
         // devuelve true/false si el numero es real y valido o no es un numero
         if(!Double.isFinite(monto) || monto < 0){
@@ -80,7 +87,7 @@ public final class Validacion {
 
     }
 
-    public static void validarFecha(String fecha) throws FechaInvalidaException{
+    public static void validarFecha(String fecha) throws FechaInvalidaException {
         if(fecha == null){
             throw new FechaInvalidaException("La fecha no puede ser nula.");
         }
@@ -96,7 +103,7 @@ public final class Validacion {
     }
 
     // Min 4 caract Max 20 carac -> letras,num,punto,guion -> No espacios ni Caracteres especiales
-    public static void validarNombreUsuario(String nombreUsuario) throws NombreUsuarioInvalidoException{
+    public static void validarNombreUsuario(String nombreUsuario) throws NombreUsuarioInvalidoException {
 
         if(nombreUsuario == null || !nombreUsuario.matches("^[a-zA-Z0-9]([._]?[a-zA-Z0-9]){3,19}$")){
             throw new NombreUsuarioInvalidoException("El nombre de usuario debe tener entre 4 y 20 caracteres. " +
@@ -106,7 +113,7 @@ public final class Validacion {
     }
 
     // Min 8, Max 30 carct -> Mayus 1, Minuscula 1, Num 1 , Caracter especial 1
-    public static void validarContrasenia(String contrasenia) throws ContraseniaInvalidaException{
+    public static void validarContrasenia(String contrasenia) throws ContraseniaInvalidaException {
 
         if(contrasenia == null ||
                 contrasenia.length() < 8 ||

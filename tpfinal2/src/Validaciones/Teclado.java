@@ -1,6 +1,13 @@
 package Validaciones;
 
-import Excepciones.*;
+import Excepciones.ExcepcionesDB.ContraseniaInvalidaException;
+import Excepciones.ExcepcionesDB.EmailInvalidoException;
+import Excepciones.ExcepcionesDB.NombreUsuarioInvalidoException;
+import Excepciones.ExcepcionesDatos.*;
+import Excepciones.ExcepcionesHotel.DniInvalidoException;
+import Excepciones.ExcepcionesHotel.FechaInvalidaException;
+import Excepciones.ExcepcionesHotel.MontoInvalidoException;
+import Excepciones.ExcepcionesHotel.TelefonoInvalidoException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -71,7 +78,7 @@ public final class Teclado {
         }
     }
 
-    public static String leerContrasenia(String mensaje) throws ContraseniaInvalidaException{
+    public static String leerContrasenia(String mensaje) throws ContraseniaInvalidaException {
 
             System.out.print(mensaje);
             String contrasenia = sc.nextLine();
@@ -81,7 +88,7 @@ public final class Teclado {
 
     }
 
-    public static String leerNombreUsuario(String mensaje) throws NombreUsuarioInvalidoException{
+    public static String leerNombreUsuario(String mensaje) throws NombreUsuarioInvalidoException {
 
             System.out.print(mensaje);
             String nombreUsuario = sc.nextLine();
