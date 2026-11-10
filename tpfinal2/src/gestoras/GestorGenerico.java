@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GestorGenerico<E extends Identificable> {
+public abstract class GestorGenerico<E extends Identificable> {
     private Map<Integer, E> elementos;
 
     public GestorGenerico() {
@@ -18,8 +18,9 @@ public class GestorGenerico<E extends Identificable> {
 
 
     //PREGUNTAR AL PROFE//
-    public GestorGenerico(Map<Integer, E> elementos) {
-        this.elementos = elementos;
+    public GestorGenerico(List<E> listaPorParametro) {
+        for (E elemento: listaPorParametro)
+            elementos.put(elemento.getId(),elemento);
     }
 
     public void agregarElemento(E unElemento) throws ElementoDuplicadoException {
