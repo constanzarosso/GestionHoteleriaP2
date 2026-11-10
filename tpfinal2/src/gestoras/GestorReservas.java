@@ -1,14 +1,13 @@
 package gestoras;
 
-
-import Excepciones.ElementoNoEncontradoException;
-import Excepciones.PeriodoInvalidoException;
+import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
+import Excepciones.ExcepcionesHotel.PeriodoInvalidoException;
 import models.Reserva;
+
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class GestorReservas extends GestorGenerico<Reserva> {
 

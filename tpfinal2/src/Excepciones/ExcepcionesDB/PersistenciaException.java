@@ -1,4 +1,4 @@
-package Excepciones;
+package Excepciones.ExcepcionesDB;
 
 public class PersistenciaException extends Exception {
     public PersistenciaException() {

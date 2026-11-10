@@ -1,4 +1,4 @@
-package Excepciones;
+package Excepciones.ExcepcionesHotel;
 
 public class PeriodoInvalidoException extends Exception {
     public PeriodoInvalidoException() {

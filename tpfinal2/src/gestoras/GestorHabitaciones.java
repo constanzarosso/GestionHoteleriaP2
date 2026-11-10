@@ -1,6 +1,6 @@
 package gestoras;
 
-import Excepciones.CapacidadExcedidaException;
+import Excepciones.ExcepcionesHotel.CapacidadExcedidaException;
 import enums.EEstadoHabitacion;
 import enums.ETipoHabitacion;
 import models.Habitacion;

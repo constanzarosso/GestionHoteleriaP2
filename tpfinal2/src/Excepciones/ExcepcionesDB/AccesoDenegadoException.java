@@ -1,4 +1,4 @@
-package Excepciones;
+package Excepciones.ExcepcionesDB;
 
 public class AccesoDenegadoException extends Exception {
     public AccesoDenegadoException() {

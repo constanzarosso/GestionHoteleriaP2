@@ -1,4 +1,4 @@
-package Excepciones;
+package Excepciones.ExcepcionesDatos;
 
 public class TextoInvalidoException extends DatoInvalidoException {
     public TextoInvalidoException(String message) {

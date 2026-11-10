@@ -1,8 +1,8 @@
 package gestoras;
 
-import Excepciones.CredencialesInvalidasException;
-import Excepciones.ElementoNoEncontradoException;
-import Excepciones.UsuarioInactivoException;
+import Excepciones.ExcepcionesDB.CredencialesInvalidasException;
+import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
+import Excepciones.ExcepcionesDB.UsuarioInactivoException;
 import enums.Permiso;
 import models.Usuario;
 

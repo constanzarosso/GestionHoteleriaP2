@@ -1,6 +1,6 @@
 package ConexionBD;
 
-import Excepciones.PersistenciaException;
+import Excepciones.ExcepcionesDB.PersistenciaException;
 import enums.EEstadoHabitacion;
 import enums.ETipoHabitacion;
 import models.Habitacion;
