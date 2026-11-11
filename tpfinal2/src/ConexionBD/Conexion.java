@@ -22,7 +22,7 @@ public final class Conexion {
     public static Connection getConnection() throws BDPersistenciaException {
         try {
             if (conn == null || conn.isClosed()) {
-                FileInputStream archi = new FileInputStream("db.properties");
+                FileInputStream archi = new FileInputStream("./tpfinal2/db.properties");
                 Properties datos = new Properties();
                 datos.load(archi);
                 archi.close();

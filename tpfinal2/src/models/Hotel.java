@@ -51,14 +51,19 @@ public class Hotel {
 
     //Gestor Usuarios
     private void cargarCredencialesAdmin(){
-        if(usuarios.cantidadElementos() == 0){
-            Administrador admin = new Administrador(usuarios.siguienteId(), "admin","Admin123!");
+        try{
+            usuarios.cargarUsuarios();
 
-            try {
-                usuarios.agregarElemento(admin);
-            }catch (ElementoDuplicadoException e){
-                System.out.println(e.getMessage());
-            }
+                if(usuarios.cantidadElementos() == 0){
+
+                    Administrador admin = new Administrador(
+                            usuarios.siguienteId(), "admin","Admin123!");
+
+                    usuarios.registrarUsuario(admin);
+                }
+
+        }catch (PersistenciaException | ElementoDuplicadoException e){
+            System.out.println(e.getMessage());
         }
     }
 
@@ -84,7 +89,7 @@ public class Hotel {
             usuarios.buscarPorNombre(usuario.getNombreUsuario());
             throw new ElementoDuplicadoException();
         }catch (ElementoNoEncontradoException e){
-            usuarios.agregarElemento(usuario);
+            usuarios.registrarUsuario(usuario);
         }
     }
 
