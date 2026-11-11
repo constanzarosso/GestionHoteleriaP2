@@ -88,6 +88,7 @@ public class Main {
                                     break;
                                      case 6:
                                     cerrarSesion = true;
+                                    contador = 0;
                                     break;
                                      default:
                                     System.out.println("Opción incorrecta");
@@ -99,41 +100,58 @@ public class Main {
                                     System.out.println("Bienvenido recepcionista");
 
 
+                                    System.out.println("\n ====== MENU RECEPCIONISTA =====");
+                                    System.out.println("1. Ver Habitaciones");
+                                    System.out.println("2. Gestionar Reservas");
+                                    System.out.println("3. Registrar Pasajeros");
+                                    System.out.println("4. Check-in / Check-out");
+                                    System.out.println("5. Registrar Consumos");
+                                    System.out.println("6. Cerrar Sesion");
 
+                                    int opcionRecepcion = Teclado.leerEntero("Opcion: ");
 
+                                    switch(opcionRecepcion){
+                                        case 1:
+                                            System.out.println("Ver Habitaciones");
+                                            break;
 
+                                        case 2:
+                                            System.out.println("Registrar Pasajeros");
+                                            break;
 
+                                        case 3:
+                                            System.out.println("Registrar Pasajeroi");
+                                            break;
 
+                                        case 4:
+                                            System.out.println("Checkin Checkout");
+                                            break;
 
+                                        case 5:
+                                            System.out.println("Registrar Consumos");
+                                            break;
 
+                                        case 6:
+                                            System.out.println("Cerrar sesion");
+                                            cerrarSesion = true;
+                                            contador = 0;
+                                            break;
 
-
-
-
-
-
-
-
-
-
-
-
+                                            default:
+                                                System.out.println("Opcion incorrecta");
+                                                break;
+                                    }
 
                                     break;
                             }
 
                         }
 
-
-                    System.out.println("Creando un Usuario: ");
-                    Recepcionista recepcionista = new Recepcionista(2,"recepcion","Recepcion123!");
-                    hotel.crearUsuario(recepcionista);
-
-
-
                     hotel.cerrarSesion();
+
+
                 }catch (CredencialesInvalidasException | ContraseniaInvalidaException | NombreUsuarioInvalidoException |
-                        UsuarioInactivoException | ElementoDuplicadoException | AccesoDenegadoException e){
+                        UsuarioInactivoException e){
                     contador++;
                     System.out.println(e.getMessage());
                 }
