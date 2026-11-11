@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class GestorUsuarioBD {
-    private GestorUsuarioBD() {
+    public GestorUsuarioBD() {
     }
 
     private static void crearUsuarios() throws PersistenciaException {
@@ -54,7 +54,7 @@ public final class GestorUsuarioBD {
                     + "permiso ENUM('GESTIONAR_USUARIOS', 'ASIGNAR_PERMISOS', 'HACER_BACKUP', "
                     + "'GESTIONAR_HABITACIONES', 'CAMBIAR_ESTADO_HABITACION', 'VER_HABITACIONES', "
                     + "'CARGAR_PASAJEROS', 'GESTIONAR_RESERVAS', 'HACER_CHECKIN_CHECKOUT', "
-                    + "'VER_INFORMES', 'SOLICITAR_RESERVA', 'REGISTRAR_CONSUMO') NOT NULL, "
+                    + "'VER_INFORMES', 'SOLICITAR_RESERVAS', 'REGISTRAR_CONSUMO') NOT NULL, "
                     + "PRIMARY KEY (id_usuario, permiso), "
                     + "FOREIGN KEY (id_usuario) REFERENCES usuarios(id))"
             );
@@ -115,11 +115,10 @@ public final class GestorUsuarioBD {
             if(conn != null){
                 try {
                     conn.setAutoCommit(true);//vuelve a activar las confirmaciones
-                    conn.close();
                     Conexion.closeConnection();
 
                 }catch (SQLException ex){
-                    ex.addSuppressed(ex);
+                    System.out.println("Error al cerrar la Conexion: " + ex.getMessage());
                 }
             }
         }
@@ -130,13 +129,14 @@ public final class GestorUsuarioBD {
         String sql = "INSERT INTO usuario_permisos (id_usuario, permiso) "
                 + "VALUES (?, ?)";
 
-            PreparedStatement ps = conn.prepareStatement(sql);
+            try(PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            for(Permiso permiso : usuario.getPermisos()) {
-                ps.setInt(1, usuario.getId());
-                ps.setString(2, permiso.name());
+                for (Permiso permiso : usuario.getPermisos()) {
+                    ps.setInt(1, usuario.getId());
+                    ps.setString(2, permiso.name());
 
-                ps.executeUpdate();
+                    ps.executeUpdate();
+                }
             }
     }
 
