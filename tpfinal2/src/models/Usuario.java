@@ -27,8 +27,17 @@ public abstract class Usuario implements Identificable {
     public int getId(){
         return id;
     }
+
     public String getNombreUsuario() {
         return nombreUsuario;
+    }
+
+    public String getContrasenia() {
+        return contrasenia;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
     public boolean isActivo() {

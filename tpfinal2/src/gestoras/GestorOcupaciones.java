@@ -1,11 +1,9 @@
 package gestoras;
 
-<<<<<<< HEAD:tpfinal2/src/models/GestorOcupaciones.java
+
 import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
-=======
-import Excepciones.ElementoNoEncontradoException;
+
 import models.Ocupacion;
->>>>>>> 8a738042df9978b8ff772ad1bf90466ae9491194:tpfinal2/src/gestoras/GestorOcupaciones.java
 
 import java.util.List;
 import java.util.ArrayList;

@@ -27,7 +27,7 @@ public final class GestorHabitacionesBD {
             Connection conn = Conexion.getConnection();
             ps = conn.prepareStatement("CREATE TABLE IF NOT EXISTS habitaciones ("
                     + "numero INT NOT NULL, "
-                    + "tipo ENUM('SIMPLE', 'DOBLE', 'SUITE') NOT NULL "
+                    + "tipo ENUM('SIMPLE', 'DOBLE', 'SUITE') NOT NULL, "
                     + "piso INT NOT NULL, "
                     + "capacidad INT NOT NULL, "
                     + "precio_base DOUBLE NOT NULL, "

@@ -1,5 +1,5 @@
 import ConexionBD.*;
-import Excepciones.*;
+import ConexionBD.GestorBD.InicializadorBD;
 import Excepciones.ExcepcionesDB.*;
 import Validaciones.Teclado;
 import models.Hotel;
@@ -20,13 +20,7 @@ public class Main {
         }
          */
         //PROBE SI FUNCIONABAN LAS TABLAS//
-        GestorHabitacionesBD.createTable();
-        GestorPasajerosBD.createTable();
-        GestorUsuarioBD.createTable();
-        GestorReservasBD.createTable();
-        GestorOcupacionesBD.createTable();
-        GestorBackupBD.createTable();
-        System.out.println("Tablas creadas");
+
 
         //PROBE INSERTAR Y LISTAR HABITACIONES//
 
@@ -43,43 +37,48 @@ public class Main {
         }*/
 
         //________________________________________________________________________________________________//
+        try {
 
-        Hotel hotel = new Hotel("Hotel UTN");
-        int contador=0;
+            InicializadorBD.inicializar();
 
-        while(contador!=4){
-            try{
-                    contador++;
-                    System.out.println("\n============= LOGIN HOTEL UTN ===============");
-                    String usuario = Teclado.leerNombreUsuario("Usuario: ");
-                    String contrasenia = Teclado.leerContrasenia("Contraseña: ");
+            Hotel hotel = new Hotel("Hotel UTN");
+            int contador=0;
 
-                    hotel.iniciarSesion(usuario,contrasenia);
+            while(contador!=4){
+                try{
+                        contador++;
+                        System.out.println("\n============= LOGIN HOTEL UTN ===============");
+                        String usuario = Teclado.leerNombreUsuario("Usuario: ");
+                        String contrasenia = Teclado.leerContrasenia("Contraseña: ");
 
-                    switch(hotel.getUsuarioActual().getTipoUsuario()){
-                        case ADMINISTRADOR:
-                            System.out.println("Bienvenido administrador");
-                            break;
+                        hotel.iniciarSesion(usuario,contrasenia);
+
+                        switch(hotel.getUsuarioActual().getTipoUsuario()){
+                            case ADMINISTRADOR:
+                                System.out.println("Bienvenido administrador");
+                                break;
 
 
-                        case RECEPCIONISTA:
-                            System.out.println("Bienvenido recepcionista");
+                            case RECEPCIONISTA:
+                                System.out.println("Bienvenido recepcionista");
 
-                            break;
-                    }
+                                break;
+                        }
 
-                hotel.cerrarSesion();
-            }catch (CredencialesInvalidasException | ContraseniaInvalidaException | NombreUsuarioInvalidoException |
-                    UsuarioInactivoException e){
-                System.out.println(e.getMessage());
+                    hotel.cerrarSesion();
+                }catch (CredencialesInvalidasException | ContraseniaInvalidaException | NombreUsuarioInvalidoException |
+                        UsuarioInactivoException e){
+                    System.out.println(e.getMessage());
+                }
+
+                if(contador==4){
+                    System.out.println("\n========================================" +
+                            "\nExceso de intentos permitidos para iniciar sesion, contacte al administrador." +
+                            "\n========================================");
+                }
             }
-
-            if(contador==4){
-                System.out.println("\n========================================" +
-                        "\nExceso de intentos permitidos para iniciar sesion, contacte al administrador." +
-                        "\n========================================");
-            }
+        } catch (PersistenciaException e) {
+            System.out.println(e.getMessage());
         }
-
     }
 }
