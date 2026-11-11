@@ -1,15 +1,23 @@
 package gestoras;
 
+import ConexionBD.GestorUsuarioBD;
 import Excepciones.ExcepcionesDB.CredencialesInvalidasException;
+import Excepciones.ExcepcionesDB.PersistenciaException;
+import Excepciones.ExcepcionesDatos.ElementoDuplicadoException;
 import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
 import Excepciones.ExcepcionesDB.UsuarioInactivoException;
 import enums.Permiso;
 import models.Usuario;
 
+import java.util.List;
+
 public class GestorUsuarios extends GestorGenerico<Usuario> {
+
+    private GestorUsuarioBD gestorUsuarioBD;
 
     public GestorUsuarios() {
         super();
+        this.gestorUsuarioBD = new GestorUsuarioBD();
     }
 
     public Usuario buscarPorNombre(String nombreUsuario) throws ElementoNoEncontradoException {
@@ -41,23 +49,44 @@ public class GestorUsuarios extends GestorGenerico<Usuario> {
         return usuario;
     }
 
-    public void darDeBajaUsuario(int id) throws ElementoNoEncontradoException{
+    public void darDeBajaUsuario(int id) throws ElementoNoEncontradoException, PersistenciaException {
         Usuario usuario = buscarElemento(id);
         usuario.darDeBaja();
+        gestorUsuarioBD.actualizar(usuario);
     }
 
-    public void asignarPermisos(int id, Permiso permiso) throws ElementoNoEncontradoException{
+    public void asignarPermisos(int id, Permiso permiso) throws ElementoNoEncontradoException, PersistenciaException {
         Usuario usuario = buscarElemento(id);
         usuario.agregarPermiso(permiso);
+        gestorUsuarioBD.actualizar(usuario);
     }
 
-    public void quitarPermisos(int id, Permiso permiso) throws ElementoNoEncontradoException{
+    public void quitarPermisos(int id, Permiso permiso) throws ElementoNoEncontradoException, PersistenciaException {
         Usuario usuario = buscarElemento(id);
         usuario.quitarPermiso(permiso);
+        gestorUsuarioBD.actualizar(usuario);
     }
 
-    public void cambiarContrasenia(int id, String nuevaContrasenia) throws ElementoNoEncontradoException{
+    public void cambiarContrasenia(int id, String nuevaContrasenia) throws ElementoNoEncontradoException, PersistenciaException {
         Usuario usuario = buscarElemento(id);
         usuario.cambiarContrasenia(nuevaContrasenia);
+        gestorUsuarioBD.actualizar(usuario);
+    }
+
+    public void cargarUsuarios() throws PersistenciaException, ElementoDuplicadoException {
+        List<Usuario> usuarios = gestorUsuarioBD.listar();
+
+        for(Usuario usuario : usuarios){
+            try {
+                agregarElemento(usuario);
+            }catch (ElementoDuplicadoException e){
+                throw new PersistenciaException(e.getMessage() );
+            }
+        }
+    }
+
+    public void registrarUsuario(Usuario usuario) throws ElementoDuplicadoException, PersistenciaException {
+        agregarElemento(usuario);
+        gestorUsuarioBD.guardar(usuario);
     }
 }

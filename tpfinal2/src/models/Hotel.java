@@ -45,14 +45,19 @@ public class Hotel {
 
     //Gestor Usuarios
     private void cargarCredencialesAdmin(){
-        if(usuarios.cantidadElementos() == 0){
-            Administrador admin = new Administrador(usuarios.siguienteId(), "admin","Admin123!");
+        try{
+            usuarios.cargarUsuarios();
 
-            try {
-                usuarios.agregarElemento(admin);
-            }catch (ElementoDuplicadoException e){
-                System.out.println(e.getMessage());
-            }
+                if(usuarios.cantidadElementos() == 0){
+
+                    Administrador admin = new Administrador(
+                            usuarios.siguienteId(), "admin","Admin123!");
+
+                    usuarios.registrarUsuario(admin);
+                }
+
+        }catch (PersistenciaException | ElementoDuplicadoException e){
+            System.out.println(e.getMessage());
         }
     }
 
@@ -71,33 +76,33 @@ public class Hotel {
         }
     }
 
-    public void crearUsuario(Usuario usuario) throws AccesoDenegadoException, ElementoDuplicadoException{
+    public void crearUsuario(Usuario usuario) throws AccesoDenegadoException, ElementoDuplicadoException, PersistenciaException {
         verificarPermiso(Permiso.GESTIONAR_USUARIOS);
 
         try {
             usuarios.buscarPorNombre(usuario.getNombreUsuario());
             throw new ElementoDuplicadoException();
         }catch (ElementoNoEncontradoException e){
-            usuarios.agregarElemento(usuario);
+            usuarios.registrarUsuario(usuario);
         }
     }
 
-    public void darDeBajaUsuario(int id) throws AccesoDenegadoException, ElementoNoEncontradoException{
+    public void darDeBajaUsuario(int id) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
         verificarPermiso(Permiso.GESTIONAR_USUARIOS);
         usuarios.darDeBajaUsuario(id);
     }
 
-    public void asignarPermisos(int id, Permiso permiso) throws AccesoDenegadoException, ElementoNoEncontradoException{
+    public void asignarPermisos(int id, Permiso permiso) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
         verificarPermiso(Permiso.ASIGNAR_PERMISOS);
         usuarios.asignarPermisos(id,permiso);
     }
 
-    public void quitarPermiso(int id, Permiso permiso) throws AccesoDenegadoException, ElementoNoEncontradoException{
+    public void quitarPermiso(int id, Permiso permiso) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
         verificarPermiso(Permiso.ASIGNAR_PERMISOS);
         usuarios.quitarPermisos(id,permiso);
     }
 
-    public void cambiarContrasenia(String actual, String nueva) throws AccesoDenegadoException, ContraseniaInvalidaException, ElementoNoEncontradoException{
+    public void cambiarContrasenia(String actual, String nueva) throws AccesoDenegadoException, ContraseniaInvalidaException, ElementoNoEncontradoException, PersistenciaException {
         if(usuarioActual == null || !usuarioActual.validarContrasenia(actual)){
             throw new AccesoDenegadoException();
         }

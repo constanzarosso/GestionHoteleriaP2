@@ -212,7 +212,62 @@ public final class GestorUsuarioBD {
         }
     }
 
+    public void actualizar(Usuario usuario) throws PersistenciaException {
+        String sql = "UPDATE usuarios SET "
+                + "nombre_usuario = ?, "
+                + "contrasenia = ?, "
+                + "tipo = ?, "
+                + "activo = ? "
+                + "WHERE id = ?";
 
+        Connection conn = null;
+
+        try {
+            conn = Conexion.getConnection();
+            conn.setAutoCommit(false);
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setString(1, usuario.getNombreUsuario());
+                ps.setString(2, usuario.getContrasenia());
+                ps.setString(3, usuario.getTipoUsuario().name());
+                ps.setBoolean(4, usuario.isActivo());
+                ps.setInt(5, usuario.getId());
+
+                int filas = ps.executeUpdate();
+
+                if(filas==0){
+                    throw new SQLException("No se encontro al usuario");
+                }
+            }
+
+            String sqlEliminar = "DELETE FROM usuario_permisos WHERE id_usuario = ?";
+
+            try(PreparedStatement ps = conn.prepareStatement(sqlEliminar)){
+                ps.setInt(1,usuario.getId());
+                ps.executeUpdate();
+            }
+
+            guardarPermisos(conn,usuario);
+            conn.commit();
+        }catch (SQLException | PersistenciaException e){
+            if(conn != null){
+                try {
+                    conn.rollback();
+                }catch (SQLException ex){
+                    e.addSuppressed(ex);
+                }
+            }
+            throw new PersistenciaException("Error al cargar la tabla usuarios: " + e.getMessage());
+        }finally {
+            if(conn != null){
+                try{
+                    conn.setAutoCommit(true);
+                }catch (SQLException ex){
+                    System.out.println("Error al cerrar la Conexion: " + ex.getMessage());
+                }
+            }
+        }
+    }
 
 
 
