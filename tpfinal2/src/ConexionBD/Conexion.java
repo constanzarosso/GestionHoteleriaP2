@@ -1,12 +1,15 @@
 package ConexionBD;
 
-import Excepciones.ExcepcionesDB.PersistenciaException;
+import Excepciones.ExcepcionesBD.BDConexionException;
+import Excepciones.ExcepcionesBD.BDPersistenciaException;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.SQLRecoverableException;
 import java.util.Properties;
 
 public final class Conexion {
@@ -16,7 +19,7 @@ public final class Conexion {
 
     private static Connection conn;
 
-    public static Connection getConnection() throws PersistenciaException {
+    public static Connection getConnection() throws BDPersistenciaException {
         try {
             if (conn == null || conn.isClosed()) {
                 FileInputStream archi = new FileInputStream("./tpfinal2/db.properties");
@@ -30,21 +33,25 @@ public final class Conexion {
                         datos.getProperty("contrasenia")
                 );
             }
+        } catch (FileNotFoundException e) {
+            throw new BDConexionException("no se encontro el archivo db.properties");
         } catch (IOException e) {
-            throw new PersistenciaException("No se encontro el archivo db.properties o no pudo abrirse: " + e.getMessage());
+            throw new BDPersistenciaException("no se pudo leer db.properties: " + e.getMessage());
+        } catch (SQLRecoverableException e) {
+            throw new BDConexionException("no se pudo conectar con MySQL, verifique que este encendido");
         } catch (SQLException e) {
-            throw new PersistenciaException("Error al conectar: " + e.getMessage());
+            throw new BDPersistenciaException("error al conectar: " + e.getMessage());
         }
         return conn;
     }
 
-    public static void closeConnection() throws PersistenciaException {
+    public static void closeConnection() throws BDPersistenciaException {
         try {
             if (conn != null) {
                 conn.close();
             }
         } catch (SQLException e) {
-            throw new PersistenciaException("Error al cerrar la conexion: " + e.getMessage());
+            throw new BDConexionException("Error al cerrar la conexion: " + e.getMessage());
         }
     }
 }

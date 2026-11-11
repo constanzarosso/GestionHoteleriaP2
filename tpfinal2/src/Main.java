@@ -1,12 +1,7 @@
 import ConexionBD.*;
-import ConexionBD.GestorBD.InicializadorBD;
-import Excepciones.ExcepcionesDB.*;
-import Excepciones.ExcepcionesDatos.ElementoDuplicadoException;
+import Excepciones.ExcepcionesBD.*;
 import Validaciones.Teclado;
 import models.Hotel;
-import models.*;
-
-import java.util.List;
 
 
 public class Main {
@@ -21,7 +16,17 @@ public class Main {
         }
          */
         //PROBE SI FUNCIONABAN LAS TABLAS//
-
+        try{
+            GestorHabitacionesBD.createTable();
+            GestorPasajerosBD.createTable();
+            GestorUsuarioBD.createTable();
+            GestorReservasBD.createTable();
+            GestorOcupacionesBD.createTable();
+            GestorBackupBD.createTable();
+            System.out.println("Tablas creadas");
+        } catch (BDPersistenciaException e) {
+            System.out.println(e.getMessage());
+        }
 
         //PROBE INSERTAR Y LISTAR HABITACIONES//
 
@@ -153,8 +158,29 @@ public class Main {
                 }catch (CredencialesInvalidasException | ContraseniaInvalidaException | NombreUsuarioInvalidoException |
                         UsuarioInactivoException e){
                     contador++;
-                    System.out.println(e.getMessage());
-                }
+                    System.out.println("\n============= LOGIN HOTEL UTN ===============");
+                    String usuario = Teclado.leerNombreUsuario("Usuario: ");
+                    String contrasenia = Teclado.leerContrasenia("Contraseña: ");
+
+                    hotel.iniciarSesion(usuario,contrasenia);
+
+                    switch(hotel.getUsuarioActual().getTipoUsuario()){
+                        case ADMINISTRADOR:
+                            System.out.println("Bienvenido administrador");
+                            break;
+
+
+                        case RECEPCIONISTA:
+                            System.out.println("Bienvenido recepcionista");
+
+                            break;
+                    }
+
+                hotel.cerrarSesion();
+            }catch (BDCredencialesInvalidasException | BDContraseniaInvalidaException |
+                    BDNombreUsuarioInvalidoException |
+                    BDUsuarioInactivoException e){
+                System.out.println(e.getMessage());
             }
                 System.out.println("\n========================================" +
                             "\nExceso de intentos permitidos para iniciar sesion, contacte al administrador." +

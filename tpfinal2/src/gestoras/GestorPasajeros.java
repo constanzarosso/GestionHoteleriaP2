@@ -1,14 +1,11 @@
 package gestoras;
 
-
 import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
-
 import models.Pasajero;
 
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class GestorPasajeros extends GestorGenerico<Pasajero> {
 

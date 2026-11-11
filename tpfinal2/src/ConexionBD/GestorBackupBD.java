@@ -1,6 +1,8 @@
 package ConexionBD;
 
-import Excepciones.ExcepcionesDB.PersistenciaException;
+
+
+import Excepciones.ExcepcionesBD.BDPersistenciaException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +12,7 @@ public final class GestorBackupBD {
     private GestorBackupBD() {
     }
 
-    private static void crearBackups() throws PersistenciaException {
+    private static void crearBackups() throws BDPersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -21,20 +23,20 @@ public final class GestorBackupBD {
                     + "PRIMARY KEY (id))");
 
             ps.execute();
-        } catch (SQLException | PersistenciaException e) {
-            throw new PersistenciaException("Error al crear tabla de backups: " + e.getMessage());
+        } catch (SQLException e) {
+            throw new BDPersistenciaException("Error al crear tabla de backups: " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new PersistenciaException("Error al cerrar: " + e.getMessage());
+                throw new BDPersistenciaException("Error al cerrar: " + e.getMessage());
             }
         }
     }
 
-    public static void createTable() throws PersistenciaException {
+    public static void createTable() throws BDPersistenciaException {
         crearBackups();
     }
 }
