@@ -1,13 +1,12 @@
 package ConexionBD.GestorBD;
 
 import ConexionBD.*;
-
-import Excepciones.ExcepcionesBD.PersistenciaException;
+import Excepciones.ExcepcionesBD.BDPersistenciaException;
 import gestoras.GestorPasajeros;
 
 public class InicializadorBD {
 
-    public static void inicializar() throws PersistenciaException {
+    public static void inicializar() throws BDPersistenciaException {
         GestorUsuarioBD.createTable();
         GestorPasajerosBD.createTable();
         GestorHabitacionesBD.createTable();
