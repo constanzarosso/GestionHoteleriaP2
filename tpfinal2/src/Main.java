@@ -8,6 +8,8 @@ import Menus.MenuUsuarios;
 import Validaciones.Teclado;
 import models.Hotel;
 import models.*;
+
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -58,7 +60,70 @@ public class Main {
                                         System.out.println("Gestionar reservas");
                                         break;
                                     case 4:
-                                        System.out.println("Realizar backup");
+
+                                        int opcionBackup;
+
+                                        do{
+                                            System.out.println("\n===== GESTION DE BACKUPS =====");
+                                            System.out.println("1. Crear backup");
+                                            System.out.println("2. Restaurar backup");
+                                            System.out.println("3. Listar backups");
+                                            System.out.println("4. Volver");
+
+                                            opcionBackup = Teclado.leerEntero("Opcion: ");
+
+                                            switch (opcionBackup) {
+                                                case 1:
+                                                        try{
+                                                            hotel.crearBackup();
+                                                            System.out.println("Backup creado con exito.");
+                                                        }catch (PersistenciaException | AccesoDenegadoException e){
+                                                            System.out.println("Error al crear backup: "+e.getMessage());
+                                                        }
+                                                    break;
+
+                                                case 2:
+                                                    try{
+                                                        int id = Teclado.leerEntero("Ingrese ID del bakcup: ");
+
+                                                        boolean confirmacion = Teclado.leerSiNo("Esto puede reemplazar datos actuales ¿Continuar? SI/NO");
+                                                        if(confirmacion){
+                                                            hotel.restaurarBackup(id);
+                                                            System.out.println("Backup restaurado con exito.");
+                                                        }else{
+                                                            System.out.println("Restauracion cancelada");
+                                                        }
+                                                    }catch (PersistenciaException | AccesoDenegadoException e){
+                                                        System.out.println("Error al crear backup: "+e.getMessage());
+                                                    }
+                                                    break;
+
+                                                case 3: //listar backups
+                                                    List<Backup> backups = hotel.listarBackups();
+
+                                                    if(backups.isEmpty()){
+                                                        System.out.println("No hay backups registrados.");
+                                                    }else{
+                                                        for(Backup backup : backups){
+                                                            System.out.println("--------------------");
+                                                            System.out.println("ID: "+backup.getId());
+                                                            System.out.println("Fecha: "+backup.getFechaHora());
+                                                            System.out.println("Usuario: "+backup.getNombreUsuario());
+                                                            System.out.println("Archivo: "+backup.getNombreArchivo());
+                                                        }
+                                                    }
+                                                    break;
+
+                                                case 4:
+                                                    System.out.println("Volviendo al menu principal de Admin");
+                                                    break;
+
+                                                default:
+                                                    System.out.println("Opcion incorrecta. ");
+                                                    break;
+                                            }
+                                        }while(opcionBackup != 4);
+
                                         break;
                                     case 5:
                                         System.out.println("\n ====== CAMBIAR CONTRASEÑA =====");
@@ -149,6 +214,8 @@ public class Main {
 
                     contador++;
                     System.out.println(e.getMessage());
+                } catch (AccesoDenegadoException ex) {
+                    System.out.println(ex.getMessage());
                 }
             }
             System.out.println("\n========================================" +

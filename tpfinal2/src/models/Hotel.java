@@ -1,5 +1,6 @@
 package models;
 
+import ConexionBD.GestorBackupBD;
 import ConexionBD.GestorHabitacionesBD;
 import Excepciones.ExcepcionesBD.*;
 import Excepciones.ExcepcionesDatos.ElementoDuplicadoException;
@@ -479,6 +480,23 @@ public class Hotel {
         }
 
         ocupacion.agregarConsumo(consumo);
+    }
+
+    //============== backup ===================
+    public List<Backup> listarBackups() throws PersistenciaException, AccesoDenegadoException {
+        verificarPermiso(Permiso.HACER_BACKUP);
+        return GestorBackupBD.listarBackups();
+    }
+
+    public void crearBackup() throws PersistenciaException, AccesoDenegadoException {
+        verificarPermiso(Permiso.HACER_BACKUP);
+        String nombreUsuario = usuarioActual.getNombreUsuario();
+        GestorBackupBD.crearBackup(nombreUsuario);
+    }
+
+    public void restaurarBackup(int id) throws PersistenciaException, AccesoDenegadoException {
+        verificarPermiso(Permiso.HACER_BACKUP);
+        GestorBackupBD.restaurarBackup(id);
     }
 }
 
