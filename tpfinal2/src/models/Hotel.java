@@ -17,6 +17,7 @@ import gestoras.*;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Hotel {
@@ -82,7 +83,7 @@ public class Hotel {
         }
     }
 
-    public void crearUsuario(Usuario usuario) throws AccesoDenegadoException, ElementoDuplicadoException{
+    public void crearUsuario(Usuario usuario) throws AccesoDenegadoException, ElementoDuplicadoException, PersistenciaException {
         verificarPermiso(Permiso.GESTIONAR_USUARIOS);
 
         try {
@@ -93,22 +94,22 @@ public class Hotel {
         }
     }
 
-    public void darDeBajaUsuario(int id) throws AccesoDenegadoException, ElementoNoEncontradoException{
+    public void darDeBajaUsuario(int id) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
         verificarPermiso(Permiso.GESTIONAR_USUARIOS);
         usuarios.darDeBajaUsuario(id);
     }
 
-    public void asignarPermisos(int id, Permiso permiso) throws AccesoDenegadoException, ElementoNoEncontradoException{
+    public void asignarPermisos(int id, Permiso permiso) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
         verificarPermiso(Permiso.ASIGNAR_PERMISOS);
         usuarios.asignarPermisos(id,permiso);
     }
 
-    public void quitarPermiso(int id, Permiso permiso) throws AccesoDenegadoException, ElementoNoEncontradoException{
+    public void quitarPermiso(int id, Permiso permiso) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
         verificarPermiso(Permiso.ASIGNAR_PERMISOS);
         usuarios.quitarPermisos(id,permiso);
     }
 
-    public void cambiarContrasenia(String actual, String nueva) throws AccesoDenegadoException, ContraseniaInvalidaException, ElementoNoEncontradoException{
+    public void cambiarContrasenia(String actual, String nueva) throws AccesoDenegadoException, ContraseniaInvalidaException, ElementoNoEncontradoException, PersistenciaException {
         if(usuarioActual == null || !usuarioActual.validarContrasenia(actual)){
             throw new AccesoDenegadoException();
         }
@@ -153,9 +154,7 @@ public class Hotel {
         ocupaciones.agregarElemento(ocupacion);
 
 
-        ///reservaDAO.modificar(reserva);
-        ///ocupacionDAO.insertar(ocupacion);
-        /// aca hay que meter persistencia de datos
+
     }
 
         public void hacerCheckOut(int numero, MetodoDePago pago)
@@ -182,9 +181,7 @@ public class Hotel {
             Habitacion habitacion = ocupacion.getHabitacion();
             habitacion.liberar();
 
-            ///ocupacionDAO.modificar(ocupacion);
-            ///reservaDAO.modificar(reserva);
-            /// aca persistencia de datos
+
         }
 
 
@@ -238,6 +235,148 @@ public class Hotel {
     }
 
 
+    // ==================== PASAJEROS ====================
+
+    public void registrarPasajero(Pasajero pasajero)
+            throws AccesoDenegadoException, ElementoDuplicadoException {
+
+        verificarPermiso(Permiso.GESTIONAR_RESERVAS);
+
+        pasajeros.agregarElemento(pasajero);
+    }
+
+    public Pasajero buscarPasajero(int dni)
+            throws AccesoDenegadoException, ElementoNoEncontradoException {
+
+        verificarPermiso(Permiso.GESTIONAR_RESERVAS);
+
+        return pasajeros.buscarElemento(dni);
+    }
+
+    public List<Pasajero> buscarPasajerosPorApellido(String apellido)
+            throws AccesoDenegadoException, ElementoNoEncontradoException {
+
+        verificarPermiso(Permiso.GESTIONAR_RESERVAS);
+
+        return pasajeros.buscarPorApellido(apellido);
+    }
+
+
+// ==================== RESERVAS ====================
+
+    public boolean consultarDisponibilidad(int numeroHabitacion,
+                                           LocalDate desde,
+                                           LocalDate hasta)
+            throws AccesoDenegadoException,
+            ElementoNoEncontradoException,
+            PeriodoInvalidoException {
+
+        verificarPermiso(Permiso.GESTIONAR_RESERVAS);
+
+        Habitacion habitacion = habitaciones.buscarElemento(numeroHabitacion);
+
+        if (!habitacion.estaDisponible()) {
+            return false;
+        }
+
+        return !reservas.hayReservaSuperpuesta(numeroHabitacion, desde, hasta);
+    }
+
+    public void crearReserva(int dni,
+                             int numeroHabitacion,
+                             LocalDate desde,
+                             LocalDate hasta,
+                             int cantidadPersonas)
+            throws AccesoDenegadoException,
+            ElementoNoEncontradoException,
+            ElementoDuplicadoException,
+            PeriodoInvalidoException,
+            HabitacionNoDisponibleException,
+            CapacidadExcedidaException {
+
+        verificarPermiso(Permiso.GESTIONAR_RESERVAS);
+
+        if (desde == null || hasta == null || !desde.isBefore(hasta)) {
+            throw new PeriodoInvalidoException();
+        }
+
+        Pasajero pasajero = pasajeros.buscarElemento(dni);
+        Habitacion habitacion = habitaciones.buscarElemento(numeroHabitacion);
+
+        if (!habitacion.estaDisponible()) {
+            throw new HabitacionNoDisponibleException();
+        }
+
+        if (cantidadPersonas > habitacion.getCapacidad()) {
+            throw new CapacidadExcedidaException();
+        }
+
+        if (reservas.hayReservaSuperpuesta(numeroHabitacion, desde, hasta)) {
+            throw new HabitacionNoDisponibleException();
+        }
+
+        Reserva reserva = new Reserva(
+                reservas.siguienteId(),
+                pasajero,
+                habitacion,
+                desde,
+                hasta,
+                cantidadPersonas,
+                EstadoReserva.PENDIENTE
+        );
+
+        reservas.agregarElemento(reserva);
+    }
+
+    public void cancelarReserva(int idReserva)
+            throws AccesoDenegadoException, ElementoNoEncontradoException,
+            ReservaInvalidaException {
+
+        verificarPermiso(Permiso.GESTIONAR_RESERVAS);
+
+        Reserva reserva = reservas.buscarElemento(idReserva);
+
+        if (reserva.getEstado() != EstadoReserva.PENDIENTE) {
+            throw new ReservaInvalidaException();
+        }
+
+        reserva.cancelar();
+    }
+
+    public List<Reserva> listarReservasPendientes()
+            throws AccesoDenegadoException {
+
+        verificarPermiso(Permiso.GESTIONAR_RESERVAS);
+
+        List<Reserva> pendientes = new ArrayList<>();
+
+        for (Reserva reserva : reservas.obtenerElementos()) {
+            if (reserva.getEstado() == EstadoReserva.PENDIENTE) {
+                pendientes.add(reserva);
+            }
+        }
+
+        return pendientes;
+    }
+
+
+// ==================== OCUPACIONES ====================
+
+    public List<Ocupacion> listarOcupacionesActivas()
+            throws AccesoDenegadoException {
+
+        verificarPermiso(Permiso.HACER_CHECKIN_CHECKOUT);
+
+        return ocupaciones.listarActivas();
+    }
+
+    public List<Ocupacion> consultarHistorialOcupaciones(int dni)
+            throws AccesoDenegadoException, ElementoNoEncontradoException {
+
+        verificarPermiso(Permiso.HACER_CHECKIN_CHECKOUT);
+
+        return ocupaciones.historial(dni);
+    }
 }
 
 
