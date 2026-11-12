@@ -1,5 +1,5 @@
 package ConexionBD;
-import Excepciones.ExcepcionesBD.BDPersistenciaException;
+import Excepciones.ExcepcionesBD.PersistenciaException;
 import enums.Permiso;
 import models.Administrador;
 import models.Recepcionista;
@@ -16,7 +16,7 @@ public final class GestorUsuarioBD {
     public GestorUsuarioBD() {
     }
 
-    private static void crearUsuarios() throws BDPersistenciaException {
+    private static void crearUsuarios() throws PersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -30,19 +30,19 @@ public final class GestorUsuarioBD {
                     + "UNIQUE (nombre_usuario))");
             ps.execute();
         } catch (SQLException e) {
-            throw new BDPersistenciaException("Error al crear la tabla usuarios: " + e.getMessage());
+            throw new PersistenciaException("Error al crear la tabla usuarios: " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new BDPersistenciaException("Error al cerrar: " + e.getMessage());
+                throw new PersistenciaException("Error al cerrar: " + e.getMessage());
             }
         }
     }
 
-    private static void crearUsuariosPermisos() throws BDPersistenciaException {
+    private static void crearUsuariosPermisos() throws PersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -57,24 +57,25 @@ public final class GestorUsuarioBD {
             );
             ps.execute();
         } catch (SQLException e) {
-            throw new BDPersistenciaException("Error al crear la tabla usuarios_permisos: " + e.getMessage());
+            throw new PersistenciaException("Error al crear la tabla usuarios_permisos: " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new BDPersistenciaException("Error al cerrar: " + e.getMessage());
+                throw new PersistenciaException("Error al cerrar: " + e.getMessage());
             }
         }
     }
 
-    public static void createTable() throws BDPersistenciaException {
+    public static void createTable() throws PersistenciaException {
         crearUsuarios();
         crearUsuariosPermisos();
     }
 
-    public void guardar(Usuario usuario) throws BDPersistenciaException { // Uso de transacciones para asegurar las operaciones
+    public void guardar(Usuario usuario) throws PersistenciaException, PersistenciaException { // Uso de transacciones para asegurar las operaciones
+
 
         String sql = "INSERT INTO usuarios "
                 + "(id, nombre_usuario, contrasenia, tipo, activo) "
@@ -99,7 +100,7 @@ public final class GestorUsuarioBD {
             guardarPermisos(conn, usuario);
             conn.commit(); //confirma los cambios
 
-        }catch (SQLException | BDPersistenciaException e){
+        }catch (SQLException | PersistenciaException e){
             if(conn != null){
                 try {
                     conn.rollback(); // deshace los cambios de la transaccion
@@ -107,7 +108,7 @@ public final class GestorUsuarioBD {
                     e.addSuppressed(ex); // junta los errores para que no se pierdan
                 }
             }
-            throw new BDPersistenciaException("Error al guardar la tabla usuarios: " + e.getMessage());
+            throw new PersistenciaException("Error al guardar la tabla usuarios: " + e.getMessage());
         } finally {
             if(conn != null){
                 try {
@@ -137,7 +138,7 @@ public final class GestorUsuarioBD {
             }
     }
 
-    public List<Usuario> listar() throws BDPersistenciaException {
+    public List<Usuario> listar() throws PersistenciaException {
         List<Usuario> usuarios = new ArrayList<>();
 
         String sql = "SELECT * FROM usuarios";
@@ -167,7 +168,7 @@ public final class GestorUsuarioBD {
                             break;
 
                             default:
-                                throw new BDPersistenciaException("Tipo de usuario incorrecto "+ tipo);
+                                throw new PersistenciaException("Tipo de usuario incorrecto "+ tipo);
                     }
 
                     usuario.setActivo(activo);
@@ -188,7 +189,7 @@ public final class GestorUsuarioBD {
             return usuarios;
 
         }catch (SQLException e){
-            throw new BDPersistenciaException("Error al cargar la tabla usuarios: " + e.getMessage());
+            throw new PersistenciaException("Error al cargar la tabla usuarios: " + e.getMessage());
         }
     }
 
@@ -209,7 +210,7 @@ public final class GestorUsuarioBD {
         }
     }
 
-    public void actualizar(Usuario usuario) throws BDPersistenciaException {
+    public void actualizar(Usuario usuario) throws PersistenciaException {
         String sql = "UPDATE usuarios SET "
                 + "nombre_usuario = ?, "
                 + "contrasenia = ?, "
@@ -246,7 +247,7 @@ public final class GestorUsuarioBD {
 
             guardarPermisos(conn,usuario);
             conn.commit();
-        }catch (SQLException | BDPersistenciaException e){
+        }catch (SQLException | PersistenciaException e){
             if(conn != null){
                 try {
                     conn.rollback();
@@ -254,7 +255,7 @@ public final class GestorUsuarioBD {
                     e.addSuppressed(ex);
                 }
             }
-            throw new BDPersistenciaException("Error al cargar la tabla usuarios: " + e.getMessage());
+            throw new PersistenciaException("Error al cargar la tabla usuarios: " + e.getMessage());
         }finally {
             if(conn != null){
                 try{
@@ -265,19 +266,4 @@ public final class GestorUsuarioBD {
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

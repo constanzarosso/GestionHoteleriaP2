@@ -1,8 +1,8 @@
 package Validaciones;
 
-import Excepciones.ExcepcionesBD.BDContraseniaInvalidaException;
-import Excepciones.ExcepcionesBD.BDEmailInvalidoException;
-import Excepciones.ExcepcionesBD.BDNombreUsuarioInvalidoException;
+import Excepciones.ExcepcionesBD.ContraseniaInvalidaException;
+import Excepciones.ExcepcionesBD.EmailInvalidoException;
+import Excepciones.ExcepcionesBD.NombreUsuarioInvalidoException;
 import Excepciones.ExcepcionesDatos.*;
 import Excepciones.ExcepcionesHotel.DniInvalidoException;
 import Excepciones.ExcepcionesHotel.FechaInvalidaException;
@@ -64,12 +64,12 @@ public final class Validacion {
         }
     }
 
-    public static void validarEmail(String email) throws BDEmailInvalidoException {
+    public static void validarEmail(String email) throws EmailInvalidoException {
         // verifica que el string tenga "texto @ texto . texto"
         String contenido =  "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
 
         if(email == null || !email.trim().matches(contenido)){
-            throw new BDEmailInvalidoException("El formato del email no es valido.");
+            throw new EmailInvalidoException("El formato del email no es valido.");
         }
 
     }
@@ -103,17 +103,17 @@ public final class Validacion {
     }
 
     // Min 4 caract Max 20 carac -> letras,num,punto,guion -> No espacios ni Caracteres especiales
-    public static void validarNombreUsuario(String nombreUsuario) throws BDNombreUsuarioInvalidoException {
+    public static void validarNombreUsuario(String nombreUsuario) throws NombreUsuarioInvalidoException {
 
         if(nombreUsuario == null || !nombreUsuario.matches("^[a-zA-Z0-9]([._]?[a-zA-Z0-9]){3,19}$")){
-            throw new BDNombreUsuarioInvalidoException("El nombre de usuario debe tener entre 4 y 20 caracteres. " +
+            throw new NombreUsuarioInvalidoException("El nombre de usuario debe tener entre 4 y 20 caracteres. " +
                     "Solo se permiten letras, numero, puntos y guiones bajos.");
         }
 
     }
 
     // Min 8, Max 30 carct -> Mayus 1, Minuscula 1, Num 1 , Caracter especial 1
-    public static void validarContrasenia(String contrasenia) throws BDContraseniaInvalidaException {
+    public static void validarContrasenia(String contrasenia) throws ContraseniaInvalidaException {
 
         if(contrasenia == null ||
                 contrasenia.length() < 8 ||
@@ -124,7 +124,7 @@ public final class Validacion {
                 !contrasenia.matches(".*[0-9].*") ||
                 !contrasenia.matches(".*[^a-zA-Z0-9].*")){
 
-            throw new BDContraseniaInvalidaException("La contraseña tiene que tener entre 8 y 30 caracteres." +
+            throw new ContraseniaInvalidaException("La contraseña tiene que tener entre 8 y 30 caracteres." +
                     "Sin espacios, con una mayuscula, una miniscula, un numero y un caracter especial.");
         }
     }
