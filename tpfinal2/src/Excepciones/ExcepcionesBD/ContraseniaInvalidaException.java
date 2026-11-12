@@ -2,8 +2,8 @@ package Excepciones.ExcepcionesBD;
 
 import Excepciones.ExcepcionesDatos.TextoInvalidoException;
 
-public class BDContraseniaInvalidaException extends TextoInvalidoException {
-    public BDContraseniaInvalidaException(String mensaje) {
+public class ContraseniaInvalidaException extends TextoInvalidoException {
+    public ContraseniaInvalidaException(String mensaje) {
         super("Error: Contraseña incorrecta. "+mensaje);
     }
 }
