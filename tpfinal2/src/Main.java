@@ -73,9 +73,7 @@ public class Main {
 
 
                             case RECEPCIONISTA:
-                                System.out.println("Bienvenido recepcionista");
 
-                            case RECEPCIONISTA:
 
                                 System.out.println("Bienvenido recepcionista");
 
@@ -337,7 +335,6 @@ public class Main {
 
 
                 } catch (CredencialesInvalidasException | ContraseniaInvalidaException |
-                         NombreUsuarioInvalidoException |
                          UsuarioInactivoException e) {
                     contador++;
                     System.out.println(e.getMessage());
