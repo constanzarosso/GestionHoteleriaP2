@@ -1,7 +1,8 @@
 package ConexionBD.GestorBD;
 
 import ConexionBD.*;
-import Excepciones.ExcepcionesDB.PersistenciaException;
+
+import Excepciones.ExcepcionesBD.PersistenciaException;
 import gestoras.GestorPasajeros;
 
 public class InicializadorBD {
