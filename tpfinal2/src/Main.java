@@ -1,10 +1,8 @@
 import ConexionBD.*;
 import ConexionBD.GestorBD.InicializadorBD;
 import Excepciones.ExcepcionesBD.*;
-import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
-import Menus.MenuHabitaciones;
+import Menus.MenuAdministrador;
 import Menus.MenuRecepcionista;
-import Menus.MenuUsuarios;
 import Validaciones.Teclado;
 import models.Hotel;
 import models.*;
@@ -154,59 +152,12 @@ public class Main {
                                         System.out.println("Opción incorrecta");
                                 }
                                 break;
-
-
                             case RECEPCIONISTA:
-
-
-                                System.out.println("Bienvenido recepcionista");
-
-                                System.out.println("\n====== MENU RECEPCIONISTA =====");
-                                System.out.println("1. Ver Habitaciones");
-                                System.out.println("2. Gestionar Reservas");
-                                System.out.println("3. Registrar Pasajeros");
-                                System.out.println("4. Check-in / Check-out");
-                                System.out.println("5. Registrar Consumos");
-                                System.out.println("6. Cerrar Sesion");
-
-                                int opcionRecepcion = Teclado.leerEntero("Opcion: ");
-
-                                switch (opcionRecepcion) {
-
-                                    case 1:
-                                        MenuRecepcionista.verHabitaciones(hotel);
-                                        break;
-
-                                    case 2:
-                                        MenuRecepcionista.gestionarReservas(hotel);
-                                        break;
-
-                                    case 3:
-                                        MenuRecepcionista.registrarPasajero(hotel);
-                                        break;
-
-                                    case 4:
-                                        MenuRecepcionista.checkInCheckOut(hotel);
-                                        break;
-
-                                    case 5:
-                                        MenuRecepcionista.registrarConsumo(hotel);
-                                        break;
-
-                                    case 6:
-                                        System.out.println("Cerrando sesion...");
-                                        cerrarSesion = true;
-                                        contador = 0;
-                                        break;
-
-                                    default:
-                                        System.out.println("Opcion incorrecta.");
-                                        break;
-                                }
+                                cerrarSesion = MenuRecepcionista.mostrar(hotel);
                                 break;
                         }
-
                     }
+                    contador = 0;
 
                     hotel.cerrarSesion();
                 } catch (CredencialesInvalidasException | ContraseniaInvalidaException |
