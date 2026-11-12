@@ -58,7 +58,7 @@ public final class MenuHabitaciones {
         }
     }
 
-    public static void menuRecepcionista(Hotel hotel) {
+    public static void consultarHabitaciones (Hotel hotel) {
         listarHabitaciones(hotel);
     }
 
