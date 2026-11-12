@@ -1,6 +1,10 @@
 import ConexionBD.*;
 import ConexionBD.GestorBD.InicializadorBD;
 import Excepciones.ExcepcionesBD.*;
+import Excepciones.ExcepcionesDatos.ElementoDuplicadoException;
+import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
+import Menus.MenuHabitaciones;
+import Menus.MenuUsuarios;
 import Validaciones.Teclado;
 import enums.MetodoDePago;
 import models.Hotel;
@@ -48,10 +52,10 @@ public class Main {
 
                                 switch (opcionAdmin) {
                                     case 1:
-                                        System.out.println("Gestionar usuarios");
+                                        MenuUsuarios.menu(hotel);
                                         break;
                                     case 2:
-                                        System.out.println("Gestionar habitaciones");
+                                        MenuHabitaciones.menuAdministrador(hotel);
                                         break;
                                     case 3:
                                         System.out.println("Gestionar reservas");
@@ -60,7 +64,25 @@ public class Main {
                                         System.out.println("Realizar backup");
                                         break;
                                     case 5:
-                                        System.out.println("Cambiar contraseña");
+                                        System.out.println("\n ====== CAMBIAR CONTRASEÑA =====");
+                                        try {
+                                            String actual = Teclado.leerContrasenia("Ingrese la contraseña actual: ");
+                                            String nueva = Teclado.leerContrasenia("Ingrese la nueva contraseña: ");
+                                            String confirmar = Teclado.leerContrasenia("Confirme la nueva contraseña: ");
+
+                                            if (!nueva.equals(confirmar)) {
+                                                System.out.println("Las contraseñas no coinciden");
+                                                break;
+                                            }
+
+                                            hotel.cambiarContrasenia(actual, nueva);
+                                            System.out.println("Contraseña cambiada con exito.");
+
+                                        } catch (ElementoNoEncontradoException | ContraseniaInvalidaException |
+                                                 PersistenciaException |
+                                                 AccesoDenegadoException e) {
+                                            System.out.println("Error al cambiar la contraseña: " + e.getMessage());
+                                        }
                                         break;
                                     case 6:
                                         cerrarSesion = true;
@@ -92,6 +114,9 @@ public class Main {
                                 switch (opcionRecepcion) {
 
                                     case 1:
+
+                                        MenuHabitaciones.menuRecepcionista(hotel);
+
                                         try {
                                             System.out.println("Consultar disponibilidad de habitacion");
 
@@ -332,10 +357,9 @@ public class Main {
                     }
 
                     hotel.cerrarSesion();
-
-
                 } catch (CredencialesInvalidasException | ContraseniaInvalidaException |
                          UsuarioInactivoException e) {
+
                     contador++;
                     System.out.println(e.getMessage());
                 }
