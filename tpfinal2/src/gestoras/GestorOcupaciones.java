@@ -3,6 +3,7 @@ package gestoras;
 
 import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
 
+import models.Consumo;
 import models.Ocupacion;
 
 
@@ -58,5 +59,11 @@ public class GestorOcupaciones extends GestorGenerico<Ocupacion> {
         }
 
         return historial;
+    }
+    public void registrarConsumo(int numeroHabitacion, Consumo consumo)
+            throws ElementoNoEncontradoException {
+
+        Ocupacion ocupacion = ocupacionActiva(numeroHabitacion);
+        ocupacion.agregarConsumo(consumo);
     }
 }
