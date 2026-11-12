@@ -51,20 +51,26 @@ public class Hotel {
 
     //Gestor Usuarios
     private void cargarCredencialesAdmin(){
-        try{
+
+        try {
             usuarios.cargarUsuarios();
 
-                if(usuarios.cantidadElementos() == 0){
+            if(usuarios.cantidadElementos() == 0){
 
-                    Administrador admin = new Administrador(
-                            usuarios.siguienteId(), "admin","Admin123!");
+                Administrador admin = new Administrador(
+                        usuarios.siguienteId(), "admin","Admin123!");
 
-                    usuarios.registrarUsuario(admin);
-                }
+                usuarios.registrarUsuario(admin);
+            }
 
-        }catch (PersistenciaException | ElementoDuplicadoException e){
-            System.out.println(e.getMessage());
+        } catch (BDPersistenciaException e) {
+            throw new RuntimeException(e);
+        } catch (ElementoDuplicadoException e) {
+            throw new RuntimeException(e);
         }
+
+
+
     }
 
     public Usuario iniciarSesion(String nombreUsuario, String contrasenia)throws BDCredencialesInvalidasException, BDUsuarioInactivoException {
@@ -82,7 +88,7 @@ public class Hotel {
         }
     }
 
-    public void crearUsuario(Usuario usuario) throws BDAccesoDenegadoException, ElementoDuplicadoException{
+    public void crearUsuario(Usuario usuario) throws BDAccesoDenegadoException, ElementoDuplicadoException, BDPersistenciaException {
         verificarPermiso(Permiso.GESTIONAR_USUARIOS);
 
         try {
@@ -92,23 +98,26 @@ public class Hotel {
             usuarios.registrarUsuario(usuario);
         }
     }
+    public int siguienteIdUsuario(){
+        return usuarios.siguienteId();
+    }
 
-    public void darDeBajaUsuario(int id) throws BDAccesoDenegadoException, ElementoNoEncontradoException{
+    public void darDeBajaUsuario(int id) throws BDAccesoDenegadoException, ElementoNoEncontradoException, BDPersistenciaException {
         verificarPermiso(Permiso.GESTIONAR_USUARIOS);
         usuarios.darDeBajaUsuario(id);
     }
 
-    public void asignarPermisos(int id, Permiso permiso) throws BDAccesoDenegadoException, ElementoNoEncontradoException{
+    public void asignarPermisos(int id, Permiso permiso) throws BDAccesoDenegadoException, ElementoNoEncontradoException, BDPersistenciaException {
         verificarPermiso(Permiso.ASIGNAR_PERMISOS);
         usuarios.asignarPermisos(id,permiso);
     }
 
-    public void quitarPermiso(int id, Permiso permiso) throws BDAccesoDenegadoException, ElementoNoEncontradoException{
+    public void quitarPermiso(int id, Permiso permiso) throws BDAccesoDenegadoException, ElementoNoEncontradoException, BDPersistenciaException {
         verificarPermiso(Permiso.ASIGNAR_PERMISOS);
         usuarios.quitarPermisos(id,permiso);
     }
 
-    public void cambiarContrasenia(String actual, String nueva) throws BDAccesoDenegadoException, BDContraseniaInvalidaException, ElementoNoEncontradoException{
+    public void cambiarContrasenia(String actual, String nueva) throws BDAccesoDenegadoException, BDContraseniaInvalidaException, ElementoNoEncontradoException, BDPersistenciaException {
         if(usuarioActual == null || !usuarioActual.validarContrasenia(actual)){
             throw new BDAccesoDenegadoException();
         }
@@ -235,6 +244,11 @@ public class Hotel {
     public Habitacion buscarHabitacion(int numero) throws BDAccesoDenegadoException, ElementoNoEncontradoException {
         verificarPermiso(Permiso.VER_HABITACIONES);
         return habitaciones.buscarElemento(numero);
+    }
+
+    public List<Usuario> listarUsuarios() throws BDAccesoDenegadoException {
+        verificarPermiso(Permiso.GESTIONAR_USUARIOS);
+        return usuarios.obtenerElementos();
     }
 
 

@@ -88,13 +88,18 @@ public final class Teclado {
 
     }
 
-    public static String leerNombreUsuario(String mensaje) throws BDNombreUsuarioInvalidoException {
-
+    public static String leerNombreUsuario(String mensaje) {
+        String nombreUsuario = "";
+        try {
             System.out.print(mensaje);
-            String nombreUsuario = sc.nextLine();
+            nombreUsuario = sc.nextLine();
             Validacion.validarNombreUsuario(nombreUsuario);
-            return nombreUsuario;
+            
 
+        }catch (BDNombreUsuarioInvalidoException e){
+            System.out.println(e.getMessage());
+        }
+        return nombreUsuario;
     }
 
     public static LocalDate leerFecha(String mensaje){
