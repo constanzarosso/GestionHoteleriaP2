@@ -1,8 +1,8 @@
 package gestoras;
 
 import ConexionBD.GestorUsuarioBD;
-import Excepciones.ExcepcionesBD.BDCredencialesInvalidasException;
-import Excepciones.ExcepcionesBD.BDPersistenciaException;
+import Excepciones.ExcepcionesBD.CredencialesInvalidasException;
+import Excepciones.ExcepcionesBD.PersistenciaException;
 import Excepciones.ExcepcionesDatos.ElementoDuplicadoException;
 import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
 import Excepciones.ExcepcionesBD.UsuarioInactivoException;
@@ -49,43 +49,43 @@ public class GestorUsuarios extends GestorGenerico<Usuario> {
         return usuario;
     }
 
-    public void darDeBajaUsuario(int id) throws ElementoNoEncontradoException, BDPersistenciaException {
+    public void darDeBajaUsuario(int id) throws ElementoNoEncontradoException, PersistenciaException {
         Usuario usuario = buscarElemento(id);
         usuario.darDeBaja();
         gestorUsuarioBD.actualizar(usuario);
     }
 
-    public void asignarPermisos(int id, Permiso permiso) throws ElementoNoEncontradoException, BDPersistenciaException {
+    public void asignarPermisos(int id, Permiso permiso) throws ElementoNoEncontradoException, PersistenciaException {
         Usuario usuario = buscarElemento(id);
         usuario.agregarPermiso(permiso);
         gestorUsuarioBD.actualizar(usuario);
     }
 
-    public void quitarPermisos(int id, Permiso permiso) throws ElementoNoEncontradoException, BDPersistenciaException {
+    public void quitarPermisos(int id, Permiso permiso) throws ElementoNoEncontradoException, PersistenciaException {
         Usuario usuario = buscarElemento(id);
         usuario.quitarPermiso(permiso);
         gestorUsuarioBD.actualizar(usuario);
     }
 
-    public void cambiarContrasenia(int id, String nuevaContrasenia) throws ElementoNoEncontradoException, BDPersistenciaException {
+    public void cambiarContrasenia(int id, String nuevaContrasenia) throws ElementoNoEncontradoException, PersistenciaException {
         Usuario usuario = buscarElemento(id);
         usuario.cambiarContrasenia(nuevaContrasenia);
         gestorUsuarioBD.actualizar(usuario);
     }
 
-    public void cargarUsuarios() throws BDPersistenciaException, ElementoDuplicadoException {
+    public void cargarUsuarios() throws PersistenciaException, ElementoDuplicadoException {
         List<Usuario> usuarios = gestorUsuarioBD.listar();
 
         for(Usuario usuario : usuarios){
             try {
                 agregarElemento(usuario);
             }catch (ElementoDuplicadoException e){
-                throw new BDPersistenciaException(e.getMessage() );
+                throw new PersistenciaException(e.getMessage() );
             }
         }
     }
 
-    public void registrarUsuario(Usuario usuario) throws ElementoDuplicadoException, BDPersistenciaException {
+    public void registrarUsuario(Usuario usuario) throws ElementoDuplicadoException, PersistenciaException {
         agregarElemento(usuario);
         gestorUsuarioBD.guardar(usuario);
     }

@@ -1,4 +1,3 @@
-import ConexionBD.*;
 import ConexionBD.GestorBD.InicializadorBD;
 import Excepciones.ExcepcionesBD.*;
 import Excepciones.ExcepcionesDatos.ElementoDuplicadoException;
@@ -7,7 +6,10 @@ import Validaciones.Teclado;
 import enums.Permiso;
 import models.Administrador;
 import models.Hotel;
-import models.*;
+import models.Recepcionista;
+import models.Usuario;
+
+import java.util.List;
 
 
 public class Main {
@@ -90,9 +92,9 @@ public class Main {
 
                                                             hotel.crearUsuario(nuevoUsuario);
                                                             System.out.println("Usuario creado correctamente");
-                                                        }catch (ElementoDuplicadoException | BDAccesoDenegadoException e){
+                                                        }catch (ElementoDuplicadoException | AccesoDenegadoException e){
                                                             System.out.println("No se pudo crear el usuario: "+e.getMessage());
-                                                        } catch (BDPersistenciaException e) {
+                                                        } catch (PersistenciaException e) {
                                                             throw new RuntimeException(e);
                                                         }
                                                         break;
@@ -118,7 +120,7 @@ public class Main {
                                                                 System.out.println("------------------");
                                                             }
 
-                                                        }catch (BDAccesoDenegadoException e){
+                                                        }catch (AccesoDenegadoException e){
                                                             System.out.println(e.getMessage());
                                                         }
                                                         break;
@@ -131,7 +133,8 @@ public class Main {
                                                             hotel.darDeBajaUsuario(id);
 
                                                             System.out.println("Usuario se dio de baja con exito.");
-                                                        }catch (ElementoNoEncontradoException | BDAccesoDenegadoException |BDPersistenciaException e){
+                                                        }catch (ElementoNoEncontradoException |
+                                                                AccesoDenegadoException | PersistenciaException e){
                                                             System.out.println("No se pudo dar de baja al usuario. "+e.getMessage() );
                                                         }
                                                         break;
@@ -158,7 +161,8 @@ public class Main {
                                                             hotel.asignarPermisos(id, permiso);
                                                             System.out.println("Permiso asignado con exito. ");
 
-                                                        }catch (ElementoNoEncontradoException | BDAccesoDenegadoException | BDPersistenciaException e){
+                                                        }catch (ElementoNoEncontradoException |
+                                                                AccesoDenegadoException | PersistenciaException e){
                                                             System.out.println("No se pudo asignar los permisos. "+ e.getMessage() );
                                                         }
                                                         break;
@@ -183,7 +187,8 @@ public class Main {
                                                             Permiso permiso = permisos[opcionPermiso-1];
                                                             hotel.quitarPermiso(id, permiso);
                                                             System.out.println("Permiso quitado con exito. ");
-                                                        }catch (ElementoNoEncontradoException | BDAccesoDenegadoException | BDPersistenciaException e){
+                                                        }catch (ElementoNoEncontradoException |
+                                                                AccesoDenegadoException | PersistenciaException e){
                                                             System.out.println("No se pudo quitar los permisos. "+ e.getMessage() );
                                                         }
                                                         break;
@@ -226,7 +231,9 @@ public class Main {
                                             hotel.cambiarContrasenia(actual, nueva);
                                             System.out.println("Contraseña cambiada con exito.");
 
-                                        }catch (ElementoNoEncontradoException | BDContraseniaInvalidaException | BDPersistenciaException | BDAccesoDenegadoException e){
+                                        }catch (ElementoNoEncontradoException | ContraseniaInvalidaException |
+                                                PersistenciaException |
+                                                AccesoDenegadoException e){
                                             System.out.println("Error al cambiar la contraseña: "+e.getMessage());
                                         }
 
@@ -295,16 +302,15 @@ public class Main {
 
                     hotel.cerrarSesion();
 
-
-                } catch (BDCredencialesInvalidasException e){
+                } catch (CredencialesInvalidasException e){
                     contador++;
 
                     System.out.println(e.getMessage());
-                }catch (BDUsuarioInactivoException e){
+                }catch (UsuarioInactivoException e){
                     contador++;
 
                     System.out.println(e.getMessage());
-                } catch (BDContraseniaInvalidaException e) {
+                } catch (ContraseniaInvalidaException e) {
                     throw new RuntimeException(e);
                 }
 
@@ -314,7 +320,7 @@ public class Main {
                     "\nExceso de intentos permitidos para iniciar sesion, contacte al administrador." +
                     "\n========================================");
 
-        } catch (BDPersistenciaException e) {
+        } catch (PersistenciaException e) {
             throw new RuntimeException(e);
         }
     }

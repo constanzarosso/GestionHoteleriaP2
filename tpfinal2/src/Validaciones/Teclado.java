@@ -16,63 +16,63 @@ import java.util.Scanner;
 public final class Teclado {
     private static final Scanner sc = new Scanner(System.in);
 
-    public static String leerTexto(String mensaje){
+    public static String leerTexto(String mensaje) {
         System.out.println(mensaje);
 
         return sc.nextLine();
     }
 
-    public static int leerOpcion(String mensaje, int minimo, int maximo){
-        while(true){
+    public static int leerOpcion(String mensaje, int minimo, int maximo) {
+        while (true) {
             int opcion = leerEntero(mensaje);
 
-            try{
+            try {
                 Validacion.validarRango(opcion, minimo, maximo);
                 return opcion;
-            }catch (FueraDeRangoException e){
+            } catch (FueraDeRangoException e) {
                 System.out.println(e.getMessage());
             }
         }
     }
 
-    public static int leerEntero(String mensaje){
-        while(true){
+    public static int leerEntero(String mensaje) {
+        while (true) {
             System.out.println(mensaje);
             String texto = sc.nextLine();
 
-            try{
+            try {
                 Validacion.validarEntero(texto);
 
                 return Integer.parseInt(texto);
-            }catch (NumeroInvalidoException e){
+            } catch (NumeroInvalidoException e) {
                 System.out.println(e.getMessage());
             }
         }
     }
 
-    public static String leerDni(String mensaje){
+    public static String leerDni(String mensaje) {
 
-        while(true){
+        while (true) {
             System.out.println(mensaje);
             String dni = sc.nextLine();
 
-            try{
+            try {
                 Validacion.validarDni(dni);
                 return dni;
-            }catch(DniInvalidoException e){
+            } catch (DniInvalidoException e) {
                 System.out.println(e.getMessage());
             }
         }
     }
 
-    public static String leerEmail(String mensaje){
-        while(true){
+    public static String leerEmail(String mensaje) {
+        while (true) {
             System.out.println(mensaje);
             String email = sc.nextLine();
-            try{
+            try {
                 Validacion.validarEmail(email);
                 return email;
-            }catch(EmailInvalidoException e){
+            } catch (EmailInvalidoException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -80,13 +80,12 @@ public final class Teclado {
 
     public static String leerContrasenia(String mensaje) throws ContraseniaInvalidaException {
 
-            System.out.print(mensaje);
-            String contrasenia = sc.nextLine();
-            Validacion.validarContrasenia(contrasenia);
-            return  contrasenia;
-
-
+        System.out.print(mensaje);
+        String contrasenia = sc.nextLine();
+        Validacion.validarContrasenia(contrasenia);
+        return contrasenia;
     }
+
 
     public static String leerNombreUsuario(String mensaje) {
         String nombreUsuario = "";
@@ -94,63 +93,63 @@ public final class Teclado {
             System.out.print(mensaje);
             nombreUsuario = sc.nextLine();
             Validacion.validarNombreUsuario(nombreUsuario);
-            
 
-        }catch (BDNombreUsuarioInvalidoException e){
+
+        } catch (NombreUsuarioInvalidoException e) {
             System.out.println(e.getMessage());
         }
         return nombreUsuario;
     }
 
-    public static LocalDate leerFecha(String mensaje){
-        while(true){
+    public static LocalDate leerFecha(String mensaje) {
+        while (true) {
             System.out.println(mensaje);
             String fecha = sc.nextLine();
 
             try {
                 Validacion.validarFecha(fecha);
                 DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/uuuu");
-                return  LocalDate.parse(fecha, formato);
-            }catch (FechaInvalidaException e){
+                return LocalDate.parse(fecha, formato);
+            } catch (FechaInvalidaException e) {
                 System.out.println(e.getMessage());
             }
         }
 
     }
 
-    public static String leerTelefono(String mensaje){
-        while(true){
+    public static String leerTelefono(String mensaje) {
+        while (true) {
             System.out.println(mensaje);
             String telefono = sc.nextLine();
 
             try {
                 Validacion.validarTelefono(telefono);
                 return telefono;
-            }catch(TelefonoInvalidoException e){
+            } catch (TelefonoInvalidoException e) {
                 System.out.println(e.getMessage());
             }
         }
     }
 
-    public static double leerMonto(String mensaje){
-        while(true){
+    public static double leerMonto(String mensaje) {
+        while (true) {
             System.out.println(mensaje);
             String texto = sc.nextLine();
 
-            try{
+            try {
                 double monto = Double.parseDouble(texto);
                 Validacion.validarMonto(monto);
                 return monto;
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println("Debe ingresar un numero valido.");
-            }catch (MontoInvalidoException e){
+            } catch (MontoInvalidoException e) {
                 System.out.println(e.getMessage());
             }
         }
     }
 
-    public static String leerLetras(String mensaje){
-        while(true){
+    public static String leerLetras(String mensaje) {
+        while (true) {
             System.out.println(mensaje);
             String texto = sc.nextLine();
 
@@ -158,21 +157,21 @@ public final class Teclado {
                 Validacion.validarNoVacio(texto);
                 Validacion.validarSoloLetras(texto);
                 return texto;
-            }catch (CampoVacioException | TextoInvalidoException e){
+            } catch (CampoVacioException | TextoInvalidoException e) {
                 System.out.println(e.getMessage());
             }
         }
     }
 
-    public static boolean leerSiNo(String mensaje){
-        while(true){
+    public static boolean leerSiNo(String mensaje) {
+        while (true) {
             System.out.println(mensaje);
             String respuesta = sc.nextLine();
 
             try {
                 Validacion.validarSiNo(respuesta);
                 return respuesta.equalsIgnoreCase("Si") || respuesta.equalsIgnoreCase("No");
-            }catch (TextoInvalidoException e){
+            } catch (TextoInvalidoException e) {
                 System.out.println(e.getMessage());
             }
         }

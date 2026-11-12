@@ -1,5 +1,6 @@
 package models;
 
+import ConexionBD.GestorHabitacionesBD;
 import Excepciones.ExcepcionesBD.*;
 import Excepciones.ExcepcionesDatos.ElementoDuplicadoException;
 import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
@@ -30,7 +31,7 @@ public class Hotel {
     private GestorHabitaciones habitaciones;
 
 
-    public Hotel(String nombre){
+    public Hotel(String nombre) throws PersistenciaException {
         this.nombre = nombre;
         this.usuarioActual = null;
         this.pasajeros = new GestorPasajeros();
@@ -38,6 +39,7 @@ public class Hotel {
         this.reservas = new GestorReservas();
         this.usuarios = new GestorUsuarios();
         this.habitaciones = new GestorHabitaciones();
+        cargarHabitaciones();
         cargarCredencialesAdmin();
     }
 
@@ -62,8 +64,7 @@ public class Hotel {
 
                 usuarios.registrarUsuario(admin);
             }
-
-        } catch (BDPersistenciaException e) {
+        } catch (PersistenciaException e) {
             throw new RuntimeException(e);
         } catch (ElementoDuplicadoException e) {
             throw new RuntimeException(e);
@@ -88,7 +89,7 @@ public class Hotel {
         }
     }
 
-    public void crearUsuario(Usuario usuario) throws BDAccesoDenegadoException, ElementoDuplicadoException, BDPersistenciaException {
+    public void crearUsuario(Usuario usuario) throws AccesoDenegadoException, ElementoDuplicadoException, PersistenciaException {
         verificarPermiso(Permiso.GESTIONAR_USUARIOS);
 
         try {
@@ -102,22 +103,22 @@ public class Hotel {
         return usuarios.siguienteId();
     }
 
-    public void darDeBajaUsuario(int id) throws BDAccesoDenegadoException, ElementoNoEncontradoException, BDPersistenciaException {
+    public void darDeBajaUsuario(int id) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
         verificarPermiso(Permiso.GESTIONAR_USUARIOS);
         usuarios.darDeBajaUsuario(id);
     }
 
-    public void asignarPermisos(int id, Permiso permiso) throws BDAccesoDenegadoException, ElementoNoEncontradoException, BDPersistenciaException {
+    public void asignarPermisos(int id, Permiso permiso) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
         verificarPermiso(Permiso.ASIGNAR_PERMISOS);
         usuarios.asignarPermisos(id,permiso);
     }
 
-    public void quitarPermiso(int id, Permiso permiso) throws BDAccesoDenegadoException, ElementoNoEncontradoException, BDPersistenciaException {
+    public void quitarPermiso(int id, Permiso permiso) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
         verificarPermiso(Permiso.ASIGNAR_PERMISOS);
         usuarios.quitarPermisos(id,permiso);
     }
 
-    public void cambiarContrasenia(String actual, String nueva) throws BDAccesoDenegadoException, BDContraseniaInvalidaException, ElementoNoEncontradoException, BDPersistenciaException {
+    public void cambiarContrasenia(String actual, String nueva) throws AccesoDenegadoException, ContraseniaInvalidaException, ElementoNoEncontradoException, PersistenciaException {
         if(usuarioActual == null || !usuarioActual.validarContrasenia(actual)){
             throw new AccesoDenegadoException();
         }
@@ -126,6 +127,53 @@ public class Hotel {
     }
 
     //Gestor Habitaciones
+    private void cargarHabitaciones() throws PersistenciaException {
+        this.habitaciones = new GestorHabitaciones(GestorHabitacionesBD.listar());
+    }
+
+    public void agregarHabitacion(Habitacion h) throws AccesoDenegadoException, ElementoDuplicadoException, PersistenciaException {
+        verificarPermiso(Permiso.GESTIONAR_HABITACIONES);
+        habitaciones.agregarElemento(h);
+        GestorHabitacionesBD.insertHabitacion(h);
+    }
+
+    public void modificarPrecio(int numero, double precio) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
+        verificarPermiso(Permiso.GESTIONAR_HABITACIONES);
+        Habitacion habitacion = habitaciones.buscarElemento(numero);
+        habitacion.modificarPrecio(precio);
+        GestorHabitacionesBD.modificarHabitacion(habitacion);
+    }
+
+    public void ocuparHabitacion(int numero) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
+        verificarPermiso(Permiso.CAMBIAR_ESTADO_HABITACION);
+        Habitacion habitacion = habitaciones.buscarElemento(numero);
+        habitacion.ocupar();
+        GestorHabitacionesBD.modificarHabitacion(habitacion);
+    }
+
+    public void liberarHabitacion (int numero) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
+        verificarPermiso(Permiso.CAMBIAR_ESTADO_HABITACION);
+        Habitacion habitacion = habitaciones.buscarElemento(numero);
+        habitacion.liberar();
+        GestorHabitacionesBD.modificarHabitacion(habitacion);
+    }
+
+    public void marcarHabitacionNoDisponible (int numero, String motivo, EEstadoHabitacion estado) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
+        verificarPermiso(Permiso.CAMBIAR_ESTADO_HABITACION);
+        Habitacion habitacion = habitaciones.buscarElemento(numero);
+        habitacion.marcarNoDisponible(motivo,estado);
+        GestorHabitacionesBD.modificarHabitacion(habitacion);
+    }
+
+    public List<Habitacion> listarHabitacionesNoDisponibles() throws AccesoDenegadoException {
+        verificarPermiso(Permiso.VER_HABITACIONES);
+        return habitaciones.listarNoDisponibles();
+    }
+
+    public List<Habitacion> listarHabitaciones() throws AccesoDenegadoException {
+        verificarPermiso(Permiso.VER_HABITACIONES);
+        return habitaciones.obtenerElementos();
+    }
 
     public void hacerCheckIn(int idReserva)
             throws ElementoNoEncontradoException,
@@ -223,30 +271,12 @@ public class Hotel {
         return habitaciones.listarDisponiblesParaHuesped(cantidad);
     }
 
-    public void ocuparHabitacion(int numero) throws AccesoDenegadoException, ElementoNoEncontradoException {
-        verificarPermiso(Permiso.CAMBIAR_ESTADO_HABITACION);
-        Habitacion habitacion = habitaciones.buscarElemento(numero);
-        habitacion.ocupar();
-    }
-
-    public void liberarHabitacion(int numero) throws AccesoDenegadoException, ElementoNoEncontradoException {
-        verificarPermiso(Permiso.CAMBIAR_ESTADO_HABITACION);
-        Habitacion habitacion = habitaciones.buscarElemento(numero);
-        habitacion.liberar();
-    }
-
-    public void marcarHabitacionNoDisponible(int numero, String motivo, EEstadoHabitacion estado) throws AccesoDenegadoException, ElementoNoEncontradoException {
-        verificarPermiso(Permiso.CAMBIAR_ESTADO_HABITACION);
-        Habitacion habitacion = habitaciones.buscarElemento(numero);
-        habitacion.marcarNoDisponible(motivo, estado);
-    }
-
     public Habitacion buscarHabitacion(int numero) throws AccesoDenegadoException, ElementoNoEncontradoException {
         verificarPermiso(Permiso.VER_HABITACIONES);
         return habitaciones.buscarElemento(numero);
     }
 
-    public List<Usuario> listarUsuarios() throws BDAccesoDenegadoException {
+    public List<Usuario> listarUsuarios() throws AccesoDenegadoException {
         verificarPermiso(Permiso.GESTIONAR_USUARIOS);
         return usuarios.obtenerElementos();
     }
