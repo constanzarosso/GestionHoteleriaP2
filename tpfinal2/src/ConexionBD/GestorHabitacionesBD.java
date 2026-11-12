@@ -113,7 +113,7 @@ public final class GestorHabitacionesBD {
             ps.setString(7, h.getMotivoNoDisponible());
             ps.execute();
         } catch (SQLIntegrityConstraintViolationException e) {
-            throw new BDRegistroDuplicadoException("Habitacion " + h.getNumero());
+            throw new RegistroDuplicadoException("Habitacion " + h.getNumero());
         } catch (SQLException e) {
             throw new PersistenciaException("Error al insertar una habitacion: " + e.getMessage());
         } finally {
@@ -137,7 +137,7 @@ public final class GestorHabitacionesBD {
             ps.setBoolean(2, d.isCamasSeparadas());
             ps.execute();
         } catch (SQLIntegrityConstraintViolationException e) {
-            throw new BDRegistroDuplicadoException("Habitacion_doble " + d.getNumero());
+            throw new RegistroDuplicadoException("Habitacion_doble " + d.getNumero());
         } catch (SQLException e) {
             throw new PersistenciaException("Error al insertar una habitacion_doble: " + e.getMessage());
         } finally {
@@ -161,7 +161,7 @@ public final class GestorHabitacionesBD {
             ps.setBoolean(2, s.isTieneJacuzzi());
             ps.execute();
         } catch (SQLIntegrityConstraintViolationException e) {
-            throw new BDRegistroDuplicadoException("Habitacion_Suite " + s.getNumero());
+            throw new RegistroDuplicadoException("Habitacion_Suite " + s.getNumero());
         } catch (SQLException e) {
             throw new PersistenciaException("Error al insertar una habitacion_suite: " + e.getMessage());
         } finally {

@@ -74,7 +74,8 @@ public final class GestorUsuarioBD {
         crearUsuariosPermisos();
     }
 
-    public void guardar(Usuario usuario) throws PersistenciaException { // Uso de transacciones para asegurar las operaciones
+    public void guardar(Usuario usuario) throws PersistenciaException, PersistenciaException { // Uso de transacciones para asegurar las operaciones
+
 
         String sql = "INSERT INTO usuarios "
                 + "(id, nombre_usuario, contrasenia, tipo, activo) "
@@ -265,19 +266,4 @@ public final class GestorUsuarioBD {
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
