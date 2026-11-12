@@ -1,11 +1,11 @@
 package gestoras;
 
 import ConexionBD.GestorUsuarioBD;
-import Excepciones.ExcepcionesBD.CredencialesInvalidasException;
-import Excepciones.ExcepcionesBD.PersistenciaException;
+import Excepciones.ExcepcionesBD.BDCredencialesInvalidasException;
+import Excepciones.ExcepcionesBD.BDPersistenciaException;
 import Excepciones.ExcepcionesDatos.ElementoDuplicadoException;
 import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
-import Excepciones.ExcepcionesBD.UsuarioInactivoException;
+import Excepciones.ExcepcionesBD.BDUsuarioInactivoException;
 import enums.Permiso;
 import models.Usuario;
 
@@ -29,63 +29,63 @@ public class GestorUsuarios extends GestorGenerico<Usuario> {
         throw new ElementoNoEncontradoException();
     }
 
-    public Usuario login(String nombreUsuario, String contrasenia)throws CredencialesInvalidasException, UsuarioInactivoException {
+    public Usuario login(String nombreUsuario, String contrasenia)throws BDCredencialesInvalidasException, BDUsuarioInactivoException {
 
         Usuario usuario;
         try{
             usuario = buscarPorNombre(nombreUsuario);
 
         }catch(ElementoNoEncontradoException e){
-           throw new CredencialesInvalidasException();
+           throw new BDCredencialesInvalidasException();
         }
 
         if (!usuario.isActivo()) {
-            throw new UsuarioInactivoException();
+            throw new BDUsuarioInactivoException();
         }
 
         if(!usuario.validarContrasenia(contrasenia)){
-            throw new CredencialesInvalidasException();
+            throw new BDCredencialesInvalidasException();
         }
         return usuario;
     }
 
-    public void darDeBajaUsuario(int id) throws ElementoNoEncontradoException, PersistenciaException {
+    public void darDeBajaUsuario(int id) throws ElementoNoEncontradoException, BDPersistenciaException {
         Usuario usuario = buscarElemento(id);
         usuario.darDeBaja();
         gestorUsuarioBD.actualizar(usuario);
     }
 
-    public void asignarPermisos(int id, Permiso permiso) throws ElementoNoEncontradoException, PersistenciaException {
+    public void asignarPermisos(int id, Permiso permiso) throws ElementoNoEncontradoException, BDPersistenciaException {
         Usuario usuario = buscarElemento(id);
         usuario.agregarPermiso(permiso);
         gestorUsuarioBD.actualizar(usuario);
     }
 
-    public void quitarPermisos(int id, Permiso permiso) throws ElementoNoEncontradoException, PersistenciaException {
+    public void quitarPermisos(int id, Permiso permiso) throws ElementoNoEncontradoException, BDPersistenciaException {
         Usuario usuario = buscarElemento(id);
         usuario.quitarPermiso(permiso);
         gestorUsuarioBD.actualizar(usuario);
     }
 
-    public void cambiarContrasenia(int id, String nuevaContrasenia) throws ElementoNoEncontradoException, PersistenciaException {
+    public void cambiarContrasenia(int id, String nuevaContrasenia) throws ElementoNoEncontradoException, BDPersistenciaException {
         Usuario usuario = buscarElemento(id);
         usuario.cambiarContrasenia(nuevaContrasenia);
         gestorUsuarioBD.actualizar(usuario);
     }
 
-    public void cargarUsuarios() throws PersistenciaException, ElementoDuplicadoException {
+    public void cargarUsuarios() throws BDPersistenciaException, ElementoDuplicadoException {
         List<Usuario> usuarios = gestorUsuarioBD.listar();
 
         for(Usuario usuario : usuarios){
             try {
                 agregarElemento(usuario);
             }catch (ElementoDuplicadoException e){
-                throw new PersistenciaException(e.getMessage() );
+                throw new BDPersistenciaException(e.getMessage() );
             }
         }
     }
 
-    public void registrarUsuario(Usuario usuario) throws ElementoDuplicadoException, PersistenciaException {
+    public void registrarUsuario(Usuario usuario) throws ElementoDuplicadoException, BDPersistenciaException {
         agregarElemento(usuario);
         gestorUsuarioBD.guardar(usuario);
     }

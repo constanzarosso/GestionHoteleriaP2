@@ -1,10 +1,10 @@
 package Excepciones.ExcepcionesBD;
 
-public class PersistenciaException extends Exception {
-    public PersistenciaException() {
+public class BDPersistenciaException extends Exception {
+    public BDPersistenciaException() {
         super("Error: problema al intentar persistencia de datos.");
     }
-    public PersistenciaException(String mensaje) {
+    public BDPersistenciaException(String mensaje) {
         super("Error con la base de datos: " + mensaje);
     }
 }

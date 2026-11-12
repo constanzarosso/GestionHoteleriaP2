@@ -1,9 +1,7 @@
-import ConexionBD.*;
 import ConexionBD.GestorBD.InicializadorBD;
 import Excepciones.ExcepcionesBD.*;
 import Validaciones.Teclado;
 import models.Hotel;
-import models.*;
 
 
 public class Main {
@@ -122,9 +120,9 @@ public class Main {
                     hotel.cerrarSesion();
 
 
-                } catch (CredencialesInvalidasException | ContraseniaInvalidaException |
-                         NombreUsuarioInvalidoException |
-                         UsuarioInactivoException e) {
+                } catch (BDCredencialesInvalidasException | BDContraseniaInvalidaException |
+                         BDNombreUsuarioInvalidoException |
+                         BDUsuarioInactivoException e) {
                     contador++;
                     System.out.println(e.getMessage());
                 }
@@ -134,7 +132,7 @@ public class Main {
                     "\n========================================");
 
 
-        } catch (PersistenciaException e) {
+        } catch (BDPersistenciaException e) {
             System.out.println(e.getMessage());
         }
     }
