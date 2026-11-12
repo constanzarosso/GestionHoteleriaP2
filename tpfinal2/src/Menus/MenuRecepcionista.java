@@ -14,7 +14,53 @@ public final class MenuRecepcionista {
     private MenuRecepcionista() {
     }
 
-    public static void verHabitaciones(Hotel hotel) {
+    public static boolean mostrar(Hotel hotel) {
+        System.out.println("Bienvenido recepcionista");
+
+        System.out.println("\n====== MENU RECEPCIONISTA =====");
+        System.out.println("1. Ver Habitaciones");
+        System.out.println("2. Gestionar Reservas");
+        System.out.println("3. Registrar Pasajeros");
+        System.out.println("4. Check-in / Check-out");
+        System.out.println("5. Registrar Consumos");
+        System.out.println("6. Cerrar Sesion");
+
+        int opcionRecepcion = Teclado.leerEntero("Opcion: ");
+
+        switch (opcionRecepcion) {
+
+            case 1:
+                verHabitaciones(hotel);
+                break;
+
+            case 2:
+                gestionarReservas(hotel);
+                break;
+
+            case 3:
+                registrarPasajero(hotel);
+                break;
+
+            case 4:
+                checkInCheckOut(hotel);
+                break;
+
+            case 5:
+                registrarConsumo(hotel);
+                break;
+
+            case 6:
+                System.out.println("Cerrando sesion...");
+                return true;
+
+            default:
+                System.out.println("Opcion incorrecta.");
+                break;
+        }
+        return false;
+    }
+
+    private static void verHabitaciones(Hotel hotel) {
         Scanner scanner = new Scanner(System.in);
 
         MenuHabitaciones.consultarHabitaciones(hotel);
@@ -44,7 +90,7 @@ public final class MenuRecepcionista {
         }
     }
 
-    public static void gestionarReservas(Hotel hotel) {
+    private static void gestionarReservas(Hotel hotel) {
         Scanner scanner = new Scanner(System.in);
 
         try {
@@ -103,7 +149,7 @@ public final class MenuRecepcionista {
         }
     }
 
-    public static void registrarPasajero(Hotel hotel) {
+    private static void registrarPasajero(Hotel hotel) {
         Scanner scanner = new Scanner(System.in);
 
         try {
@@ -147,7 +193,7 @@ public final class MenuRecepcionista {
         }
     }
 
-    public static void checkInCheckOut(Hotel hotel) {
+    private static void checkInCheckOut(Hotel hotel) {
         Scanner scanner = new Scanner(System.in);
 
         try {
@@ -221,7 +267,7 @@ public final class MenuRecepcionista {
         }
     }
 
-    public static void registrarConsumo(Hotel hotel) {
+    private static void registrarConsumo(Hotel hotel) {
         Scanner scanner = new Scanner(System.in);
 
         try {
