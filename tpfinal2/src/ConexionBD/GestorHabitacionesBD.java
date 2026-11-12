@@ -17,7 +17,7 @@ public final class GestorHabitacionesBD {
     private GestorHabitacionesBD() {
     }
 
-    private static void crearHabitaciones() throws BDPersistenciaException {
+    private static void crearHabitaciones() throws PersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -32,19 +32,19 @@ public final class GestorHabitacionesBD {
                     + "PRIMARY KEY (numero))");
             ps.execute();
         } catch (SQLException e) {
-            throw new BDCrearTablaException("Habitaciones: " + e.getMessage());
+            throw new CrearTablaException("Habitaciones: " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new BDPersistenciaException("Error al cerrar" + e.getMessage());
+                throw new PersistenciaException("Error al cerrar" + e.getMessage());
             }
         }
     }
 
-    private static void crearHabitacionesDobles() throws BDPersistenciaException {
+    private static void crearHabitacionesDobles() throws PersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -56,19 +56,19 @@ public final class GestorHabitacionesBD {
             ps.execute();
 
         } catch (SQLException e) {
-            throw new BDCrearTablaException("Habitaciones_dobles: " + e.getMessage());
+            throw new CrearTablaException("Habitaciones_dobles: " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new BDPersistenciaException("Error al cerrar: " + e.getMessage());
+                throw new PersistenciaException("Error al cerrar: " + e.getMessage());
             }
         }
     }
 
-    private static void crearHabitacionesSuite() throws BDPersistenciaException {
+    private static void crearHabitacionesSuite() throws PersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -79,25 +79,25 @@ public final class GestorHabitacionesBD {
                     + "FOREIGN KEY (numero) REFERENCES habitaciones(numero))");
             ps.execute();
         } catch (SQLException e) {
-            throw new BDCrearTablaException("Habitaciones_suite: " + e.getMessage());
+            throw new CrearTablaException("Habitaciones_suite: " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new BDPersistenciaException("Error al cerrar: " + e.getMessage());
+                throw new PersistenciaException("Error al cerrar: " + e.getMessage());
             }
         }
     }
 
-    public static void createTable() throws BDPersistenciaException {
+    public static void createTable() throws PersistenciaException {
         crearHabitaciones();
         crearHabitacionesDobles();
         crearHabitacionesSuite();
     }
 
-    private static void insertarHabitacion(Habitacion h) throws BDPersistenciaException {
+    private static void insertarHabitacion(Habitacion h) throws PersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -115,19 +115,19 @@ public final class GestorHabitacionesBD {
         } catch (SQLIntegrityConstraintViolationException e) {
             throw new BDRegistroDuplicadoException("Habitacion " + h.getNumero());
         } catch (SQLException e) {
-            throw new BDPersistenciaException("Error al insertar una habitacion: " + e.getMessage());
+            throw new PersistenciaException("Error al insertar una habitacion: " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new BDPersistenciaException("Error al cerrar: " + e.getMessage());
+                throw new PersistenciaException("Error al cerrar: " + e.getMessage());
             }
         }
     }
 
-    private static void insertarHabitacionDoble(HabitacionDoble d) throws BDPersistenciaException {
+    private static void insertarHabitacionDoble(HabitacionDoble d) throws PersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -139,19 +139,19 @@ public final class GestorHabitacionesBD {
         } catch (SQLIntegrityConstraintViolationException e) {
             throw new BDRegistroDuplicadoException("Habitacion_doble " + d.getNumero());
         } catch (SQLException e) {
-            throw new BDPersistenciaException("Error al insertar una habitacion_doble: " + e.getMessage());
+            throw new PersistenciaException("Error al insertar una habitacion_doble: " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new BDPersistenciaException("Error al cerrar: " + e.getMessage());
+                throw new PersistenciaException("Error al cerrar: " + e.getMessage());
             }
         }
     }
 
-    private static void insertarHabitacionSuite(HabitacionSuite s) throws BDPersistenciaException {
+    private static void insertarHabitacionSuite(HabitacionSuite s) throws PersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -163,19 +163,19 @@ public final class GestorHabitacionesBD {
         } catch (SQLIntegrityConstraintViolationException e) {
             throw new BDRegistroDuplicadoException("Habitacion_Suite " + s.getNumero());
         } catch (SQLException e) {
-            throw new BDPersistenciaException("Error al insertar una habitacion_suite: " + e.getMessage());
+            throw new PersistenciaException("Error al insertar una habitacion_suite: " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new BDPersistenciaException("Error al cerrar: " + e.getMessage());
+                throw new PersistenciaException("Error al cerrar: " + e.getMessage());
             }
         }
     }
 
-    public static void insertHabitacion(Habitacion h) throws BDPersistenciaException {
+    public static void insertHabitacion(Habitacion h) throws PersistenciaException {
         insertarHabitacion(h);
         if (h.getTipoHabitacion() == ETipoHabitacion.DOBLE) {
             insertarHabitacionDoble((HabitacionDoble) h);
@@ -184,7 +184,7 @@ public final class GestorHabitacionesBD {
         }
     }
 
-    public static List<Habitacion> listar() throws BDPersistenciaException {
+    public static List<Habitacion> listar() throws PersistenciaException {
         List<Habitacion> habitaciones = new ArrayList<>();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -219,7 +219,7 @@ public final class GestorHabitacionesBD {
                 habitaciones.add(h);
             }
         } catch (SQLException e) {
-            throw new BDConsultaException(e.getMessage());
+            throw new ConsultaException(e.getMessage());
         } finally {
             try {
                 if (rs != null) {
@@ -229,13 +229,13 @@ public final class GestorHabitacionesBD {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new BDPersistenciaException("Error al cerrar: " + e.getMessage());
+                throw new PersistenciaException("Error al cerrar: " + e.getMessage());
             }
         }
         return habitaciones;
     }
 
-    public static void modificarHabitacion(Habitacion h) throws BDPersistenciaException {
+    public static void modificarHabitacion(Habitacion h) throws PersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -249,17 +249,17 @@ public final class GestorHabitacionesBD {
             ps.setInt(5, h.getNumero());
             int filasModificadas = ps.executeUpdate();
             if (filasModificadas == 0) {
-                throw new BDRegistroNoEncontradoException("Habitacion " + h.getNumero());
+                throw new RegistroNoEncontradoException("Habitacion " + h.getNumero());
             }
         } catch (SQLException e) {
-            throw new BDPersistenciaException("Error al modificar tabla habitacion: " + e.getMessage());
+            throw new PersistenciaException("Error al modificar tabla habitacion: " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new BDPersistenciaException("Error al cerrar: " + e.getMessage());
+                throw new PersistenciaException("Error al cerrar: " + e.getMessage());
             }
         }
     }

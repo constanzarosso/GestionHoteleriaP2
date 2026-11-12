@@ -7,50 +7,11 @@ import Validaciones.Teclado;
 import enums.Permiso;
 import models.Administrador;
 import models.Hotel;
-import models.Recepcionista;
-import models.Usuario;
-
-import java.util.List;
+import models.*;
 
 
 public class Main {
-    public static void main(String[] args){
-        //SOLO PROBE LA CONEXION//
-        /*try{
-            Conexion.getConnection();
-            System.out.println("Conectado");
-            Conexion.closeConnection();
-        }catch (PersistenciaException e){
-            System.out.println(e.getMessage());
-        }
-         */
-        //PROBE SI FUNCIONABAN LAS TABLAS//
-      /*
-        try {
-            GestorHabitacionesBD.createTable();
-            GestorPasajerosBD.createTable();
-            GestorUsuarioBD.createTable();
-            GestorReservasBD.createTable();
-            GestorOcupacionesBD.createTable();
-            GestorBackupBD.createTable();
-            System.out.println("Tablas creadas");
-        } catch (BDPersistenciaException e) {
-            System.out.println(e.getMessage());
-        }
-*/
-        //PROBE INSERTAR Y LISTAR HABITACIONES//
-
-        /*try {
-            GestorHabitacionesBD.insertHabitacion(new HabitacionSimple(101, 1, 1, 50000));
-            GestorHabitacionesBD.insertHabitacion(new HabitacionDoble(205, 2, 2, 50000, true));
-            GestorHabitacionesBD.insertHabitacion(new HabitacionSuite(401, 4, 2, 50000, true));
-
-            for (Habitacion h : GestorHabitacionesBD.listar()) {
-                System.out.println(h);
-            }
-        } catch (PersistenciaException e) {
-            System.out.println(e.getMessage());
-        }*/
+    public static void main(String[] args) {
 
         //___________________________________________________ Inicio _____________________________________________//
 
