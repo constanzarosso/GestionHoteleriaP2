@@ -86,9 +86,7 @@ public class Ocupacion implements Identificable, Facturable {
     }
 
 
-    public void agregarConsumo(Consumo c) {
-        consumos.add(c);
-    }
+
 
 
     public boolean estaActiva() {
@@ -128,6 +126,11 @@ public class Ocupacion implements Identificable, Facturable {
         }
 
         return totalEstadia + totalConsumos;
+    }
+    public void agregarConsumo(Consumo consumo) {
+        if (consumo != null) {
+            consumos.add(consumo);
+        }
     }
 
     @Override

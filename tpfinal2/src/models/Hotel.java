@@ -6,6 +6,7 @@ import Excepciones.ExcepcionesDatos.ElementoDuplicadoException;
 import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
 import Excepciones.ExcepcionesHotel.CapacidadExcedidaException;
 import Excepciones.ExcepcionesHotel.HabitacionNoDisponibleException;
+import Excepciones.ExcepcionesHotel.PeriodoInvalidoException;
 import Excepciones.ExcepcionesHotel.ReservaInvalidaException;
 import Validaciones.Validacion;
 
@@ -240,6 +241,49 @@ public class Hotel {
 
 
         }
+    public void hacerCheckInSinReserva(int dni, int numeroHabitacion, LocalDate fechaHasta, int cantidadPersonas)
+            throws AccesoDenegadoException,
+            ElementoNoEncontradoException,
+            HabitacionNoDisponibleException,
+            CapacidadExcedidaException,
+            ElementoDuplicadoException,
+            ReservaInvalidaException {
+
+        verificarPermiso(Permiso.HACER_CHECKIN_CHECKOUT);
+
+        Pasajero pasajero = pasajeros.buscarElemento(dni);
+        Habitacion habitacion = habitaciones.buscarElemento(numeroHabitacion);
+
+        if (!habitacion.estaDisponible()) {
+            throw new HabitacionNoDisponibleException();
+        }
+
+        if (cantidadPersonas > habitacion.getCapacidad()) {
+            throw new CapacidadExcedidaException();
+        }
+
+        Reserva reserva = new Reserva(
+                reservas.siguienteId(),
+                pasajero,
+                LocalDate.now(),
+                habitacion,
+                fechaHasta,
+                cantidadPersonas,
+                EstadoReserva.EN_CURSO
+        );
+
+        reservas.agregarElemento(reserva);
+
+        habitacion.ocupar();
+
+        Ocupacion ocupacion = new Ocupacion(
+                ocupaciones.siguienteId(),
+                reserva,
+                LocalDate.now()
+        );
+
+        ocupaciones.agregarElemento(ocupacion);
+    }
 
 
     public List<Habitacion> listarHabitacionesDisponibles() throws AccesoDenegadoException {
@@ -361,9 +405,8 @@ public class Hotel {
 
         Reserva reserva = new Reserva(
                 reservas.siguienteId(),
-                pasajero,
+                pasajero,desde,
                 habitacion,
-                desde,
                 hasta,
                 cantidadPersonas,
                 EstadoReserva.PENDIENTE
@@ -420,6 +463,22 @@ public class Hotel {
         verificarPermiso(Permiso.HACER_CHECKIN_CHECKOUT);
 
         return ocupaciones.historial(dni);
+    }
+    //====================== consumo ====================
+    public void registrarConsumo(int numeroHabitacion, Consumo consumo)
+            throws AccesoDenegadoException,
+            ElementoNoEncontradoException,
+            ReservaInvalidaException {
+
+        verificarPermiso(Permiso.REGISTRAR_CONSUMO);
+
+        Ocupacion ocupacion = ocupaciones.ocupacionActiva(numeroHabitacion);
+
+        if (ocupacion == null || consumo == null) {
+            throw new ReservaInvalidaException();
+        }
+
+        ocupacion.agregarConsumo(consumo);
     }
 }
 

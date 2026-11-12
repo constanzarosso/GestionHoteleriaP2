@@ -4,6 +4,8 @@ import interfaces.Facturable;
 import interfaces.Identificable;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Consumo implements Facturable, Identificable {
@@ -21,6 +23,7 @@ public class Consumo implements Facturable, Identificable {
         this.descripcion = descripcion;
         this.monto = monto;
         this.fecha = fecha;
+
     }
 
     @Override
@@ -55,6 +58,7 @@ public class Consumo implements Facturable, Identificable {
     public double calcularTotal() {
         return monto;
     }
+
 
     @Override
     public String toString() {
