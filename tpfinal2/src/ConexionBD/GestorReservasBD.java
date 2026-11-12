@@ -1,7 +1,7 @@
 package ConexionBD;
 
 
-import Excepciones.ExcepcionesBD.BDPersistenciaException;
+import Excepciones.ExcepcionesBD.PersistenciaException;
 import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
 import enums.EstadoReserva;
 import gestoras.GestorHabitaciones;
@@ -19,7 +19,7 @@ public final class GestorReservasBD {
     private GestorReservasBD() {
     }
 
-    private static void crearReservas() throws BDPersistenciaException {
+    private static void crearReservas() throws PersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -37,25 +37,25 @@ public final class GestorReservasBD {
             ps.execute();
 
         } catch (SQLException e) {
-            throw new BDPersistenciaException("Error al crear la tabla reservas: " + e.getMessage());
+            throw new PersistenciaException("Error al crear la tabla reservas: " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new BDPersistenciaException("Error al cerrar: " + e.getMessage());
+                throw new PersistenciaException("Error al cerrar: " + e.getMessage());
             }
         }
     }
 
-    public static void createTable() throws BDPersistenciaException {
+    public static void createTable() throws PersistenciaException {
         crearReservas();
     }
 
     public List<Reserva> listar(GestorHabitaciones gestorHabitaciones,
                                 GestorPasajeros gestorPasajeros)
-            throws BDPersistenciaException, ElementoNoEncontradoException {
+            throws PersistenciaException, ElementoNoEncontradoException {
 
         List<Reserva> reservas = new ArrayList<>();
 
@@ -105,7 +105,7 @@ public final class GestorReservasBD {
             }
 
         } catch (SQLException e) {
-            throw new BDPersistenciaException(
+            throw new PersistenciaException(
                     "Error al listar reservas: " + e.getMessage());
         }
 
@@ -113,7 +113,7 @@ public final class GestorReservasBD {
     }
 
     public void insertar(Reserva reserva)
-            throws BDPersistenciaException {
+            throws PersistenciaException {
 
         String sql = "INSERT INTO reservas "
                 + "(id, dni_pasajero, numero_habitacion, fecha_desde, "
@@ -134,13 +134,13 @@ public final class GestorReservasBD {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new BDPersistenciaException(
+            throw new PersistenciaException(
                     "Error al insertar reserva: " + e.getMessage());
         }
     }
 
     public void modificar(Reserva reserva)
-            throws BDPersistenciaException {
+            throws PersistenciaException {
 
         String sql = "UPDATE reservas SET "
                 + "dni_pasajero = ?, numero_habitacion = ?, "
@@ -162,7 +162,7 @@ public final class GestorReservasBD {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new BDPersistenciaException(
+            throw new PersistenciaException(
                     "Error al modificar reserva: " + e.getMessage());
         }
     }

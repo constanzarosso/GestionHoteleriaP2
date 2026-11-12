@@ -1,7 +1,7 @@
 package ConexionBD;
 
 
-import Excepciones.ExcepcionesBD.BDPersistenciaException;
+import Excepciones.ExcepcionesBD.PersistenciaException;
 import models.Pasajero;
 
 import java.sql.Connection;
@@ -15,7 +15,7 @@ public final class GestorPasajerosBD {
     private GestorPasajerosBD() {
     }
 
-    private static void crearPasajeros() throws BDPersistenciaException {
+    private static void crearPasajeros() throws PersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -30,22 +30,22 @@ public final class GestorPasajerosBD {
                     + "PRIMARY KEY (dni))");
             ps.execute();
         } catch (SQLException e) {
-            throw new BDPersistenciaException("Error al crear la tabla pasajeros: " + e.getMessage());
+            throw new PersistenciaException("Error al crear la tabla pasajeros: " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new BDPersistenciaException("Error al cerrar: " + e.getMessage());
+                throw new PersistenciaException("Error al cerrar: " + e.getMessage());
             }
         }
     }
 
-    public static void createTable() throws BDPersistenciaException {
+    public static void createTable() throws PersistenciaException {
         crearPasajeros();
     }
-    public List<Pasajero> listar() throws BDPersistenciaException {
+    public List<Pasajero> listar() throws PersistenciaException {
 
         List<Pasajero> pasajeros = new ArrayList<>();
 
@@ -71,7 +71,7 @@ public final class GestorPasajerosBD {
             }
 
         } catch (SQLException e) {
-            throw new BDPersistenciaException(
+            throw new PersistenciaException(
                     "Error al listar pasajeros: " + e.getMessage());
         }
 
@@ -79,7 +79,7 @@ public final class GestorPasajerosBD {
     }
 
     public void insertar(Pasajero pasajero)
-            throws BDPersistenciaException {
+            throws PersistenciaException {
 
         String sql = "INSERT INTO pasajeros "
                 + "(dni, nombre, apellido, origen, domicilio_origen, telefono, email) "
@@ -99,13 +99,13 @@ public final class GestorPasajerosBD {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new BDPersistenciaException(
+            throw new PersistenciaException(
                     "Error al insertar pasajero: " + e.getMessage());
         }
     }
 
     public void modificar(Pasajero pasajero)
-            throws BDPersistenciaException {
+            throws PersistenciaException {
 
         String sql = "UPDATE pasajeros SET "
                 + "domicilio_origen = ?, telefono = ?, email = ? "
@@ -122,7 +122,7 @@ public final class GestorPasajerosBD {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new BDPersistenciaException(
+            throw new PersistenciaException(
                     "Error al modificar pasajero: " + e.getMessage());
         }
     }

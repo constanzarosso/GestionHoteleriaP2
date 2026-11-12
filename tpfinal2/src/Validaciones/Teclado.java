@@ -1,8 +1,8 @@
 package Validaciones;
 
-import Excepciones.ExcepcionesBD.BDContraseniaInvalidaException;
-import Excepciones.ExcepcionesBD.BDEmailInvalidoException;
-import Excepciones.ExcepcionesBD.BDNombreUsuarioInvalidoException;
+import Excepciones.ExcepcionesBD.ContraseniaInvalidaException;
+import Excepciones.ExcepcionesBD.EmailInvalidoException;
+import Excepciones.ExcepcionesBD.NombreUsuarioInvalidoException;
 import Excepciones.ExcepcionesDatos.*;
 import Excepciones.ExcepcionesHotel.DniInvalidoException;
 import Excepciones.ExcepcionesHotel.FechaInvalidaException;
@@ -72,13 +72,13 @@ public final class Teclado {
             try{
                 Validacion.validarEmail(email);
                 return email;
-            }catch(BDEmailInvalidoException e){
+            }catch(EmailInvalidoException e){
                 System.out.println(e.getMessage());
             }
         }
     }
 
-    public static String leerContrasenia(String mensaje) throws BDContraseniaInvalidaException {
+    public static String leerContrasenia(String mensaje) throws ContraseniaInvalidaException {
 
             System.out.print(mensaje);
             String contrasenia = sc.nextLine();
@@ -88,7 +88,7 @@ public final class Teclado {
 
     }
 
-    public static String leerNombreUsuario(String mensaje) throws BDNombreUsuarioInvalidoException {
+    public static String leerNombreUsuario(String mensaje) throws NombreUsuarioInvalidoException {
 
             System.out.print(mensaje);
             String nombreUsuario = sc.nextLine();

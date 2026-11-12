@@ -1,5 +1,9 @@
 package ConexionBD;
-import Excepciones.ExcepcionesBD.BDPersistenciaException;
+import Excepciones.ExcepcionesBD.PersistenciaException;
+import enums.Permiso;
+import models.Administrador;
+import models.Recepcionista;
+import models.Usuario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +16,7 @@ public final class GestorUsuarioBD {
     public GestorUsuarioBD() {
     }
 
-    private static void crearUsuarios() throws BDPersistenciaException {
+    private static void crearUsuarios() throws PersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -26,19 +30,19 @@ public final class GestorUsuarioBD {
                     + "UNIQUE (nombre_usuario))");
             ps.execute();
         } catch (SQLException e) {
-            throw new BDPersistenciaException("Error al crear la tabla usuarios: " + e.getMessage());
+            throw new PersistenciaException("Error al crear la tabla usuarios: " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new BDPersistenciaException("Error al cerrar: " + e.getMessage());
+                throw new PersistenciaException("Error al cerrar: " + e.getMessage());
             }
         }
     }
 
-    private static void crearUsuariosPermisos() throws BDPersistenciaException {
+    private static void crearUsuariosPermisos() throws PersistenciaException {
         PreparedStatement ps = null;
         try {
             Connection conn = Conexion.getConnection();
@@ -53,19 +57,19 @@ public final class GestorUsuarioBD {
             );
             ps.execute();
         } catch (SQLException e) {
-            throw new BDPersistenciaException("Error al crear la tabla usuarios_permisos: " + e.getMessage());
+            throw new PersistenciaException("Error al crear la tabla usuarios_permisos: " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new BDPersistenciaException("Error al cerrar: " + e.getMessage());
+                throw new PersistenciaException("Error al cerrar: " + e.getMessage());
             }
         }
     }
 
-    public static void createTable() throws BDPersistenciaException {
+    public static void createTable() throws PersistenciaException {
         crearUsuarios();
         crearUsuariosPermisos();
     }
