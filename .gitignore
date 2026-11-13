@@ -2,4 +2,4 @@
 out/
 target/
 *.class
-db.properties
+tpfinal2/db.properties
