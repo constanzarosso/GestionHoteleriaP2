@@ -45,7 +45,7 @@ public class Main {
                                 System.out.println("3. Gestionar reservas");
                                 System.out.println("4. Realizar backup");
                                 System.out.println("5. Cambiar contraseña");
-                                System.out.println("6. Cerrar sesión");
+                                System.out.println("6. Cerrar sesion");
 
 
                                 int opcionAdmin = Teclado.leerEntero("Opcion: ");
@@ -150,9 +150,10 @@ public class Main {
                                     case 6:
                                         cerrarSesion = true;
                                         contador = 0;
+                                        System.out.println("Sesion cerrada correctamente");
                                         break;
                                     default:
-                                        System.out.println("Opción incorrecta");
+                                        System.out.println("Opcion incorrecta");
                                 }
                                 break;
                             case RECEPCIONISTA:
