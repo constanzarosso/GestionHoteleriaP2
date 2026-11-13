@@ -8,6 +8,18 @@ import models.Hotel;
 import static Menus.Consola.*;
 
 public class Main {
+    private static final String RESET = "\u001B[0m";
+
+    private static final String ROSA = "\u001B[38;5;213m";
+    private static final String FUCSIA = "\u001B[38;5;201m";
+    private static final String LAVANDA = "\u001B[38;5;141m";
+    private static final String VIOLETA = "\u001B[38;5;135m";
+    private static final String TURQUESA = "\u001B[38;5;87m";
+    private static final String DORADO = "\u001B[38;5;220m";
+    private static final String BLANCO = "\u001B[38;5;255m";
+    private static final String GRIS = "\u001B[38;5;244m";
+    private static final String VERDE = "\u001B[38;5;118m";
+    private static final String ROJO = "\u001B[38;5;203m";
 
     public static void main(String[] args) {
 
@@ -27,8 +39,11 @@ public class Main {
 
                     mostrarEncabezado("HOTEL UTN | INICIO DE SESION");
 
-                    String usuario = Teclado.leerNombreUsuario("Usuario       : ");
-                    String contrasenia = Teclado.leerContrasenia("Contrasenia   : ");
+                    String usuario = Teclado.leerNombreUsuario(
+                            TURQUESA + "  Usuario       : " + RESET);
+
+                    String contrasenia = Teclado.leerContrasenia(
+                            ROSA + "  Contrasenia   : " + RESET);
 
                     hotel.iniciarSesion(usuario, contrasenia);
 
@@ -78,8 +93,8 @@ public class Main {
 
             mostrarEncabezado("ACCESO BLOQUEADO");
 
-            System.out.println("  Exceso de intentos permitidos para iniciar sesion.");
-            System.out.println("  Contacte al administrador del sistema.");
+            System.out.println(ROJO + "  Exceso de intentos permitidos para iniciar sesion." + RESET);
+            System.out.println(ROSA + "  Contacte al administrador del sistema." + RESET);
 
             mostrarSeparador();
 
@@ -88,4 +103,50 @@ public class Main {
             mostrarError("Error de persistencia: " + e.getMessage());
         }
     }
-}
+    private static void mostrarEncabezado(String titulo) {
+        System.out.println();
+
+        System.out.println(FUCSIA + "╔════════════════════════════════════════════════════════════╗" + RESET);
+
+        System.out.println(FUCSIA + "║" + RESET + "                                                            " + FUCSIA + "║" + RESET);
+
+        System.out.println(FUCSIA + "║" + LAVANDA + "  ██╗  ██╗ ██████╗ ████████╗███████╗██╗                   " + FUCSIA + "║" + RESET);
+        System.out.println(FUCSIA + "║" + LAVANDA + "  ██║  ██║██╔═══██╗╚══██╔══╝██╔════╝██║                   " + FUCSIA + "║" + RESET);
+        System.out.println(FUCSIA + "║" + LAVANDA + "  ███████║██║   ██║   ██║   █████╗  ██║                   " + FUCSIA + "║" + RESET);
+        System.out.println(FUCSIA + "║" + LAVANDA+ "  ██╔══██║██║   ██║   ██║   ██╔══╝  ██║                   " + FUCSIA + "║" + RESET);
+        System.out.println(FUCSIA + "║" + LAVANDA + "  ██║  ██║╚██████╔╝   ██║   ███████╗██║                   " + FUCSIA + "║" + RESET);
+        System.out.println(FUCSIA + "║" + LAVANDA+ "  ╚═╝  ╚═╝ ╚═════╝    ╚═╝   ╚══════╝╚═╝                   " + FUCSIA + "║" + RESET);
+
+        System.out.println(FUCSIA + "║" + LAVANDA + "                    ✧ CONCARMA HOTEL ✧                    " + FUCSIA + "║" + RESET);
+
+        System.out.println(FUCSIA + "║" + RESET + "                                                            " + FUCSIA + "║" + RESET);
+
+        System.out.println(FUCSIA + "╠════════════════════════════════════════════════════════════╣" + RESET);
+
+        System.out.printf(FUCSIA + "║" + TURQUESA + "  %-58s" + FUCSIA + "║%n" + RESET, titulo);
+
+        System.out.println(FUCSIA + "╚════════════════════════════════════════════════════════════╝" + RESET);
+
+        System.out.println();
+    }
+
+        private static void mostrarSeparador() {
+            System.out.println(LAVANDA + "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" + RESET);
+        }
+
+        private static void mostrarExito(String mensaje) {
+            System.out.println();
+            System.out.println(VERDE + "  ✧ " + mensaje + RESET);
+            System.out.println();
+        }
+
+        private static void mostrarError(String mensaje) {
+            System.out.println();
+            System.out.println(ROJO + "  ✦ " + mensaje + RESET);
+            System.out.println();
+        }
+
+        private static void mostrarInfo(String mensaje) {
+            System.out.println(TURQUESA + "  ❀ " + mensaje + RESET);
+        }
+    }
