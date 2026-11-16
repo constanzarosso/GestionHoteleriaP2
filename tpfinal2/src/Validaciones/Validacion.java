@@ -50,11 +50,13 @@ public final class Validacion {
         }
     }
 
-    public static void validarSoloLetras(String texto) throws TextoInvalidoException{
+    public static String validarSoloLetras(String texto) throws TextoInvalidoException{
 
         if(texto == null || !texto.trim().matches("[\\p{L} ]+")){ // permite solo letras
             throw new TextoInvalidoException("El texto solo puede contener letras y espacios.");
         }
+
+        return texto;
     }
 
     public static void validarDni(String dni) throws DniInvalidoException {

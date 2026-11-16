@@ -32,7 +32,7 @@ public class Main {
             while (contador < 5) {
 
                 try {
-                    boolean cerrarSesion = false;
+                    boolean cerrarSesion = true;
                     contador++;
 
                     // ==================== LOGIN ====================
@@ -51,7 +51,7 @@ public class Main {
 
                     // ==================== MENUS ====================
 
-                    while (!cerrarSesion) {
+                    do{
 
                         switch (hotel.getUsuarioActual().getTipoUsuario()) {
 
@@ -71,7 +71,7 @@ public class Main {
 
                                 break;
                         }
-                    }
+                    }while(cerrarSesion);
 
                     contador = 0;
 

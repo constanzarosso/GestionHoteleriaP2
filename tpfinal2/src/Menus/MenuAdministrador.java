@@ -25,50 +25,53 @@ public final class MenuAdministrador {
      * @return true si el usuario eligio cerrar sesion
      */
     public static boolean mostrar(Hotel hotel) throws ContraseniaInvalidaException, PersistenciaException, AccesoDenegadoException {
-        mostrarEncabezado("MENU ADMINISTRADOR");
+        int opcionAdmin=0;
 
-        System.out.println("  1. Gestionar usuarios");
-        System.out.println("  2. Gestionar habitaciones");
-        System.out.println("  3. Gestionar reservas");
-        System.out.println("  4. Realizar backup");
-        System.out.println("  5. Cambiar contrasenia");
-        System.out.println("  6. Cerrar sesion");
+        do {
+            mostrarEncabezado("MENU ADMINISTRADOR");
 
-        mostrarSeparador();
+            System.out.println("  1. Gestionar usuarios");
+            System.out.println("  2. Gestionar habitaciones");
+            System.out.println("  3. Realizar backup");
+            System.out.println("  4. Cambiar contrasenia");
+            System.out.println("  5. Cerrar sesion");
 
-        int opcionAdmin = Teclado.leerEntero("  Seleccione una opcion: ");
+            mostrarSeparador();
 
-        switch (opcionAdmin) {
+            opcionAdmin = Teclado.leerEntero("  Seleccione una opcion: ");
 
-            case 1:
-                MenuUsuarios.menu(hotel);
-                break;
 
-            case 2:
-                MenuHabitaciones.menuAdministrador(hotel);
-                break;
+            switch (opcionAdmin) {
 
-            case 3:
-                mostrarInfo("Gestionar reservas");
-                break;
+                case 1:
+                    MenuUsuarios.menu(hotel);
+                    break;
 
-            case 4:
-                gestionarBackups(hotel);
-                break;
+                case 2:
+                    MenuHabitaciones.menuAdministrador(hotel);
+                    break;
 
-            case 5:
-                cambiarContrasenia(hotel);
-                break;
+                case 3:
+                    gestionarBackups(hotel);
+                    break;
 
-            case 6:
-                mostrarExito("Sesion cerrada correctamente.");
-                return true;
+                case 4:
+                    cambiarContrasenia(hotel);
+                    break;
 
-            default:
-                mostrarError("Opcion incorrecta. Intente nuevamente.");
-                break;
-        }
-        return false;
+                case 5:
+                    opcionAdmin = 5;
+                    mostrarExito("Sesion cerrada correctamente.");
+
+                    break;
+
+                default:
+                    mostrarError("Opcion incorrecta. Intente nuevamente.");
+                    break;
+            }
+            return false;
+        }while (opcionAdmin != 5);
+
     }
 
     // ==================== BACKUP ====================

@@ -165,7 +165,7 @@ public final class MenuHabitaciones {
                 lista = hotel.listarHabitacionesDisponibles();
             } else if (opcion == 3) {
                 lista = hotel.listarHabitacionesOcupadas();
-            } else {
+            } else{
                 lista = hotel.listarHabitacionesNoDisponibles();
             }
 
