@@ -170,7 +170,10 @@ public final class Teclado {
 
             try {
                 Validacion.validarSiNo(respuesta);
-                return respuesta.equalsIgnoreCase("Si") || respuesta.equalsIgnoreCase("No");
+                if(respuesta.equalsIgnoreCase("Si"))
+                    return true;
+                if(respuesta.equalsIgnoreCase("No"))
+                    return false;
             } catch (TextoInvalidoException e) {
                 System.out.println(e.getMessage());
             }

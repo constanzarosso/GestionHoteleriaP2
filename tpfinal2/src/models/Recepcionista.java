@@ -22,11 +22,9 @@ public class Recepcionista extends Usuario {
     @Override
     public Set<Permiso> permisosIniciales() {
         return new HashSet<>(Set.of(
-                Permiso.GESTIONAR_HABITACIONES,
                 Permiso.GESTIONAR_RESERVAS,
                 Permiso.HACER_CHECKIN_CHECKOUT,
                 Permiso.VER_HABITACIONES,
-                Permiso.CAMBIAR_ESTADO_HABITACION,
                 Permiso.CARGAR_PASAJEROS,
                 Permiso.REGISTRAR_CONSUMO,
                 Permiso.SOLICITAR_RESERVAS
