@@ -112,7 +112,7 @@ public final class GestorReservasBD {
         return reservas;
     }
 
-    public void insertar(Reserva reserva)
+    public static void insertar(Reserva reserva)
             throws PersistenciaException {
 
         String sql = "INSERT INTO reservas "
@@ -139,7 +139,7 @@ public final class GestorReservasBD {
         }
     }
 
-    public void modificar(Reserva reserva)
+    public static void modificar(Reserva reserva)
             throws PersistenciaException {
 
         String sql = "UPDATE reservas SET "

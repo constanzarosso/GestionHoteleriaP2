@@ -2,6 +2,8 @@ package models;
 
 import ConexionBD.GestorBackupBD;
 import ConexionBD.GestorHabitacionesBD;
+import ConexionBD.GestorOcupacionesBD;
+import ConexionBD.GestorReservasBD;
 import Excepciones.ExcepcionesBD.*;
 import Excepciones.ExcepcionesDatos.ElementoDuplicadoException;
 import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
@@ -415,6 +417,7 @@ public class Hotel {
 
         ocuparHabitacion(numeroHabitacion);
         reservas.agregarElemento(reserva);
+        GestorReservasBD.insertar(reserva);
     }
 
     public void cancelarReserva(int idReserva)
@@ -430,6 +433,7 @@ public class Hotel {
         }
 
         reserva.cancelar();
+
     }
 
     public List<Reserva> listarReservasPendientes()
@@ -481,6 +485,7 @@ public class Hotel {
         }
 
         ocupacion.agregarConsumo(consumo);
+
     }
 
     //============== backup ===================

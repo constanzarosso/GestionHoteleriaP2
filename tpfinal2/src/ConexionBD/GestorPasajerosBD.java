@@ -45,7 +45,7 @@ public final class GestorPasajerosBD {
     public static void createTable() throws PersistenciaException {
         crearPasajeros();
     }
-    public List<Pasajero> listar() throws PersistenciaException {
+    public static List<Pasajero> listar() throws PersistenciaException {
 
         List<Pasajero> pasajeros = new ArrayList<>();
 
@@ -78,7 +78,7 @@ public final class GestorPasajerosBD {
         return pasajeros;
     }
 
-    public void insertar(Pasajero pasajero)
+    public static void insertar(Pasajero pasajero)
             throws PersistenciaException {
 
         String sql = "INSERT INTO pasajeros "
@@ -104,7 +104,7 @@ public final class GestorPasajerosBD {
         }
     }
 
-    public void modificar(Pasajero pasajero)
+    public static void modificar(Pasajero pasajero)
             throws PersistenciaException {
 
         String sql = "UPDATE pasajeros SET "
