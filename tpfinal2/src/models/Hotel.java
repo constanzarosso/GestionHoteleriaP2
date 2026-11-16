@@ -381,7 +381,7 @@ public class Hotel {
             ElementoDuplicadoException,
             PeriodoInvalidoException,
             HabitacionNoDisponibleException,
-            CapacidadExcedidaException {
+            CapacidadExcedidaException, PersistenciaException {
 
         verificarPermiso(Permiso.GESTIONAR_RESERVAS);
 
@@ -413,6 +413,7 @@ public class Hotel {
                 EstadoReserva.PENDIENTE
         );
 
+        ocuparHabitacion(numeroHabitacion);
         reservas.agregarElemento(reserva);
     }
 

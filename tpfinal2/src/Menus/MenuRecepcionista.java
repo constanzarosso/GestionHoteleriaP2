@@ -1,7 +1,9 @@
 package Menus;
 
 import Validaciones.Teclado;
+import Validaciones.Validacion;
 import enums.MetodoDePago;
+import gestoras.GestorHabitaciones;
 import models.Consumo;
 import models.Hotel;
 import models.Pasajero;
@@ -30,7 +32,7 @@ public final class MenuRecepcionista {
         switch (opcionRecepcion) {
 
             case 1:
-                verHabitaciones(hotel);
+                MenuHabitaciones.consultarHabitaciones(hotel);
                 break;
 
             case 2:
@@ -51,19 +53,21 @@ public final class MenuRecepcionista {
 
             case 6:
                 System.out.println("Cerrando sesion...");
-                return true;
+                return false;
 
             default:
                 System.out.println("Opcion incorrecta.");
                 break;
         }
-        return false;
+        return true;
     }
 
-    private static void verHabitaciones(Hotel hotel) {
-        Scanner scanner = new Scanner(System.in);
+    private static void consultarDisponibilidad(Hotel hotel) {
+       Scanner scanner = new Scanner(System.in);
 
-        MenuHabitaciones.consultarHabitaciones(hotel);
+
+      //  MenuHabitaciones.consultarHabitaciones(hotel);
+
 
         try {
             System.out.println("Consultar disponibilidad de habitacion");
@@ -103,11 +107,15 @@ public final class MenuRecepcionista {
             switch (opcionReserva) {
 
                 case 1:
-                    int dni = Teclado.leerEntero("DNI del pasajero: ");
+                        int dni = Integer.parseInt(Teclado.leerDni("Ingrese DNI: "));
 
+                        ///Validar que exista la habitacion
                     int numeroHabitacion =
                             Teclado.leerEntero("Numero de habitacion: ");
 
+
+
+                    ///Validar las fechas
                     System.out.print("Fecha desde (AAAA-MM-DD): ");
                     LocalDate fechaDesde =
                             LocalDate.parse(scanner.nextLine());
@@ -116,6 +124,7 @@ public final class MenuRecepcionista {
                     LocalDate fechaHasta =
                             LocalDate.parse(scanner.nextLine());
 
+                    /// Validar las cantidad de personas que no superen el limite de la habitacion segun su numero de habitacion
                     int cantidadPersonas =
                             Teclado.leerEntero("Cantidad de personas: ");
 
@@ -155,25 +164,20 @@ public final class MenuRecepcionista {
         try {
             System.out.println("====== REGISTRAR PASAJERO ======");
 
-            int dni = Teclado.leerEntero("DNI: ");
+            int dni = Integer.parseInt(Teclado.leerDni("Ingrese DNI: "));
 
-            System.out.print("Nombre: ");
-            String nombre = scanner.nextLine();
 
-            System.out.print("Apellido: ");
-            String apellido = scanner.nextLine();
+            String nombre = Validacion.validarSoloLetras("Nombre: ");
 
-            System.out.print("Origen: ");
-            String origen = scanner.nextLine();
+            String apellido = Validacion.validarSoloLetras("Apellido: ");
 
-            System.out.print("Domicilio de origen: ");
-            String domicilio = scanner.nextLine();
+            String origen = Validacion.validarSoloLetras("Origen: ");
 
-            System.out.print("Telefono: ");
-            String telefono = scanner.nextLine();
+            String domicilio = Teclado.leerTexto("Domicilio: ");
 
-            System.out.print("Email: ");
-            String email = scanner.nextLine();
+            String telefono = Teclado.leerTelefono("Ingrese Telefono: ");
+
+            String email = Teclado.leerEmail("Email: ");
 
             Pasajero pasajero = new Pasajero(
                     dni,
