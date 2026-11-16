@@ -14,6 +14,10 @@ public class GestorReservas extends GestorGenerico<Reserva> {
     public GestorReservas() {
     }
 
+    public GestorReservas(List<Reserva> reservas) {
+        super(reservas);
+    }
+
 
     public List<Reserva> reservasDeHabitacion(int numero)
             throws ElementoNoEncontradoException {

@@ -19,7 +19,7 @@ import java.util.List;
 import java.sql.Date;
 
 public final class GestorOcupacionesBD {
-    private GestorOcupacionesBD() {
+    public GestorOcupacionesBD() {
     }
 
     private static void crearOcupaciones() throws PersistenciaException {

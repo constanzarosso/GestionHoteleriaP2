@@ -2,6 +2,9 @@ package models;
 
 import ConexionBD.GestorBackupBD;
 import ConexionBD.GestorHabitacionesBD;
+import ConexionBD.GestorOcupacionesBD;
+import ConexionBD.GestorPasajerosBD;
+import ConexionBD.GestorReservasBD;
 import Excepciones.ExcepcionesBD.*;
 import Excepciones.ExcepcionesDatos.ElementoDuplicadoException;
 import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
@@ -43,6 +46,7 @@ public class Hotel {
         this.usuarios = new GestorUsuarios();
         this.habitaciones = new GestorHabitaciones();
         cargarHabitaciones();
+        cargarPasajerosReservasYOcupaciones();
         cargarCredencialesAdmin();
     }
 
@@ -134,6 +138,18 @@ public class Hotel {
         this.habitaciones = new GestorHabitaciones(GestorHabitacionesBD.listar());
     }
 
+    private void cargarPasajerosReservasYOcupaciones() throws PersistenciaException {
+        try {
+            GestorPasajeros pasajerosBD = new GestorPasajeros(new GestorPasajerosBD().listar());
+            GestorReservas reservasBD = new GestorReservas(new GestorReservasBD().listar(habitaciones, pasajerosBD));
+            this.pasajeros = pasajerosBD;
+            this.reservas = reservasBD;
+            this.ocupaciones = new GestorOcupaciones(new GestorOcupacionesBD().listar(reservasBD));
+        } catch (ElementoNoEncontradoException e) {
+            throw new PersistenciaException("No se pudieron relacionar los datos guardados: " + e.getMessage());
+        }
+    }
+
     public void agregarHabitacion(Habitacion h) throws AccesoDenegadoException, ElementoDuplicadoException, PersistenciaException {
         verificarPermiso(Permiso.GESTIONAR_HABITACIONES);
         habitaciones.agregarElemento(h);
@@ -148,7 +164,7 @@ public class Hotel {
     }
 
     public void ocuparHabitacion(int numero) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
-        verificarPermiso(Permiso.CAMBIAR_ESTADO_HABITACION);
+        verificarPermiso(Permiso.HACER_CHECKIN_CHECKOUT);
         Habitacion habitacion = habitaciones.buscarElemento(numero);
         habitacion.ocupar();
         GestorHabitacionesBD.modificarHabitacion(habitacion);
@@ -163,6 +179,9 @@ public class Hotel {
 
     public void marcarHabitacionNoDisponible (int numero, String motivo, EEstadoHabitacion estado) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
         verificarPermiso(Permiso.CAMBIAR_ESTADO_HABITACION);
+        if (usuarioActual.getTipoUsuario() != TipoUsuario.ADMINISTRADOR) {
+            throw new AccesoDenegadoException();
+        }
         Habitacion habitacion = habitaciones.buscarElemento(numero);
         habitacion.marcarNoDisponible(motivo,estado);
         GestorHabitacionesBD.modificarHabitacion(habitacion);
@@ -193,16 +212,16 @@ public class Hotel {
 
         Habitacion habitacion = reserva.getHabitacion();
 
-        if (!habitacion.estaDisponible()) {
+        if (habitacion.getEstadoHabitacion() != EEstadoHabitacion.DISPONIBLE) {
             throw new HabitacionNoDisponibleException();
         }
 
-        if (ocupaciones.ocupacionActiva(habitacion.getId()) != null) {
+        if (ocupaciones.tieneOcupacionActiva(habitacion.getId())) {
             throw new ReservaInvalidaException();
         }
 
         reserva.pasarAEnCurso();
-        habitacion.ocupar();
+        ocuparHabitacion(habitacion.getId());
 
         Ocupacion ocupacion = new Ocupacion(
                 ocupaciones.siguienteId(),
@@ -211,6 +230,8 @@ public class Hotel {
         );
 
         ocupaciones.agregarElemento(ocupacion);
+        new GestorOcupacionesBD().insertar(ocupacion);
+        new GestorReservasBD().modificar(reserva);
 
 
 
@@ -224,10 +245,6 @@ public class Hotel {
             verificarPermiso(Permiso.HACER_CHECKIN_CHECKOUT);
             Ocupacion ocupacion = ocupaciones.ocupacionActiva(numero);
 
-            if (ocupacion == null) {
-                throw new ReservaInvalidaException();
-            }
-
             if (pago == null) {
                 throw new ReservaInvalidaException();
             }
@@ -239,6 +256,9 @@ public class Hotel {
 
             Habitacion habitacion = ocupacion.getHabitacion();
             habitacion.liberar();
+            new GestorOcupacionesBD().modificar(ocupacion);
+            new GestorReservasBD().modificar(reserva);
+            GestorHabitacionesBD.modificarHabitacion(habitacion);
 
 
         }
@@ -248,14 +268,14 @@ public class Hotel {
             HabitacionNoDisponibleException,
             CapacidadExcedidaException,
             ElementoDuplicadoException,
-            ReservaInvalidaException {
+            ReservaInvalidaException, PersistenciaException {
 
         verificarPermiso(Permiso.HACER_CHECKIN_CHECKOUT);
 
         Pasajero pasajero = pasajeros.buscarElemento(dni);
         Habitacion habitacion = habitaciones.buscarElemento(numeroHabitacion);
 
-        if (!habitacion.estaDisponible()) {
+        if (habitacion.getEstadoHabitacion() != EEstadoHabitacion.DISPONIBLE) {
             throw new HabitacionNoDisponibleException();
         }
 
@@ -273,9 +293,9 @@ public class Hotel {
                 EstadoReserva.EN_CURSO
         );
 
-        reservas.agregarElemento(reserva);
-
         habitacion.ocupar();
+        GestorHabitacionesBD.modificarHabitacion(habitacion);
+        reservas.agregarElemento(reserva);
 
         Ocupacion ocupacion = new Ocupacion(
                 ocupaciones.siguienteId(),
@@ -284,6 +304,8 @@ public class Hotel {
         );
 
         ocupaciones.agregarElemento(ocupacion);
+        new GestorReservasBD().insertar(reserva);
+        new GestorOcupacionesBD().insertar(ocupacion);
     }
 
 
@@ -327,11 +349,21 @@ public class Hotel {
     // ==================== PASAJEROS ====================
 
     public void registrarPasajero(Pasajero pasajero)
-            throws AccesoDenegadoException, ElementoDuplicadoException {
+            throws AccesoDenegadoException, ElementoDuplicadoException, PersistenciaException {
 
-        verificarPermiso(Permiso.GESTIONAR_RESERVAS);
+        verificarPermiso(Permiso.CARGAR_PASAJEROS);
 
         pasajeros.agregarElemento(pasajero);
+        try {
+            new GestorPasajerosBD().insertar(pasajero);
+        } catch (PersistenciaException e) {
+            try {
+                pasajeros.eliminarElemento(pasajero.getId());
+            } catch (ElementoNoEncontradoException ignorada) {
+                e.addSuppressed(ignorada);
+            }
+            throw e;
+        }
     }
 
     public Pasajero buscarPasajero(int dni)
@@ -364,7 +396,7 @@ public class Hotel {
 
         Habitacion habitacion = habitaciones.buscarElemento(numeroHabitacion);
 
-        if (!habitacion.estaDisponible()) {
+        if (habitacion.getEstadoHabitacion() != EEstadoHabitacion.DISPONIBLE) {
             return false;
         }
 
@@ -392,7 +424,7 @@ public class Hotel {
         Pasajero pasajero = pasajeros.buscarElemento(dni);
         Habitacion habitacion = habitaciones.buscarElemento(numeroHabitacion);
 
-        if (!habitacion.estaDisponible()) {
+        if (habitacion.getEstadoHabitacion() != EEstadoHabitacion.DISPONIBLE) {
             throw new HabitacionNoDisponibleException();
         }
 
@@ -413,13 +445,18 @@ public class Hotel {
                 EstadoReserva.PENDIENTE
         );
 
-        ocuparHabitacion(numeroHabitacion);
         reservas.agregarElemento(reserva);
+        try {
+            new GestorReservasBD().insertar(reserva);
+        } catch (PersistenciaException e) {
+            reservas.eliminarElemento(reserva.getId());
+            throw e;
+        }
     }
 
     public void cancelarReserva(int idReserva)
             throws AccesoDenegadoException, ElementoNoEncontradoException,
-            ReservaInvalidaException {
+            ReservaInvalidaException, PersistenciaException {
 
         verificarPermiso(Permiso.GESTIONAR_RESERVAS);
 
@@ -430,6 +467,7 @@ public class Hotel {
         }
 
         reserva.cancelar();
+        new GestorReservasBD().modificar(reserva);
     }
 
     public List<Reserva> listarReservasPendientes()
@@ -470,16 +508,17 @@ public class Hotel {
     public void registrarConsumo(int numeroHabitacion, Consumo consumo)
             throws AccesoDenegadoException,
             ElementoNoEncontradoException,
-            ReservaInvalidaException {
+            ReservaInvalidaException, PersistenciaException {
 
         verificarPermiso(Permiso.REGISTRAR_CONSUMO);
 
         Ocupacion ocupacion = ocupaciones.ocupacionActiva(numeroHabitacion);
 
-        if (ocupacion == null || consumo == null) {
+        if (consumo == null) {
             throw new ReservaInvalidaException();
         }
 
+        new GestorOcupacionesBD().insertarConsumo(ocupacion.getId(), consumo);
         ocupacion.agregarConsumo(consumo);
     }
 

@@ -16,6 +16,10 @@ public class GestorOcupaciones extends GestorGenerico<Ocupacion> {
     public GestorOcupaciones() {
     }
 
+    public GestorOcupaciones(List<Ocupacion> ocupaciones) {
+        super(ocupaciones);
+    }
+
 
 
     public Ocupacion ocupacionActiva(int numero)
@@ -29,6 +33,15 @@ public class GestorOcupaciones extends GestorGenerico<Ocupacion> {
         }
 
         throw new ElementoNoEncontradoException();
+    }
+
+    public boolean tieneOcupacionActiva(int numero) {
+        for (Ocupacion ocupacion : obtenerElementos()) {
+            if (ocupacion.getHabitacion().getId() == numero && ocupacion.estaActiva()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Ocupacion> listarActivas() {
