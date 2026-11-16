@@ -12,6 +12,10 @@ public class GestorPasajeros extends GestorGenerico<Pasajero> {
     public GestorPasajeros() {
     }
 
+    public GestorPasajeros(List<Pasajero> pasajeros) {
+        super(pasajeros);
+    }
+
 
 
     public List<Pasajero> buscarPorApellido(String apellido)

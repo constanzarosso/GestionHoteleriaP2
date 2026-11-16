@@ -30,7 +30,9 @@ public abstract class Habitacion implements Identificable {
         this.capacidad = capacidad;
         this.precioBase = precioBase;
         this.estadoHabitacion = estadoHabitacion;
-        this.motivoNoDisponible = motivoNoDisponible;
+        this.motivoNoDisponible = estadoHabitacion == EEstadoHabitacion.OCUPADA
+                ? null
+                : motivoNoDisponible;
     }
 
     public int getNumero() {
@@ -67,6 +69,7 @@ public abstract class Habitacion implements Identificable {
 
     public void ocupar() {
         this.estadoHabitacion = EEstadoHabitacion.OCUPADA;
+        this.motivoNoDisponible = null;
     }
 
     public void liberar() {
@@ -105,11 +108,16 @@ public abstract class Habitacion implements Identificable {
 
     @Override
     public String toString() {
-        return  "numero=" + numero +
+        String descripcion = "numero=" + numero +
                 ", piso=" + piso +
                 ", capacidad=" + capacidad +
                 ", precioBase=" + precioBase +
-                ", estadoHabitacion=" + estadoHabitacion +
-                ", motivoNoDisponible=" + motivoNoDisponible;
+                ", estadoHabitacion=" + estadoHabitacion;
+        if (estadoHabitacion != EEstadoHabitacion.OCUPADA
+                && motivoNoDisponible != null
+                && !motivoNoDisponible.isBlank()) {
+            descripcion += ", motivoNoDisponible=" + motivoNoDisponible;
+        }
+        return descripcion;
     }
 }

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class GestorReservasBD {
-    private GestorReservasBD() {
+    public GestorReservasBD() {
     }
 
     private static void crearReservas() throws PersistenciaException {

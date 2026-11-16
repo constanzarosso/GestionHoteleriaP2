@@ -9,7 +9,6 @@ import models.Hotel;
 import models.Pasajero;
 
 import java.time.LocalDate;
-import java.util.Scanner;
 
 public final class MenuRecepcionista {
 
@@ -63,7 +62,6 @@ public final class MenuRecepcionista {
     }
 
     private static void consultarDisponibilidad(Hotel hotel) {
-       Scanner scanner = new Scanner(System.in);
 
 
       //  MenuHabitaciones.consultarHabitaciones(hotel);
@@ -74,11 +72,9 @@ public final class MenuRecepcionista {
 
             int numero = Teclado.leerEntero("Numero de habitacion: ");
 
-            System.out.print("Fecha desde (AAAA-MM-DD): ");
-            LocalDate desde = LocalDate.parse(scanner.nextLine());
+            LocalDate desde = LocalDate.parse(Teclado.leerTexto("Fecha desde (AAAA-MM-DD): "));
 
-            System.out.print("Fecha hasta (AAAA-MM-DD): ");
-            LocalDate hasta = LocalDate.parse(scanner.nextLine());
+            LocalDate hasta = LocalDate.parse(Teclado.leerTexto("Fecha hasta (AAAA-MM-DD): "));
 
             boolean disponible = hotel.consultarDisponibilidad(
                     numero, desde, hasta);
@@ -95,7 +91,6 @@ public final class MenuRecepcionista {
     }
 
     private static void gestionarReservas(Hotel hotel) {
-        Scanner scanner = new Scanner(System.in);
 
         try {
             System.out.println("\n====== GESTIONAR RESERVAS =====");
@@ -107,7 +102,7 @@ public final class MenuRecepcionista {
             switch (opcionReserva) {
 
                 case 1:
-                        int dni = Integer.parseInt(Teclado.leerDni("Ingrese DNI: "));
+                        int dni = Teclado.leerEntero("DNI: ");
 
                         ///Validar que exista la habitacion
                     int numeroHabitacion =
@@ -116,13 +111,11 @@ public final class MenuRecepcionista {
 
 
                     ///Validar las fechas
-                    System.out.print("Fecha desde (AAAA-MM-DD): ");
                     LocalDate fechaDesde =
-                            LocalDate.parse(scanner.nextLine());
+                            LocalDate.parse(Teclado.leerTexto("Fecha desde (AAAA-MM-DD): "));
 
-                    System.out.print("Fecha hasta (AAAA-MM-DD): ");
                     LocalDate fechaHasta =
-                            LocalDate.parse(scanner.nextLine());
+                            LocalDate.parse(Teclado.leerTexto("Fecha hasta (AAAA-MM-DD): "));
 
                     /// Validar las cantidad de personas que no superen el limite de la habitacion segun su numero de habitacion
                     int cantidadPersonas =
@@ -159,7 +152,6 @@ public final class MenuRecepcionista {
     }
 
     private static void registrarPasajero(Hotel hotel) {
-        Scanner scanner = new Scanner(System.in);
 
         try {
             System.out.println("====== REGISTRAR PASAJERO ======");
@@ -167,11 +159,11 @@ public final class MenuRecepcionista {
             int dni = Integer.parseInt(Teclado.leerDni("Ingrese DNI: "));
 
 
-            String nombre = Validacion.validarSoloLetras("Nombre: ");
+            String nombre = Teclado.leerLetras("Nombre: ");
 
-            String apellido = Validacion.validarSoloLetras("Apellido: ");
+            String apellido = Teclado.leerLetras("Apellido: ");
 
-            String origen = Validacion.validarSoloLetras("Origen: ");
+            String origen = Teclado.leerLetras("Origen: ");
 
             String domicilio = Teclado.leerTexto("Domicilio: ");
 
@@ -198,7 +190,6 @@ public final class MenuRecepcionista {
     }
 
     private static void checkInCheckOut(Hotel hotel) {
-        Scanner scanner = new Scanner(System.in);
 
         try {
             System.out.println("\n====== CHECK-IN / CHECK-OUT =====");
@@ -225,9 +216,8 @@ public final class MenuRecepcionista {
                     int numero = Teclado.leerEntero(
                             "Numero de habitacion: ");
 
-                    System.out.print("Fecha hasta (AAAA-MM-DD): ");
                     LocalDate fechaHasta =
-                            LocalDate.parse(scanner.nextLine());
+                            LocalDate.parse(Teclado.leerTexto("Fecha hasta (AAAA-MM-DD): "));
 
                     int personas = Teclado.leerEntero(
                             "Cantidad de personas: ");
@@ -247,14 +237,13 @@ public final class MenuRecepcionista {
                             "Numero de habitacion: ");
 
                     System.out.println("Metodo de pago:");
-                    System.out.println("EFECTIVO");
-                    System.out.println("DEBITO");
-                    System.out.println("CREDITO");
-                    System.out.println("TRANSFERENCIA");
+                    System.out.println("1. EFECTIVO");
+                    System.out.println("2. DEBITO");
+                    System.out.println("3. CREDITO");
+                    System.out.println("4. TRANSFERENCIA");
 
-                    System.out.print("Metodo de pago: ");
-                    MetodoDePago pago =
-                            MetodoDePago.valueOf(scanner.nextLine().toUpperCase());
+                    int opcionPago = Teclado.leerOpcion("Metodo de pago: ", 1, 4);
+                    MetodoDePago pago = MetodoDePago.values()[opcionPago - 1];
 
                     hotel.hacerCheckOut(numeroHabitacion, pago);
 
@@ -272,16 +261,14 @@ public final class MenuRecepcionista {
     }
 
     private static void registrarConsumo(Hotel hotel) {
-        Scanner scanner = new Scanner(System.in);
 
         try {
             System.out.println("====== REGISTRAR CONSUMO ======");
 
-            int idOcupacion =
-                    Teclado.leerEntero("ID de la ocupacion: ");
+            int numeroHabitacion =
+                    Teclado.leerEntero("Numero de habitacion: ");
 
-            System.out.print("Descripcion del consumo: ");
-            String descripcion = scanner.nextLine();
+            String descripcion = Teclado.leerTexto("Descripcion del consumo: ");
 
             double monto = Teclado.leerEntero("Monto: ");
 
@@ -292,7 +279,7 @@ public final class MenuRecepcionista {
                     LocalDate.now()
             );
 
-            hotel.registrarConsumo(idOcupacion, consumo);
+            hotel.registrarConsumo(numeroHabitacion, consumo);
 
             System.out.println("Consumo registrado correctamente.");
 

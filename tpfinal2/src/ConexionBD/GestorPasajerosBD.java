@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class GestorPasajerosBD {
-    private GestorPasajerosBD() {
+    public GestorPasajerosBD() {
     }
 
     private static void crearPasajeros() throws PersistenciaException {
