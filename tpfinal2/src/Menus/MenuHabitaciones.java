@@ -4,6 +4,7 @@ import Excepciones.ExcepcionesBD.AccesoDenegadoException;
 import Excepciones.ExcepcionesBD.PersistenciaException;
 import Excepciones.ExcepcionesDatos.ElementoDuplicadoException;
 import Excepciones.ExcepcionesDatos.ElementoNoEncontradoException;
+import Excepciones.ExcepcionesHotel.HabitacionNoDisponibleException;
 import Validaciones.Teclado;
 import enums.EEstadoHabitacion;
 import models.Habitacion;
@@ -132,6 +133,8 @@ public final class MenuHabitaciones {
         try {
             hotel.marcarHabitacionNoDisponible(numero, motivo, estado);
             System.out.println("Habitacion marcada como no disponible.");
+        } catch (HabitacionNoDisponibleException e) {
+            System.out.println("La habitacion tiene un check-in activo: primero hay que hacer el check-out.");
         } catch (AccesoDenegadoException | ElementoNoEncontradoException | PersistenciaException e) {
             System.out.println("No se pudo cambiar el estado: " + e.getMessage());
         }
@@ -144,6 +147,8 @@ public final class MenuHabitaciones {
         try {
             hotel.liberarHabitacion(numero);
             System.out.println("Habitacion habilitada con exito.");
+        } catch (HabitacionNoDisponibleException e) {
+            System.out.println("La habitacion tiene un check-in activo: primero hay que hacer el check-out.");
         } catch (AccesoDenegadoException | ElementoNoEncontradoException | PersistenciaException e) {
             System.out.println("No se pudo habilitar la habitacion: " + e.getMessage());
         }
@@ -155,7 +160,12 @@ public final class MenuHabitaciones {
         System.out.println("2. Disponibles");
         System.out.println("3. Ocupadas");
         System.out.println("4. No disponibles");
-        int opcion = Teclado.leerOpcion("Opcion: ", 1, 4);
+        System.out.println("5. Volver");
+        int opcion = Teclado.leerOpcion("Opcion: ", 1, 5);
+
+        if (opcion == 5) {
+            return;
+        }
 
         try {
             List<Habitacion> lista;

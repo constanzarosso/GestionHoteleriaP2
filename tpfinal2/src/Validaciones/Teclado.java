@@ -170,10 +170,8 @@ public final class Teclado {
 
             try {
                 Validacion.validarSiNo(respuesta);
-                if(respuesta.equalsIgnoreCase("Si"))
-                    return true;
-                if(respuesta.equalsIgnoreCase("No"))
-                    return false;
+                // validarSiNo ya acepta s, si, sí, n y no: es "si" cuando empieza con s
+                return respuesta.trim().toLowerCase().startsWith("s");
             } catch (TextoInvalidoException e) {
                 System.out.println(e.getMessage());
             }

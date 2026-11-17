@@ -117,6 +117,11 @@ public class Ocupacion implements Identificable, Facturable {
                         ? fechaCheckOut
                         : LocalDate.now());
 
+        // Si entra y sale el mismo dia se cobra una noche
+        if (noches < 1) {
+            noches = 1;
+        }
+
         double totalEstadia =  noches * reserva.getHabitacion().calcularPrecioPorNoche();
 
         double totalConsumos = 0;
