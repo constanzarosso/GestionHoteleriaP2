@@ -170,19 +170,29 @@ public class Hotel {
         GestorHabitacionesBD.modificarHabitacion(habitacion);
     }
 
-    public void liberarHabitacion (int numero) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
+    public void liberarHabitacion (int numero) throws AccesoDenegadoException, ElementoNoEncontradoException, HabitacionNoDisponibleException, PersistenciaException {
         verificarPermiso(Permiso.CAMBIAR_ESTADO_HABITACION);
         Habitacion habitacion = habitaciones.buscarElemento(numero);
+
+        // Una habitacion con un check-in activo solo se libera haciendo el check-out
+        if (ocupaciones.tieneOcupacionActiva(numero)) {
+            throw new HabitacionNoDisponibleException();
+        }
         habitacion.liberar();
         GestorHabitacionesBD.modificarHabitacion(habitacion);
     }
 
-    public void marcarHabitacionNoDisponible (int numero, String motivo, EEstadoHabitacion estado) throws AccesoDenegadoException, ElementoNoEncontradoException, PersistenciaException {
+    public void marcarHabitacionNoDisponible (int numero, String motivo, EEstadoHabitacion estado) throws AccesoDenegadoException, ElementoNoEncontradoException, HabitacionNoDisponibleException, PersistenciaException {
         verificarPermiso(Permiso.CAMBIAR_ESTADO_HABITACION);
         if (usuarioActual.getTipoUsuario() != TipoUsuario.ADMINISTRADOR) {
             throw new AccesoDenegadoException();
         }
         Habitacion habitacion = habitaciones.buscarElemento(numero);
+
+        // Una habitacion con un check-in activo solo se libera haciendo el check-out
+        if (ocupaciones.tieneOcupacionActiva(numero)) {
+            throw new HabitacionNoDisponibleException();
+        }
         habitacion.marcarNoDisponible(motivo,estado);
         GestorHabitacionesBD.modificarHabitacion(habitacion);
     }
@@ -207,6 +217,12 @@ public class Hotel {
         Reserva reserva = reservas.buscarElemento(idReserva);
 
         if (reserva.getEstado() != EstadoReserva.PENDIENTE) {
+            throw new ReservaInvalidaException();
+        }
+
+        // El check-in se hace desde el dia de entrada y antes del dia de salida
+        LocalDate hoy = LocalDate.now();
+        if (hoy.isBefore(reserva.getFechaDesde()) || !hoy.isBefore(reserva.getFechaHasta())) {
             throw new ReservaInvalidaException();
         }
 
@@ -268,9 +284,13 @@ public class Hotel {
             HabitacionNoDisponibleException,
             CapacidadExcedidaException,
             ElementoDuplicadoException,
-            ReservaInvalidaException, PersistenciaException {
+            ReservaInvalidaException, PersistenciaException, PeriodoInvalidoException {
 
         verificarPermiso(Permiso.HACER_CHECKIN_CHECKOUT);
+
+        if (fechaHasta == null || !LocalDate.now().isBefore(fechaHasta)) {
+            throw new PeriodoInvalidoException();
+        }
 
         Pasajero pasajero = pasajeros.buscarElemento(dni);
         Habitacion habitacion = habitaciones.buscarElemento(numeroHabitacion);
@@ -282,6 +302,11 @@ public class Hotel {
         if (cantidadPersonas > habitacion.getCapacidad()) {
             throw new CapacidadExcedidaException();
         }
+        // No se puede ocupar si se pisa con una reserva que ya existe para esos dias
+        if (reservas.hayReservaSuperpuesta(numeroHabitacion, LocalDate.now(), fechaHasta)) {
+            throw new HabitacionNoDisponibleException();
+        }
+
 
         Reserva reserva = new Reserva(
                 reservas.siguienteId(),
@@ -396,7 +421,9 @@ public class Hotel {
 
         Habitacion habitacion = habitaciones.buscarElemento(numeroHabitacion);
 
-        if (habitacion.getEstadoHabitacion() != EEstadoHabitacion.DISPONIBLE) {
+        // Para fechas futuras no importa el estado de hoy: importa que no se pise con otra reserva.
+        // Solo una habitacion fuera de servicio no se puede reservar.
+        if (habitacion.getEstadoHabitacion() == EEstadoHabitacion.FUERA_DE_SERVICIO) {
             return false;
         }
 
@@ -417,14 +444,15 @@ public class Hotel {
 
         verificarPermiso(Permiso.GESTIONAR_RESERVAS);
 
-        if (desde == null || hasta == null || !desde.isBefore(hasta)) {
+        if (desde == null || hasta == null || !desde.isBefore(hasta) || desde.isBefore(LocalDate.now())) {
             throw new PeriodoInvalidoException();
         }
 
         Pasajero pasajero = pasajeros.buscarElemento(dni);
         Habitacion habitacion = habitaciones.buscarElemento(numeroHabitacion);
 
-        if (habitacion.getEstadoHabitacion() != EEstadoHabitacion.DISPONIBLE) {
+        // Para fechas futuras no importa el estado de hoy: importa que no se pise con otra reserva.
+        if (habitacion.getEstadoHabitacion() == EEstadoHabitacion.FUERA_DE_SERVICIO) {
             throw new HabitacionNoDisponibleException();
         }
 
@@ -537,6 +565,10 @@ public class Hotel {
     public void restaurarBackup(int id) throws PersistenciaException, AccesoDenegadoException {
         verificarPermiso(Permiso.HACER_BACKUP);
         GestorBackupBD.restaurarBackup(id);
+
+        // Despues de restaurar, la base cambio: se vuelven a cargar los datos en memoria
+        cargarHabitaciones();
+        cargarPasajerosReservasYOcupaciones();
     }
 }
 

@@ -21,8 +21,8 @@ public final class MenuAdministrador {
     }
 
     /**
-     * Muestra el menu una vez y ejecuta la opcion elegida.
-     * @return true si el usuario eligio cerrar sesion
+     * Muestra el menu hasta que el usuario elige cerrar sesion.
+     * @return false cuando se cierra la sesion (el Main deja de mostrar el menu)
      */
     public static boolean mostrar(Hotel hotel) throws ContraseniaInvalidaException, PersistenciaException, AccesoDenegadoException {
         int opcionAdmin=0;
@@ -69,8 +69,9 @@ public final class MenuAdministrador {
                     mostrarError("Opcion incorrecta. Intente nuevamente.");
                     break;
             }
-            return false;
         }while (opcionAdmin != 5);
+
+        return false;
 
     }
 
