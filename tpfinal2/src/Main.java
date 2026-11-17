@@ -29,7 +29,7 @@ public class Main {
             Hotel hotel = new Hotel("Hotel UTN");
             int contador = 0;
 
-            while (contador < 5) {
+            while (contador < 3) {
 
                 try {
                     boolean cerrarSesion = true;
